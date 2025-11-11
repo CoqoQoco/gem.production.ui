@@ -1,7 +1,6 @@
 # Updated Project Structure - Phase 1 with i18n & SCSS
 
 
-
 ## 🆕 New Features Added
 - ✅ **i18n (vue-i18n)** - Multi-language support (Thai/English)
 - ✅ **SCSS** - Centralized styles with modular architecture
