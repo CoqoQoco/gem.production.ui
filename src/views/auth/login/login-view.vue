@@ -273,10 +273,11 @@ const handleLogin = async () => {
     // Redirect after short delay to allow user to see success message
     setTimeout(() => {
       console.log("Executing redirect to:", redirectPath);
+      isLoading.value = false;
       router.push(redirectPath);
     }, 1500);
   } catch (error) {
-    //isLoading.value = false;
+    isLoading.value = false;
 
     // Handle error from axios interceptor
     errorMessage.value = error.message || t("auth.login.error");
