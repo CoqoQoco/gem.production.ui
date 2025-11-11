@@ -1,0 +1,800 @@
+# Instructions for Claude Code
+
+## Project Overview
+สร้าง **Jewelry POS + WMS System** - Phase 1: Authentication Module + Dashboard
+
+**Technology Stack:**
+- Frontend: Vue 3 + PrimeVue 4.0
+- Build Tool: Vite
+- State Management: Pinia
+- Router: Vue Router
+- Language: TypeScript (Optional) / JavaScript
+
+---
+
+## Project Structure
+
+```
+jewelry-pos-system/
+├── public/
+│   └── logo.png
+├── src/
+│   ├── assets/
+│   │   ├── styles/
+│   │   │   ├── variables.css
+│   │   │   ├── global.css
+│   │   │   └── primevue-theme.css
+│   │   └── images/
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── AppHeader.vue
+│   │   │   ├── StatsCard.vue
+│   │   │   ├── ModuleCard.vue
+│   │   │   ├── WelcomeSection.vue
+│   │   │   ├── PageHeader.vue
+│   │   │   ├── EmptyState.vue
+│   │   │   ├── LoadingSpinner.vue
+│   │   │   ├── FormField.vue
+│   │   │   └── ActionButtons.vue
+│   │   └── index.js
+│   ├── views/
+│   │   ├── auth/
+            |
+            ├──login/
+│   │   │   |     ├── LoginView.vue
+            | register/
+│   │   │         └── RegisterView.vue
+│   │   └── dashboard/
+│   │       └── DashboardView.vue
+│   ├── router/
+│   │   └── index.js
+│   ├── stores/
+│   │   └── auth.js
+│   ├── composables/
+│   │   └── useValidation.js
+│   ├── utils/
+│   │   ├── mockData.js
+│   │   └── helpers.js
+│   ├── App.vue
+│   └── main.js
+├── ui-overview.md
+├── ui-auth.md
+├── ui-dashboard.md
+├── ui-components.md
+├── package.json
+├── vite.config.js
+└── index.html
+```
+
+---
+
+## Step-by-Step Implementation Guide
+
+### Step 1: Initialize Project
+
+```bash
+npm create vite@latest jewelry-pos-system -- --template vue
+cd jewelry-pos-system
+npm install
+```
+
+### Step 2: Install Dependencies
+
+```bash
+# PrimeVue & Icons
+npm install primevue primeicons
+
+# Router & State Management
+npm install vue-router pinia
+
+# Additional utilities
+npm install @vueuse/core
+```
+
+### Step 3: Setup PrimeVue
+
+**main.js:**
+```javascript
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
+import ConfirmationService from 'primevue/confirmationservice'
+import Tooltip from 'primevue/tooltip'
+
+// PrimeVue Components
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import Password from 'primevue/password'
+import Checkbox from 'primevue/checkbox'
+import Toast from 'primevue/toast'
+import Avatar from 'primevue/avatar'
+import Badge from 'primevue/badge'
+import Menu from 'primevue/menu'
+import OverlayPanel from 'primevue/overlaypanel'
+import Dropdown from 'primevue/dropdown'
+import InputMask from 'primevue/inputmask'
+import InlineMessage from 'primevue/inlinemessage'
+import ProgressSpinner from 'primevue/progressspinner'
+import Breadcrumb from 'primevue/breadcrumb'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Skeleton from 'primevue/skeleton'
+import ConfirmDialog from 'primevue/confirmdialog'
+
+// Styles
+import 'primevue/resources/themes/lara-light-blue/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
+import './assets/styles/variables.css'
+import './assets/styles/global.css'
+
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+const pinia = createPinia()
+
+app.use(pinia)
+app.use(router)
+app.use(PrimeVue, { ripple: true })
+app.use(ToastService)
+app.use(ConfirmationService)
+
+// Register PrimeVue components globally
+app.component('Button', Button)
+app.component('InputText', InputText)
+app.component('Password', Password)
+app.component('Checkbox', Checkbox)
+app.component('Toast', Toast)
+app.component('Avatar', Avatar)
+app.component('Badge', Badge)
+app.component('Menu', Menu)
+app.component('OverlayPanel', OverlayPanel)
+app.component('Dropdown', Dropdown)
+app.component('InputMask', InputMask)
+app.component('InlineMessage', InlineMessage)
+app.component('ProgressSpinner', ProgressSpinner)
+app.component('Breadcrumb', Breadcrumb)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('Skeleton', Skeleton)
+app.component('ConfirmDialog', ConfirmDialog)
+
+// Register tooltip directive
+app.directive('tooltip', Tooltip)
+
+app.mount('#app')
+```
+
+### Step 4: Create CSS Variables
+
+**src/assets/styles/variables.css:**
+```css
+:root {
+  /* Primary Colors - Gold/Orange theme for Jewelry */
+  --primary-50: #fef3e7;
+  --primary-100: #fde7cf;
+  --primary-200: #fbcea0;
+  --primary-300: #f9b670;
+  --primary-400: #f79d41;
+  --primary-500: #f58511;
+  --primary-600: #c46a0e;
+  --primary-700: #93500a;
+  --primary-800: #623507;
+  --primary-900: #311b03;
+
+  /* Secondary Colors */
+  --secondary-50: #f0f4f8;
+  --secondary-100: #d9e2ec;
+  --secondary-200: #bcccdc;
+  --secondary-300: #9fb3c8;
+  --secondary-400: #829ab1;
+  --secondary-500: #627d98;
+  --secondary-600: #486581;
+  --secondary-700: #334e68;
+  --secondary-800: #243b53;
+  --secondary-900: #102a43;
+
+  /* Neutral Colors */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Status Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+```
+
+**src/assets/styles/global.css:**
+```css
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+  background-color: var(--gray-50);
+  color: var(--gray-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Utility Classes */
+.w-full {
+  width: 100%;
+}
+
+.mt-2 { margin-top: var(--space-2); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-normal);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-slide-enter-active {
+  transition: all 0.4s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+```
+
+### Step 5: Create Router
+
+**src/router/index.js:**
+```javascript
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginView from '@/views/auth/LoginView.vue'
+import RegisterView from '@/views/auth/RegisterView.vue'
+import DashboardView from '@/views/dashboard/DashboardView.vue'
+
+const routes = [
+  {
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView,
+    meta: { requiresGuest: true }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterView,
+    meta: { requiresGuest: true }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/login'
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+// Navigation Guards
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('user')
+  
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/login')
+  } else if (to.meta.requiresGuest && isAuthenticated) {
+    next('/dashboard')
+  } else {
+    next()
+  }
+})
+
+export default router
+```
+
+### Step 6: Create Auth Store
+
+**src/stores/auth.js:**
+```javascript
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref(null)
+  const isAuthenticated = ref(false)
+
+  // Mock users for testing
+  const mockUsers = [
+    {
+      username: 'admin',
+      password: 'admin123',
+      role: 'admin',
+      fullName: 'ผู้ดูแลระบบ',
+      email: 'admin@example.com',
+      branch: 'สาขาสำนักงานใหญ่',
+      branchId: 1
+    },
+    {
+      username: 'sales01',
+      password: 'sales123',
+      role: 'sales',
+      fullName: 'สมชาย ใจดี',
+      email: 'sales01@example.com',
+      branch: 'สาขากรุงเทพ',
+      branchId: 1
+    },
+    {
+      username: 'manager01',
+      password: 'manager123',
+      role: 'manager',
+      fullName: 'สมหญิง จิตรดี',
+      email: 'manager01@example.com',
+      branch: 'สาขาเชียงใหม่',
+      branchId: 2
+    }
+  ]
+
+  const login = async (credentials) => {
+    // Simulate API call
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const foundUser = mockUsers.find(
+          u => (u.username === credentials.username || u.email === credentials.username) 
+            && u.password === credentials.password
+        )
+
+        if (foundUser) {
+          const userWithoutPassword = { ...foundUser }
+          delete userWithoutPassword.password
+          
+          user.value = userWithoutPassword
+          isAuthenticated.value = true
+          
+          // Store in localStorage
+          if (credentials.rememberMe) {
+            localStorage.setItem('user', JSON.stringify(userWithoutPassword))
+          }
+          
+          resolve(userWithoutPassword)
+        } else {
+          reject(new Error('อีเมลหรือรหัสผ่านไม่ถูกต้อง'))
+        }
+      }, 1500) // Simulate network delay
+    })
+  }
+
+  const register = async (userData) => {
+    // Simulate API call
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Check if username or email already exists
+        const exists = mockUsers.find(
+          u => u.username === userData.username || u.email === userData.email
+        )
+
+        if (exists) {
+          reject(new Error('ชื่อผู้ใช้หรืออีเมลนี้มีอยู่แล้ว'))
+        } else {
+          // In real app, this would save to backend
+          resolve({ success: true })
+        }
+      }, 1500)
+    })
+  }
+
+  const logout = () => {
+    user.value = null
+    isAuthenticated.value = false
+    localStorage.removeItem('user')
+  }
+
+  const checkAuth = () => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      user.value = JSON.parse(storedUser)
+      isAuthenticated.value = true
+    }
+  }
+
+  return {
+    user,
+    isAuthenticated,
+    login,
+    register,
+    logout,
+    checkAuth
+  }
+})
+```
+
+### Step 7: Create Mock Data
+
+**src/utils/mockData.js:**
+```javascript
+export const branches = [
+  { value: 1, label: 'สาขาสำนักงานใหญ่ (กรุงเทพ)' },
+  { value: 2, label: 'สาขาเชียงใหม่' },
+  { value: 3, label: 'สาขาภูเก็ต' }
+]
+
+export const roles = [
+  { value: 'sales', label: 'พนักงานขาย (Sales)' },
+  { value: 'guide', label: 'ไกด์ (Guide)' },
+  { value: 'driver', label: 'คนขับรถ (Driver)' },
+  { value: 'warehouse', label: 'พนักงานคลังสินค้า' },
+  { value: 'manager', label: 'ผู้จัดการ (Manager)' },
+  { value: 'admin', label: 'ผู้ดูแลระบบ (Admin)' }
+]
+
+export const quickStats = [
+  {
+    id: 'sales',
+    icon: '💰',
+    label: 'ยอดขายวันนี้',
+    value: '125,000 ฿',
+    change: '+12.5%',
+    trend: 'up',
+    accentColor: '#f58511'
+  },
+  {
+    id: 'stock',
+    icon: '📦',
+    label: 'สินค้าคงเหลือ',
+    value: '456 ชิ้น',
+    change: '-8 ชิ้น',
+    trend: 'down',
+    accentColor: '#627d98'
+  },
+  {
+    id: 'customers',
+    icon: '👥',
+    label: 'ลูกค้าวันนี้',
+    value: '28 คน',
+    change: '+5 คน',
+    trend: 'up',
+    accentColor: '#3b82f6'
+  },
+  {
+    id: 'orders',
+    icon: '💎',
+    label: 'ออเดอร์รอดำเนินการ',
+    value: '12 รายการ',
+    change: '2 รายการ',
+    trend: 'neutral',
+    accentColor: '#8b5cf6'
+  }
+]
+
+export const modules = [
+  {
+    id: 'master-data',
+    icon: 'pi pi-database',
+    iconEmoji: '👥',
+    title: 'ข้อมูลหลัก',
+    subtitle: 'Master Data Management',
+    description: 'จัดการข้อมูลพื้นฐานของระบบ',
+    features: [
+      'พนักงานขาย (Salesperson)',
+      'ไกด์ (Guide)',
+      'คนขับรถ (Driver)',
+      'ข้อมูลสินค้าจิวเวลรี่',
+      'ข้อมูลสาขา',
+      'ผู้ใช้งานระบบ'
+    ],
+    route: '/master-data',
+    accentColor: '#3b82f6'
+  },
+  {
+    id: 'goods-receipt',
+    icon: 'pi pi-box',
+    iconEmoji: '📦',
+    title: 'รับสินค้าเข้า Stock',
+    subtitle: 'Goods Receipt & Warehouse',
+    description: 'บันทึกรับสินค้าและจัดการคลังสินค้า',
+    features: [
+      'บันทึกรับสินค้าเข้า',
+      'รับสินค้าจากฝ่ายผลิต',
+      'โอนสินค้าระหว่างสาขา',
+      'ตรวจสอบ Stock คงเหลือ',
+      'รายงานการเคลื่อนไหว Stock'
+    ],
+    route: '/goods-receipt',
+    accentColor: '#f97316'
+  },
+  {
+    id: 'pos',
+    icon: 'pi pi-shopping-cart',
+    iconEmoji: '🛒',
+    title: 'ขายหน้าร้าน',
+    subtitle: 'Point of Sale (POS)',
+    description: 'ระบบขายสินค้าหน้าร้าน',
+    features: [
+      'ขายจิวเวลรี่ + ระบุ Location',
+      'ขาย Gift Shop',
+      'จัดการคิวไกด์',
+      'ชำระเงิน 3 วิธี',
+      'พิมพ์ใบเสร็จทันที'
+    ],
+    route: '/pos',
+    accentColor: '#10b981'
+  },
+  {
+    id: 'documents',
+    icon: 'pi pi-print',
+    iconEmoji: '🖨️',
+    title: 'พิมพ์เอกสาร',
+    subtitle: 'Document Printing',
+    description: 'พิมพ์เอกสารและใบกำกับภาษี',
+    features: [
+      'ใบส่งของ/ใบเสร็จแบบย่อ (A5)',
+      'ใบกำกับภาษีแบบเต็ม',
+      'VAT Refund + Passport',
+      'ใบรับประกันสินค้า',
+      'Export PDF'
+    ],
+    route: '/documents',
+    accentColor: '#8b5cf6'
+  },
+  {
+    id: 'commission',
+    icon: 'pi pi-money-bill',
+    iconEmoji: '💰',
+    title: 'คำนวณคอมมิชชั่น',
+    subtitle: 'Commission Calculation',
+    description: 'คำนวณและจัดการค่าคอมมิชชั่น',
+    features: [
+      'คอมมิชชั่นไกด์รายวัน',
+      'คอมมิชชั่น Sales',
+      'คอมมิชชั่น Marketing',
+      'คอมมิชชั่นหัวหน้าไกด์',
+      'สรุปรายการจ่ายเงิน'
+    ],
+    route: '/commission',
+    accentColor: '#eab308'
+  },
+  {
+    id: 'reports',
+    icon: 'pi pi-chart-bar',
+    iconEmoji: '📊',
+    title: 'รายงาน',
+    subtitle: 'Reports & Analytics',
+    description: 'รายงานและวิเคราะห์ข้อมูล',
+    features: [
+      'รายงานขายรายวัน-เดือน-ปี',
+      'รายงาน Stock คงเหลือ',
+      'รายงานคอมมิชชั่นทุกประเภท',
+      'Dashboard สำหรับผู้บริหาร',
+      'Export Excel/PDF'
+    ],
+    route: '/reports',
+    accentColor: '#ef4444'
+  }
+]
+
+export const notifications = [
+  { 
+    id: 1, 
+    message: 'มีออเดอร์ใหม่ 3 รายการ', 
+    time: '5 นาทีที่แล้ว',
+    severity: 'info'
+  },
+  { 
+    id: 2, 
+    message: 'Stock สินค้า A ใกล้หมด', 
+    time: '1 ชั่วโมงที่แล้ว',
+    severity: 'warn'
+  },
+  { 
+    id: 3, 
+    message: 'รายงานประจำวันพร้อมแล้ว', 
+    time: '2 ชั่วโมงที่แล้ว',
+    severity: 'success'
+  }
+]
+```
+
+---
+
+## Tasks for Claude Code
+
+### Priority 1: Core Setup ✅
+1. ✅ Create project structure
+2. ✅ Install all dependencies
+3. ✅ Setup PrimeVue configuration
+4. ✅ Create CSS variables and global styles
+5. ✅ Setup router with navigation guards
+6. ✅ Create auth store with Pinia
+7. ✅ Create mock data utilities
+
+### Priority 2: Authentication Pages 🎯
+8. **Create LoginView.vue**
+   - Follow ui-auth.md specifications
+   - Implement form validation
+   - Connect to auth store
+   - Add loading states
+   - Add toast notifications
+
+9. **Create RegisterView.vue**
+   - Follow ui-auth.md specifications
+   - Implement all form fields
+   - Add validation for each field
+   - Connect to auth store
+   - Show password strength
+
+### Priority 3: Reusable Components 🎯
+10. **Create all common components** from ui-components.md:
+    - AppHeader.vue
+    - StatsCard.vue
+    - ModuleCard.vue
+    - WelcomeSection.vue
+    - PageHeader.vue
+    - EmptyState.vue
+    - LoadingSpinner.vue
+    - FormField.vue
+    - ActionButtons.vue
+
+### Priority 4: Dashboard 🎯
+11. **Create DashboardView.vue**
+    - Follow ui-dashboard.md specifications
+    - Use all reusable components
+    - Display quick stats
+    - Display module cards grid
+    - Add responsive design
+    - Add animations
+
+### Priority 5: Polish & Testing 🎯
+12. Add page transitions
+13. Test all responsive breakpoints
+14. Test navigation flow
+15. Test form validations
+16. Add error handling
+17. Optimize performance
+
+---
+
+## Development Guidelines
+
+### Code Style
+- Use Vue 3 Composition API (`<script setup>`)
+- Use consistent naming conventions
+- Add comments for complex logic
+- Keep components small and focused
+- Use TypeScript types if possible (optional)
+
+### Best Practices
+- ✅ Mobile-first responsive design
+- ✅ Accessibility (ARIA labels, keyboard navigation)
+- ✅ Loading states for async operations
+- ✅ Error handling and user feedback
+- ✅ Clean and maintainable code
+- ✅ Reusable components
+- ✅ Proper validation messages in Thai
+
+### Testing Checklist
+- [ ] Login with correct credentials
+- [ ] Login with wrong credentials
+- [ ] Register new user
+- [ ] Remember me functionality
+- [ ] Logout
+- [ ] Navigation guards work
+- [ ] Responsive on mobile/tablet/desktop
+- [ ] All animations smooth
+- [ ] Toast notifications appear correctly
+- [ ] Form validations work
+
+---
+
+## Expected Deliverables
+
+1. **Fully functional Vue 3 + PrimeVue application**
+2. **Login & Register pages** matching UI specs
+3. **Dashboard** with all modules displayed
+4. **10+ reusable components**
+5. **Responsive design** (mobile/tablet/desktop)
+6. **Mock authentication** working
+7. **Navigation** between pages
+8. **Professional UI** matching jewelry theme
+
+---
+
+## Notes
+- This is Phase 1 only (No API integration yet)
+- Use mock data for everything
+- Focus on UI/UX quality
+- Make it visually appealing for jewelry business
+- All text in Thai language
+- Test with the provided mock users
+
+---
+
+**Start with Priority 1 & 2, then move to components and dashboard.**
+
+Good luck! 🚀
