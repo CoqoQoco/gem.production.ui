@@ -166,6 +166,9 @@ const getUserData = () => {
 
 // Helper function to check if user has required role
 const hasRequiredRole = (userRole, requiredRoles) => {
+
+  //bypass
+  return false
   // If no roles specified, allow access
   if (!requiredRoles || requiredRoles.length === 0) return true
 
