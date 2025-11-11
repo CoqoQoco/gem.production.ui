@@ -220,28 +220,29 @@ router.beforeEach((to, from, next) => {
     } else {
       // Check role-based access
       const requiredRoles = to.meta.roles
+      next()
 
-      if (requiredRoles && !hasRequiredRole(userRole, requiredRoles)) {
-        // User doesn't have required role - logout immediately
-        console.log(`[Router Guard] Access denied: user role "${userRole}" not in required roles:`, requiredRoles)
-        console.log(`[Router Guard] Logging out user...`)
+      // if (requiredRoles && !hasRequiredRole(userRole, requiredRoles)) {
+      //   // User doesn't have required role - logout immediately
+      //   console.log(`[Router Guard] Access denied: user role "${userRole}" not in required roles:`, requiredRoles)
+      //   console.log(`[Router Guard] Logging out user...`)
 
-        // Clear authentication data
-        const authStore = useAuthStore()
-        authStore.clearAuthData()
+      //   // Clear authentication data
+      //   const authStore = useAuthStore()
+      //   authStore.clearAuthData()
 
-        // Redirect to login with access denied message
-        next({
-          path: '/login',
-          query: {
-            error: 'access_denied',
-            message: 'You do not have permission to access this resource'
-          }
-        })
-      } else {
-        console.log(`[Router Guard] Protected route and authenticated with valid role, allowing access`)
-        next()
-      }
+      //   // Redirect to login with access denied message
+      //   next({
+      //     path: '/login',
+      //     query: {
+      //       error: 'access_denied',
+      //       message: 'You do not have permission to access this resource'
+      //     }
+      //   })
+      // } else {
+      //   console.log(`[Router Guard] Protected route and authenticated with valid role, allowing access`)
+      //   next()
+      // }
     }
   }
   // Public routes (explicitly marked as public)
