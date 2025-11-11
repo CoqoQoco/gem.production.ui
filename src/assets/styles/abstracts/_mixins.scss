@@ -1,0 +1,123 @@
+@use 'variables' as *;
+
+// Responsive Breakpoints
+@mixin mobile {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint-md}) and (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-lg}) {
+    @content;
+  }
+}
+
+// Flexbox Center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex Column Center
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Card Style
+@mixin card($padding: $space-6) {
+  background: white;
+  border-radius: $radius-2xl;
+  padding: $padding;
+  box-shadow: $shadow-xl;
+}
+
+// Button Style
+@mixin button-primary {
+  background-color: $primary-500;
+  border-color: $primary-500;
+  color: white;
+  font-weight: 600;
+  transition: all $transition-normal;
+
+  &:hover:not(:disabled) {
+    background-color: $primary-400;
+    border-color: $primary-400;
+    transform: translateY(-1px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $primary-600;
+    border-color: $primary-600;
+    transform: translateY(0);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Input Style
+@mixin input-field {
+  width: 100%;
+  height: 40px;
+  border: 1px solid $gray-300;
+  border-radius: $radius-md;
+  padding: 0 $space-3;
+  font-size: 14px;
+  transition: all $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-500;
+    box-shadow: 0 0 0 2px rgba(245, 133, 17, 0.2);
+  }
+
+  &.error {
+    border-color: $error;
+  }
+}
+
+// Animation Keyframes
+@mixin fade-slide-in {
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  animation: fadeSlideIn 0.4s ease;
+}
+
+@mixin pulse {
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  animation: pulse 2s ease-in-out infinite;
+}

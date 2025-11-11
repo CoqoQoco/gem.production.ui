@@ -1,0 +1,74 @@
+// Color Variables - Pastel Pink Theme
+$primary-50: #ffebf0;
+$primary-100: #ffd7e1;
+$primary-200: #ffb6c1;  // Light Pink
+$primary-300: #ffa6b1;
+$primary-400: #ff96a1;
+$primary-500: #ffb6c1;  // Main pastel pink
+$primary-600: #ff69b4;  // Hot Pink
+$primary-700: #ff1493;  // Deep Pink
+$primary-800: #c71585;  // Medium Violet Red
+$primary-900: #8b0060;  // Dark Pink
+
+$secondary-50: #fef5f8;
+$secondary-100: #fceaf0;
+$secondary-200: #ffc0cb;  // Pink
+$secondary-300: #ffdae0;  // Very Light Pink
+$secondary-400: #ffb0bb;
+$secondary-500: #ffc0cb;
+$secondary-600: #ff9eb0;
+$secondary-700: #ff7c93;
+$secondary-800: #ff5a76;
+$secondary-900: #ff3859;
+
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+$success: #10b981;
+$warning: #f59e0b;
+$error: #ef4444;
+$info: #3b82f6;
+
+// Spacing
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
+
+// Border Radius
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-xl: 0.75rem;
+$radius-2xl: 1rem;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+// Transitions
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 200ms ease-in-out;
+$transition-slow: 300ms ease-in-out;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;

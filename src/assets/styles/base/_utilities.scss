@@ -1,0 +1,79 @@
+@use '../abstracts/variables' as *;
+
+// Width utilities
+.w-full {
+  width: 100%;
+}
+
+.w-auto {
+  width: auto;
+}
+
+// Margin utilities
+.mt-2 { margin-top: $space-2; }
+.mt-4 { margin-top: $space-4; }
+.mt-6 { margin-top: $space-6; }
+.mb-2 { margin-bottom: $space-2; }
+.mb-4 { margin-bottom: $space-4; }
+.mb-6 { margin-bottom: $space-6; }
+.ml-2 { margin-left: $space-2; }
+.ml-4 { margin-left: $space-4; }
+.mr-2 { margin-right: $space-2; }
+.mr-4 { margin-right: $space-4; }
+
+// Padding utilities
+.p-2 { padding: $space-2; }
+.p-4 { padding: $space-4; }
+.p-6 { padding: $space-6; }
+
+// Display utilities
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.gap-2 { gap: $space-2; }
+.gap-4 { gap: $space-4; }
+
+// Text utilities
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray-400;
+  border-radius: $radius-full;
+
+  &:hover {
+    background: $gray-500;
+  }
+}

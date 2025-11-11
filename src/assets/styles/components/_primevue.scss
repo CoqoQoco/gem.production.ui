@@ -1,0 +1,471 @@
+// PrimeVue Component Styles (Unstyled Mode)
+// Custom styling for all PrimeVue components
+
+@use '../abstracts/variables' as *;
+
+// Button Component
+.p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: $radius-md;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+  user-select: none;
+
+  &:not(:disabled) {
+    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
+    border-color: #ffb6c1 !important;
+    color: white !important;
+
+    &:hover {
+      background: linear-gradient(135deg, #ff96a1 0%, #ffaab5 100%) !important;
+      border-color: #ff96a1 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+    }
+
+    &:active {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff7fc4 100%) !important;
+      border-color: #ff69b4 !important;
+      transform: translateY(0);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3) !important;
+    }
+  }
+
+  &:disabled {
+    background-color: $gray-300 !important;
+    color: $gray-500 !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .p-button-icon {
+    font-size: 1.125rem;
+  }
+
+  .p-button-label {
+    font-weight: 600;
+  }
+
+  .p-button-loading-icon {
+    animation: spin 1s linear infinite;
+  }
+}
+
+// Specific override for auth buttons
+.auth-button.p-button {
+  &:not(:disabled) {
+    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
+    border-color: #ffb6c1 !important;
+
+    &:hover {
+      background: linear-gradient(135deg, #ff96a1 0%, #ffaab5 100%) !important;
+      border-color: #ff96a1 !important;
+    }
+
+    &:active {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff7fc4 100%) !important;
+      border-color: #ff69b4 !important;
+    }
+  }
+}
+
+// Checkbox Component
+.p-checkbox {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+
+  .p-checkbox-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid $gray-300;
+    border-radius: 4px;
+    background-color: white;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: #ffb6c1 !important;
+    }
+
+    &.p-focus {
+      outline: none;
+      border-color: #ffb6c1 !important;
+      box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2) !important;
+    }
+
+    &.p-highlight {
+      background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
+      border-color: #ffb6c1 !important;
+
+      .p-checkbox-icon {
+        color: white !important;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  &.p-invalid .p-checkbox-box {
+    border-color: $error !important;
+  }
+
+  &.p-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Toast Component
+.p-toast {
+  position: fixed;
+  z-index: 9999;
+
+  &.p-toast-top-right {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .p-toast-message {
+    margin: 0 0 1rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: $radius-md;
+    border-left: 6px solid;
+    background-color: white;
+
+    &.p-toast-message-success {
+      border-color: #22c55e;
+
+      .p-toast-message-icon {
+        color: #22c55e;
+      }
+    }
+
+    &.p-toast-message-error {
+      border-color: $error;
+
+      .p-toast-message-icon {
+        color: $error;
+      }
+    }
+
+    &.p-toast-message-warn {
+      border-color: #f59e0b;
+
+      .p-toast-message-icon {
+        color: #f59e0b;
+      }
+    }
+
+    &.p-toast-message-info {
+      border-color: #3b82f6;
+
+      .p-toast-message-icon {
+        color: #3b82f6;
+      }
+    }
+
+    .p-toast-message-content {
+      display: flex;
+      align-items: flex-start;
+      padding: 1rem;
+      gap: 0.75rem;
+
+      .p-toast-message-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .p-toast-message-text {
+        flex: 1;
+
+        .p-toast-summary {
+          font-weight: 700;
+          font-size: 1rem;
+          margin-bottom: 0.25rem;
+          color: $gray-900;
+        }
+
+        .p-toast-detail {
+          font-size: 0.875rem;
+          color: $gray-600;
+          line-height: 1.5;
+        }
+      }
+
+      .p-toast-icon-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: $gray-400;
+        cursor: pointer;
+        transition: all $transition-fast;
+
+        &:hover {
+          background-color: $gray-100;
+          color: $gray-600;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba($gray-500, 0.2);
+        }
+      }
+    }
+  }
+}
+
+// InlineMessage Component
+.p-inline-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: $radius-md;
+  font-size: 0.875rem;
+
+  &.p-inline-message-error {
+    background-color: rgba($error, 0.1);
+    border: 1px solid rgba($error, 0.3);
+    color: #c73030;
+
+    .p-inline-message-icon {
+      color: $error;
+    }
+  }
+
+  &.p-inline-message-success {
+    background-color: rgba(#22c55e, 0.1);
+    border: 1px solid rgba(#22c55e, 0.3);
+    color: #1a9d4a;
+
+    .p-inline-message-icon {
+      color: #22c55e;
+    }
+  }
+
+  &.p-inline-message-warn {
+    background-color: rgba(#f59e0b, 0.1);
+    border: 1px solid rgba(#f59e0b, 0.3);
+    color: #c47c08;
+
+    .p-inline-message-icon {
+      color: #f59e0b;
+    }
+  }
+
+  &.p-inline-message-info {
+    background-color: rgba(#3b82f6, 0.1);
+    border: 1px solid rgba(#3b82f6, 0.3);
+    color: #2d68c4;
+
+    .p-inline-message-icon {
+      color: #3b82f6;
+    }
+  }
+
+  .p-inline-message-icon {
+    font-size: 1rem;
+  }
+
+  .p-inline-message-text {
+    line-height: 1.5;
+  }
+}
+
+// InputMask Component (inherits from input styles in _auth.scss)
+.p-inputmask {
+  // Styles are defined in _auth.scss .phone-input
+}
+
+// Select Component (replaces Dropdown in v4)
+.p-select,
+.p-dropdown {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  background: white;
+  border: 1px solid $gray-300;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+  width: 100%;
+
+  &:not(.p-disabled):hover {
+    border-color: #ffb6c1;
+  }
+
+  &.p-focus {
+    outline: none;
+    border-color: #ffb6c1;
+    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2);
+  }
+
+  &.p-invalid {
+    border-color: $error;
+  }
+
+  &.p-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: $gray-100;
+  }
+
+  .p-select-label,
+  .p-dropdown-label {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: $gray-900;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.p-placeholder {
+      color: $gray-500;
+    }
+  }
+
+  .p-select-dropdown,
+  .p-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    color: $gray-600;
+    flex-shrink: 0;
+  }
+
+  .p-select-clear-icon,
+  .p-dropdown-clear-icon {
+    color: $gray-500;
+    margin-right: 0.5rem;
+  }
+}
+
+// Select/Dropdown Panel (Overlay)
+.p-select-overlay,
+.p-dropdown-panel {
+  position: absolute;
+  background: white;
+  border: 1px solid $gray-200;
+  border-radius: $radius-md;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1100;
+  margin-top: 0.25rem;
+
+  .p-dropdown-header {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid $gray-200;
+
+    .p-dropdown-filter {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid $gray-300;
+      border-radius: $radius-md;
+      font-size: 0.875rem;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-500;
+        box-shadow: 0 0 0 2px rgba($primary-500, 0.2);
+      }
+    }
+  }
+
+  .p-dropdown-items-wrapper {
+    overflow: auto;
+    max-height: 200px;
+  }
+
+  .p-dropdown-items {
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem;
+
+    .p-dropdown-item {
+      padding: 0.5rem 0.75rem;
+      margin: 0.125rem 0;
+      cursor: pointer;
+      border-radius: $radius-sm;
+      transition: all $transition-fast;
+      font-size: 0.875rem;
+      color: $gray-900;
+
+      &:hover {
+        background-color: rgba(255, 182, 193, 0.1);
+        color: #ff69b4;
+      }
+
+      &.p-highlight {
+        background-color: rgba(255, 182, 193, 0.2);
+        color: #ff69b4;
+        font-weight: 600;
+      }
+
+      &.p-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:focus {
+        outline: none;
+        background-color: rgba(255, 182, 193, 0.1);
+      }
+    }
+
+    .p-dropdown-empty-message {
+      padding: 0.5rem 0.75rem;
+      color: $gray-500;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+  }
+}
+
+// Dropdown Enter/Leave Animations
+.p-dropdown-panel-enter-active {
+  transition: all 0.15s ease-out;
+}
+
+.p-dropdown-panel-leave-active {
+  transition: all 0.1s ease-in;
+}
+
+.p-dropdown-panel-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.p-dropdown-panel-leave-to {
+  opacity: 0;
+}
+
+// Animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

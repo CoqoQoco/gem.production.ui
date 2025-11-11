@@ -1,0 +1,469 @@
+<template>
+  <div class="worker-data-page">
+    <div class="worker-data-container">
+      <!-- Header -->
+      <div class="worker-data-header">
+        <div class="header-left">
+          <h1 class="page-title">
+            <i class="pi pi-shopping-bag"></i>
+            {{ t('workerData.sales.title') }}
+          </h1>
+          <div class="page-breadcrumb">
+            <router-link to="/dashboard">{{ t('dashboard.menu.dashboard') }}</router-link>
+            <span>/</span>
+            <router-link to="/settings">{{ t('dashboard.menu.settings') }}</router-link>
+            <span>/</span>
+            <span>{{ t('workerData.sales.title') }}</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="btn-add-worker" @click="openAddModal">
+            <i class="pi pi-plus"></i>
+            <span>{{ t('workerData.sales.addNew') }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="worker-data-toolbar">
+        <div class="toolbar-content">
+          <div class="search-box">
+            <i class="pi pi-search"></i>
+            <input
+              type="text"
+              v-model="searchQuery"
+              :placeholder="t('workerData.sales.searchPlaceholder')"
+              @input="handleSearch"
+            />
+          </div>
+          <div class="filter-group">
+            <!-- Status Filter -->
+            <Dropdown
+              v-model="filterStatus"
+              :options="statusOptions"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="t('workerData.form.status')"
+              @change="handleFilter"
+              style="min-width: 150px"
+            />
+            <!-- Branch Filter -->
+            <Dropdown
+              v-model="filterBranch"
+              :options="branchOptions"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="t('workerData.form.branch')"
+              @change="handleFilter"
+              style="min-width: 150px"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="worker-data-table">
+        <DataTable
+          :items="paginatedSales"
+          :columns="columns"
+          :totalRecords="filteredSales.length"
+          :perPage="perPage"
+          dataKey="id"
+          :paginator="true"
+          :showGridlines="true"
+          @page="handlePageChange"
+          @sort="handleSort"
+        >
+          <!-- No Column -->
+          <template #noTemplate="{ data, index }">
+            {{ (currentPage - 1) * perPage + index + 1 }}
+          </template>
+
+          <!-- Gender Column -->
+          <template #genderTemplate="{ data }">
+            <div class="gender-badge">
+              <i
+                :class="[
+                  'pi',
+                  data.gender === 'male' ? 'pi-mars male' : 'pi-venus female'
+                ]"
+              ></i>
+              <span>{{ getGenderLabel(data.gender) }}</span>
+            </div>
+          </template>
+
+          <!-- Total Sales Column -->
+          <template #totalSalesTemplate="{ data }">
+            <span style="font-weight: 600; color: #22c55e">
+              {{ formatCurrency(data.totalSales) }}
+            </span>
+          </template>
+
+          <!-- Commission Column -->
+          <template #commissionTemplate="{ data }">
+            <span style="font-weight: 600; color: #f59e0b">
+              {{ formatCurrency(data.commission) }}
+            </span>
+          </template>
+
+          <!-- Rating Column -->
+          <template #ratingTemplate="{ data }">
+            <div class="rating-display">
+              <i class="pi pi-star-fill"></i>
+              <span>{{ data.rating }}</span>
+            </div>
+          </template>
+
+          <!-- Status Column -->
+          <template #statusTemplate="{ data }">
+            <span
+              :class="[
+                'status-badge',
+                data.status === 'active' ? 'status-active' : 'status-inactive'
+              ]"
+            >
+              <i class="pi pi-circle-fill"></i>
+              {{ getStatusLabel(data.status) }}
+            </span>
+          </template>
+
+          <!-- Branch Column -->
+          <template #branchTemplate="{ data }">
+            {{ getBranchLabel(data.branchId) }}
+          </template>
+
+          <!-- Actions Column -->
+          <template #actionsTemplate="{ data }">
+            <div class="worker-action-buttons">
+              <button
+                class="btn-action btn-view"
+                @click="viewSales(data)"
+                :title="t('common.view')"
+              >
+                <i class="pi pi-eye"></i>
+              </button>
+              <button
+                class="btn-action btn-edit"
+                @click="editSales(data)"
+                :title="t('common.edit')"
+              >
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button
+                class="btn-action btn-delete"
+                @click="deleteSales(data)"
+                :title="t('common.delete')"
+              >
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </template>
+        </DataTable>
+      </div>
+    </div>
+
+    <!-- Worker Form Modal -->
+    <WorkerForm
+      v-model:visible="showFormModal"
+      :workerType="'sales'"
+      :editData="selectedSales"
+      @save="handleSave"
+    />
+
+    <!-- Alerts -->
+    <AlertConfirm
+      v-model:visible="showDeleteConfirm"
+      :header="t('workerData.sales.delete')"
+      :message="t('workerData.sales.deleteConfirm')"
+      :confirmText="t('common.delete')"
+      :cancelText="t('common.cancel')"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <AlertSubmit
+      v-model:visible="showSuccessAlert"
+      :header="t('common.success')"
+      :message="successMessage"
+      :okText="t('common.confirm')"
+      @ok="showSuccessAlert = false"
+    />
+
+    <AlertError
+      v-model:visible="showErrorAlert"
+      :header="t('common.error')"
+      :message="errorMessage"
+      :okText="t('common.close')"
+      @ok="showErrorAlert = false"
+    />
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useToast } from 'primevue/usetoast'
+import Dropdown from 'primevue/dropdown'
+import DataTable from '@/components/prime-vue/data-table.vue'
+import { AlertConfirm, AlertSubmit, AlertError } from '@/components/alert'
+import WorkerForm from '@/components/worker-data/WorkerForm.vue'
+import { salesData, genderOptions, statusOptions as mockStatusOptions } from '@/utils/workerMockData'
+import { branches } from '@/utils/mockData'
+
+const { t, locale } = useI18n()
+const toast = useToast()
+
+// Data
+const salesStaff = ref([...salesData])
+const searchQuery = ref('')
+const filterStatus = ref(null)
+const filterBranch = ref(null)
+const currentPage = ref(1)
+const perPage = ref(10)
+const selectedSales = ref(null)
+const salesToDelete = ref(null)
+
+// Modals
+const showFormModal = ref(false)
+const showDeleteConfirm = ref(false)
+const showSuccessAlert = ref(false)
+const showErrorAlert = ref(false)
+const successMessage = ref('')
+const errorMessage = ref('')
+
+// Options
+const statusOptions = computed(() => [
+  { label: t('common.search') + ' ' + t('workerData.form.status'), value: null },
+  ...mockStatusOptions.map(opt => ({
+    label: locale.value === 'th' ? opt.labelTh : opt.labelEn,
+    value: opt.value
+  }))
+])
+
+const branchOptions = computed(() => [
+  { label: t('common.search') + ' ' + t('workerData.form.branch'), value: null },
+  ...branches.map(branch => ({
+    label: branch.label,
+    value: branch.value
+  }))
+])
+
+// Table Columns
+const columns = computed(() => [
+  {
+    field: 'no',
+    header: t('workerData.table.no'),
+    width: '60px',
+    align: 'center',
+    sortable: false
+  },
+  {
+    field: 'code',
+    header: t('workerData.table.code'),
+    width: '100px',
+    sortable: true
+  },
+  {
+    field: 'nameTh',
+    header: t('workerData.table.nameTh'),
+    minWidth: '180px',
+    sortable: true
+  },
+  {
+    field: 'nameEn',
+    header: t('workerData.table.nameEn'),
+    minWidth: '180px',
+    sortable: true
+  },
+  {
+    field: 'gender',
+    header: t('workerData.table.gender'),
+    width: '100px',
+    align: 'center',
+    sortable: true
+  },
+  {
+    field: 'phone',
+    header: t('workerData.table.phone'),
+    width: '140px',
+    sortable: false
+  },
+  {
+    field: 'totalSales',
+    header: t('workerData.sales.totalSales'),
+    width: '150px',
+    align: 'right',
+    sortable: true
+  },
+  {
+    field: 'commission',
+    header: t('workerData.sales.commission'),
+    width: '130px',
+    align: 'right',
+    sortable: true
+  },
+  {
+    field: 'rating',
+    header: t('workerData.sales.rating'),
+    width: '100px',
+    align: 'center',
+    sortable: true
+  },
+  {
+    field: 'branch',
+    header: t('workerData.table.branch'),
+    width: '150px',
+    sortable: true
+  },
+  {
+    field: 'status',
+    header: t('workerData.table.status'),
+    width: '120px',
+    align: 'center',
+    sortable: true
+  },
+  {
+    field: 'actions',
+    header: t('workerData.table.actions'),
+    width: '140px',
+    align: 'center',
+    sortable: false
+  }
+])
+
+// Computed
+const filteredSales = computed(() => {
+  let result = [...salesStaff.value]
+
+  // Search filter
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    result = result.filter(sales =>
+      sales.code.toLowerCase().includes(query) ||
+      sales.nameTh.toLowerCase().includes(query) ||
+      sales.nameEn.toLowerCase().includes(query) ||
+      sales.phone.includes(query) ||
+      sales.email.toLowerCase().includes(query)
+    )
+  }
+
+  // Status filter
+  if (filterStatus.value) {
+    result = result.filter(sales => sales.status === filterStatus.value)
+  }
+
+  // Branch filter
+  if (filterBranch.value) {
+    result = result.filter(sales => sales.branchId === filterBranch.value)
+  }
+
+  return result
+})
+
+const paginatedSales = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value
+  const end = start + perPage.value
+  return filteredSales.value.slice(start, end)
+})
+
+// Methods
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('th-TH', {
+    style: 'currency',
+    currency: 'THB'
+  }).format(value)
+}
+
+const handleSearch = () => {
+  currentPage.value = 1
+}
+
+const handleFilter = () => {
+  currentPage.value = 1
+}
+
+const handlePageChange = (event) => {
+  currentPage.value = Math.floor(event.first / event.rows) + 1
+  perPage.value = event.rows
+}
+
+const handleSort = (event) => {
+  console.log('Sort:', event)
+}
+
+const getGenderLabel = (gender) => {
+  const option = genderOptions.find(opt => opt.value === gender)
+  return option ? (locale.value === 'th' ? option.labelTh : option.labelEn) : gender
+}
+
+const getStatusLabel = (status) => {
+  const option = mockStatusOptions.find(opt => opt.value === status)
+  return option ? (locale.value === 'th' ? option.labelTh : option.labelEn) : status
+}
+
+const getBranchLabel = (branchId) => {
+  const branch = branches.find(b => b.value === branchId)
+  return branch ? branch.label : '-'
+}
+
+const openAddModal = () => {
+  selectedSales.value = null
+  showFormModal.value = true
+}
+
+const viewSales = (sales) => {
+  toast.add({
+    severity: 'info',
+    summary: t('common.info'),
+    detail: `View ${sales.nameTh}`,
+    life: 3000
+  })
+}
+
+const editSales = (sales) => {
+  selectedSales.value = { ...sales }
+  showFormModal.value = true
+}
+
+const deleteSales = (sales) => {
+  salesToDelete.value = sales
+  showDeleteConfirm.value = true
+}
+
+const confirmDelete = () => {
+  if (salesToDelete.value) {
+    const index = salesStaff.value.findIndex(s => s.id === salesToDelete.value.id)
+    if (index !== -1) {
+      salesStaff.value.splice(index, 1)
+      successMessage.value = t('workerData.message.deleteSuccess')
+      showSuccessAlert.value = true
+      salesToDelete.value = null
+    }
+  }
+}
+
+const handleSave = (data) => {
+  if (selectedSales.value) {
+    const index = salesStaff.value.findIndex(s => s.id === selectedSales.value.id)
+    if (index !== -1) {
+      salesStaff.value[index] = { ...data }
+      successMessage.value = t('workerData.message.editSuccess')
+    }
+  } else {
+    const newSales = {
+      ...data,
+      id: Math.max(...salesStaff.value.map(s => s.id)) + 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+    salesStaff.value.push(newSales)
+    successMessage.value = t('workerData.message.addSuccess')
+  }
+  showSuccessAlert.value = true
+  showFormModal.value = false
+}
+
+onMounted(() => {
+  // Initialize component
+})
+</script>
