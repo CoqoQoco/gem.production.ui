@@ -6,7 +6,7 @@ import router from "@/router";
 
 // Get API URLs from environment variables
 const jewelryUrl =
-  import.meta.env.VITE_JEWELRY_API_URL || "https://localhost:7001/";
+  import.meta.env.VITE_JEWELRY_API_URL || "https://localhost:9001/";
 const apiTimeout = parseInt(import.meta.env.VITE_API_TIMEOUT) || 100000;
 const maxLoadingTime =
   parseInt(import.meta.env.VITE_MAX_LOADING_TIME) || 10000;
