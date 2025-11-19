@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import authRoutes from './modules/auth-router'
 import dashboardRoutes from './modules/dashboard-router'
 import workerDataRoutes from './modules/worker-data-router'
+import settingRoutes from './modules/setting-router'
 
 const routes = [
   {
@@ -38,7 +39,10 @@ const routes = [
       ...dashboardRoutes,
 
       // Worker Data Module
-      ...workerDataRoutes
+      ...workerDataRoutes,
+
+      // Setting Module
+      ...settingRoutes
 
       // Add more modules here
       // ...salesRoutes,

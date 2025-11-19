@@ -1,5 +1,5 @@
 <template>
-  <div class="account-management-page">
+  <div class="list-page-container">
     <!-- Search Header Component -->
     <SearchView
       :search-text="searchParams.searchText"
@@ -173,9 +173,12 @@ export default {
       this.showDetailModal = true
       this.isLoadingDetail = true
 
+      console.log('Loading details for user:', user)
+
       try {
         const result = await this.accountApiStore.getUser({
-          id: user.id
+          id: user.id,
+          username: user.username
         })
 
         if (result.success) {
@@ -294,16 +297,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.account-management-page {
-  padding: 0.1rem;
-  background: #f3f4f6;
-  min-height: 100vh;
-}
-
-// Responsive
-@media (max-width: 768px) {
-  .account-management-page {
-    padding: 0.1rem;
-  }
-}
+@import '@/assets/styles/components/list-page-templete/index-view.scss';
 </style>

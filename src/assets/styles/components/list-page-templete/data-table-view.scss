@@ -1,0 +1,122 @@
+// ============================================
+// List Page Data Table View Template
+// ============================================
+// This template is for the data table section of list pages
+// Includes table container, cell templates, and action buttons
+//
+// Usage:
+// Apply .list-data-table-container class to the data table wrapper
+//
+// Cell Classes:
+// .list-name-cell        - For name/user display with icon
+// .list-username-cell    - For username display
+// .list-email-cell       - For email display
+// .list-roles-cell       - For roles/tags display
+// .list-status-cell      - For status badges
+// .list-date-cell        - For date/time display
+// .list-action-buttons   - For action button group
+
+.list-data-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+}
+
+// Name Cell (Generic - can be used for user name, item name, etc.)
+.list-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .list-item-icon {
+    color: #f58511;
+    font-size: 1rem;
+  }
+}
+
+// Username Cell
+.list-username-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+// Email Cell
+.list-email-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+
+  span {
+    color: #3b82f6;
+  }
+}
+
+// Roles Cell (can be used for tags, categories, etc.)
+.list-roles-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  .list-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .list-no-item {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+}
+
+// Status Cell
+.list-status-cell {
+  display: flex;
+  justify-content: center;
+}
+
+// Date Cell
+.list-date-cell {
+  font-size: 0.875rem;
+  color: #6b7280;
+
+  .no-data {
+    color: #9ca3af;
+  }
+}
+
+// Action Buttons
+.list-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+
+  :deep(.p-button) {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+
+    .p-button-icon {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .list-data-table-container {
+    padding: 1rem;
+  }
+}

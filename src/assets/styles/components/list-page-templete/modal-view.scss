@@ -1,0 +1,272 @@
+// ============================================
+// List Page Modal/Dialog View Template
+// ============================================
+// This template is for detail view modals in list pages
+// Includes modal styling, header, content sections, and footer
+//
+// Usage:
+// Apply .list-detail-dialog class to the Dialog component
+//
+// Structure:
+// .list-detail-dialog
+//   .list-detail-loading (if loading)
+//   .list-detail-no-data (if no data)
+//   .list-detail-content
+//     .list-detail-header
+//     .list-detail-sections
+//       .list-detail-section
+//         .list-detail-section-title
+//         .list-detail-info-grid
+//           .list-detail-info-item
+//         .list-detail-tags-container (for roles/tags)
+
+.list-detail-dialog {
+  :deep(.p-dialog-header) {
+    background: linear-gradient(135deg, #f58511 0%, #ff9a3c 100%);
+    color: #ffffff;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem;
+
+    .p-dialog-title {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    .p-dialog-header-icon {
+      color: #ffffff;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  :deep(.p-dialog-content) {
+    padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  :deep(.p-dialog-footer) {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+// Loading Container
+.list-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+
+  p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+}
+
+// No Data Container
+.list-detail-no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+
+  i {
+    font-size: 3rem;
+    color: #fbbf24;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+// Detail Content
+.list-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Detail Header (with avatar/icon and title)
+.list-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #fff5e6 0%, #ffe4cc 100%);
+  border-radius: 12px;
+
+  .list-detail-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #f58511 0%, #ff9a3c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    i {
+      font-size: 2.5rem;
+      color: #ffffff;
+    }
+  }
+
+  .list-detail-title-group {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .list-detail-subtitle {
+      margin: 0;
+      font-size: 1rem;
+      color: #6b7280;
+    }
+  }
+
+  .list-detail-status-badge {
+    flex-shrink: 0;
+  }
+}
+
+// Detail Sections
+.list-detail-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.list-detail-section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  .list-detail-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+
+    i {
+      color: #f58511;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Info Grid
+.list-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+
+  .list-detail-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #6b7280;
+    }
+
+    .list-detail-info-value {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      color: #1f2937;
+      padding: 0.75rem;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+
+      i {
+        color: #9ca3af;
+        font-size: 1rem;
+      }
+
+      span {
+        flex: 1;
+      }
+    }
+  }
+}
+
+// Tags Container (for roles, categories, etc.)
+.list-detail-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  .list-detail-tag {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .list-detail-no-item {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+}
+
+// Dialog Footer
+.list-detail-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .list-detail-dialog {
+    :deep(.p-dialog) {
+      width: 95vw !important;
+      max-width: 95vw !important;
+    }
+
+    :deep(.p-dialog-content) {
+      padding: 1rem;
+    }
+  }
+
+  .list-detail-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+
+    .list-detail-title-group h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .list-detail-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

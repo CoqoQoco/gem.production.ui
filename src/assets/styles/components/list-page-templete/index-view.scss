@@ -1,0 +1,26 @@
+// ============================================
+// List Page Index View Template
+// ============================================
+// This template is for the main list page container
+// Can be reused across different list pages in the project
+//
+// Usage:
+// Apply .list-page-container class to the root element of your list page
+//
+// Example:
+// <div class="list-page-container">
+//   <!-- Your page content here -->
+// </div>
+
+.list-page-container {
+  padding: 0.1rem;
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .list-page-container {
+    padding: 0.1rem;
+  }
+}

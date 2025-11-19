@@ -1,5 +1,5 @@
 <template>
-  <div class="data-table-container">
+  <div class="list-data-table-container">
     <DataTableComponent
       :items="users"
       :columns="columns"
@@ -15,15 +15,15 @@
     >
       <!-- Full Name Template -->
       <template #fullNameTemplate="{ data }">
-        <div class="user-name-cell">
-          <i class="pi pi-user user-icon"></i>
+        <div class="list-name-cell">
+          <i class="pi pi-user list-item-icon"></i>
           <span>{{ data.firstName }} {{ data.lastName }}</span>
         </div>
       </template>
 
       <!-- Username Template -->
       <template #usernameTemplate="{ data }">
-        <div class="username-cell">
+        <div class="list-username-cell">
           <i class="pi pi-at"></i>
           <span>{{ data.username }}</span>
         </div>
@@ -31,7 +31,7 @@
 
       <!-- Email Template -->
       <template #emailTemplate="{ data }">
-        <div class="email-cell">
+        <div class="list-email-cell">
           <i class="pi pi-envelope"></i>
           <span>{{ data.email }}</span>
         </div>
@@ -39,15 +39,15 @@
 
       <!-- Roles Template -->
       <template #rolesTemplate="{ data }">
-        <div class="roles-cell">
+        <div class="list-roles-cell">
           <Tag
             v-for="role in data.roles"
             :key="role.roleId"
             :value="role.roleName"
             severity="info"
-            class="role-tag"
+            class="list-tag"
           />
-          <span v-if="!data.roles || data.roles.length === 0" class="no-role">
+          <span v-if="!data.roles || data.roles.length === 0" class="list-no-item">
             {{ $t('account.noRole') || 'ไม่มีบทบาท' }}
           </span>
         </div>
@@ -55,7 +55,7 @@
 
       <!-- Status Template -->
       <template #isActiveTemplate="{ data }">
-        <div class="status-cell">
+        <div class="list-status-cell">
           <Tag
             :value="data.isActive ? ($t('account.active') || 'ใช้งาน') : ($t('account.inactive') || 'ไม่ใช้งาน')"
             :severity="data.isActive ? 'success' : 'danger'"
@@ -65,7 +65,7 @@
 
       <!-- Last Login Template -->
       <template #lastLoginTemplate="{ data }">
-        <div class="date-cell">
+        <div class="list-date-cell">
           <span v-if="data.lastLogin">
             {{ formatDateTime(data.lastLogin) }}
           </span>
@@ -75,7 +75,7 @@
 
       <!-- Actions Template -->
       <template #actionsTemplate="{ data }">
-        <div class="action-buttons">
+        <div class="list-action-buttons">
           <!-- View Detail Button -->
           <Button
             icon="pi pi-eye"
@@ -233,108 +233,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.data-table-container {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-}
-
-// User Name Cell
-.user-name-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  .user-icon {
-    color: #f58511;
-    font-size: 1rem;
-  }
-}
-
-// Username Cell
-.username-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  i {
-    color: #6b7280;
-    font-size: 0.875rem;
-  }
-}
-
-// Email Cell
-.email-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  i {
-    color: #6b7280;
-    font-size: 0.875rem;
-  }
-
-  span {
-    color: #3b82f6;
-  }
-}
-
-// Roles Cell
-.roles-cell {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-
-  .role-tag {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .no-role {
-    color: #9ca3af;
-    font-size: 0.875rem;
-    font-style: italic;
-  }
-}
-
-// Status Cell
-.status-cell {
-  display: flex;
-  justify-content: center;
-}
-
-// Date Cell
-.date-cell {
-  font-size: 0.875rem;
-  color: #6b7280;
-
-  .no-data {
-    color: #9ca3af;
-  }
-}
-
-// Action Buttons
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-
-  :deep(.p-button) {
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-
-    .p-button-icon {
-      font-size: 1rem;
-    }
-  }
-}
-
-// Responsive
-@media (max-width: 768px) {
-  .data-table-container {
-    padding: 1rem;
-  }
-}
+@import '@/assets/styles/components/list-page-templete/data-table-view.scss';
 </style>
