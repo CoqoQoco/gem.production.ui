@@ -6,6 +6,12 @@ import authRoutes from './modules/auth-router'
 import dashboardRoutes from './modules/dashboard-router'
 import workerDataRoutes from './modules/worker-data-router'
 import settingRoutes from './modules/setting-router'
+import salesRoutes from './modules/sales-router'
+import inventoryRoutes from './modules/inventory-router'
+import reportsRoutes from './modules/reports-router'
+import customerRoutes from './modules/customer-router'
+import productRoutes from './modules/product-router'
+import profileRoutes from './modules/profile-router'
 
 const routes = [
   {
@@ -42,12 +48,25 @@ const routes = [
       ...workerDataRoutes,
 
       // Setting Module
-      ...settingRoutes
+      ...settingRoutes,
 
-      // Add more modules here
-      // ...salesRoutes,
-      // ...inventoryRoutes,
-      // ...reportsRoutes,
+      // Sales Module
+      ...salesRoutes,
+
+      // Inventory Module
+      ...inventoryRoutes,
+
+      // Reports Module
+      ...reportsRoutes,
+
+      // Customer Module
+      ...customerRoutes,
+
+      // Product Module
+      ...productRoutes,
+
+      // Profile Module
+      ...profileRoutes
     ]
   },
 

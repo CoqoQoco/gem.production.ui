@@ -50,21 +50,36 @@
             </a>
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'sales'" class="submenu">
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                <router-link
+                  to="/sales/orders"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.salesOrder') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/sales/quotation"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.quotation') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/sales/invoice"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.invoice') }}</span>
                   <span class="badge">Soon</span>
-                </a>
+                </router-link>
               </div>
             </transition>
           </div>
@@ -78,26 +93,46 @@
             </a>
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'inventory'" class="submenu">
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                <router-link
+                  to="/inventory/stock-list"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockList') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/inventory/stock-in"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockIn') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/inventory/stock-out"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockOut') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/inventory/stock-transfer"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockTransfer') }}</span>
                   <span class="badge">Soon</span>
-                </a>
+                </router-link>
               </div>
             </transition>
           </div>
@@ -111,43 +146,73 @@
             </a>
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'reports'" class="submenu">
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                <router-link
+                  to="/reports/daily"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.dailyReport') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/reports/monthly"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.monthlyReport') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/reports/sales"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.salesReport') }}</span>
                   <span class="badge">Soon</span>
-                </a>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                </router-link>
+                <router-link
+                  to="/reports/inventory"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.inventoryReport') }}</span>
                   <span class="badge">Soon</span>
-                </a>
+                </router-link>
               </div>
             </transition>
           </div>
 
           <!-- Customers Module (No Submenu) -->
-          <a href="#" class="nav-item" @click.prevent="comingSoon">
+          <router-link
+            to="/customers"
+            class="nav-item"
+            active-class="active"
+            @click="closeSidebar"
+          >
             <i class="pi pi-users"></i>
             <span>{{ t('dashboard.menu.customers') }}</span>
             <span class="badge">Soon</span>
-          </a>
+          </router-link>
 
           <!-- Products Module (No Submenu) -->
-          <a href="#" class="nav-item" @click.prevent="comingSoon">
+          <router-link
+            to="/products"
+            class="nav-item"
+            active-class="active"
+            @click="closeSidebar"
+          >
             <i class="pi pi-tag"></i>
             <span>{{ t('dashboard.menu.products') }}</span>
             <span class="badge">Soon</span>
-          </a>
+          </router-link>
 
           <!-- Divider -->
           <div class="nav-divider">
@@ -212,20 +277,40 @@
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('account.title') || 'จัดการบัญชีผู้ใช้' }}</span>
                 </router-link>
-                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                <router-link
+                  to="/setting/adjust-role-router"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('roleRouter.title') || 'จัดการสิทธิ์เข้าถึงหน้า' }}</span>
+                </router-link>
+                <router-link
+                  to="/setting/system"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.systemSettings') || 'ตั้งค่าระบบ' }}</span>
                   <span class="badge">Soon</span>
-                </a>
+                </router-link>
               </div>
             </transition>
           </div>
 
           <!-- Profile -->
-          <a href="#" class="nav-item" @click.prevent="comingSoon">
+          <router-link
+            to="/profile"
+            class="nav-item"
+            active-class="active"
+            @click="closeSidebar"
+          >
             <i class="pi pi-user"></i>
             <span>{{ t('dashboard.profile') }}</span>
-          </a>
+            <span class="badge">Soon</span>
+          </router-link>
         </nav>
 
         <!-- Sidebar Footer -->

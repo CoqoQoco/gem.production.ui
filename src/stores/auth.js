@@ -25,31 +25,91 @@ export const useAuthStore = defineStore("auth", () => {
 
       // API returns: { isSuccess, message, token, userId, username, email, expiresAt }
       if (response.isSuccess) {
-        // Store token
+        // Store token first
         token.value = response.token;
         localStorage.setItem("token-gem", response.token);
 
-        // Store user data
-        const userData = {
-          userId: response.userId,
-          username: response.username,
-          email: response.email,
-          expiresAt: response.expiresAt,
-        };
+        // Call getUser API to get complete user data including roles and router permissions
+        try {
+          const userResponse = await api.jewelry.get("api/user", {
+            id: response.userId,
+            username: response.username,
+          });
 
-        user.value = userData;
-        isAuthenticated.value = true;
+          if (userResponse.isSuccess) {
+            // Store complete user data from getUser API
+            const userData = {
+              id: userResponse.id,
+              userId: userResponse.id,
+              username: userResponse.username,
+              email: userResponse.email,
+              tel: userResponse.tel,
+              firstName: userResponse.firstName,
+              lastName: userResponse.lastName,
+              createDate: userResponse.createDate,
+              createBy: userResponse.createBy,
+              lastLogin: userResponse.lastLogin,
+              roles: userResponse.roles, // Contains roleId, roleName, and routerAllow
+              expiresAt: response.expiresAt,
+            };
 
-        // Store in localStorage if remember me
-        if (credentials.rememberMe) {
-          localStorage.setItem("user", JSON.stringify(userData));
-          localStorage.setItem("rememberMe", "true");
-        } else {
-          // Store in sessionStorage instead
-          sessionStorage.setItem("user", JSON.stringify(userData));
+            user.value = userData;
+            isAuthenticated.value = true;
+
+            // Store in localStorage if remember me
+            if (credentials.rememberMe) {
+              localStorage.setItem("user", JSON.stringify(userData));
+              localStorage.setItem("rememberMe", "true");
+            } else {
+              // Store in sessionStorage instead
+              sessionStorage.setItem("user", JSON.stringify(userData));
+            }
+
+            return userData;
+          } else {
+            // If getUser fails, use basic user data from login response
+            const basicUserData = {
+              userId: response.userId,
+              username: response.username,
+              email: response.email,
+              expiresAt: response.expiresAt,
+            };
+
+            user.value = basicUserData;
+            isAuthenticated.value = true;
+
+            if (credentials.rememberMe) {
+              localStorage.setItem("user", JSON.stringify(basicUserData));
+              localStorage.setItem("rememberMe", "true");
+            } else {
+              sessionStorage.setItem("user", JSON.stringify(basicUserData));
+            }
+
+            return basicUserData;
+          }
+        } catch (getUserError) {
+          console.error("Error fetching user details:", getUserError);
+
+          // Fallback to basic user data from login
+          const basicUserData = {
+            userId: response.userId,
+            username: response.username,
+            email: response.email,
+            expiresAt: response.expiresAt,
+          };
+
+          user.value = basicUserData;
+          isAuthenticated.value = true;
+
+          if (credentials.rememberMe) {
+            localStorage.setItem("user", JSON.stringify(basicUserData));
+            localStorage.setItem("rememberMe", "true");
+          } else {
+            sessionStorage.setItem("user", JSON.stringify(basicUserData));
+          }
+
+          return basicUserData;
         }
-
-        return userData;
       } else {
         // This case should be handled by axios interceptor, but just in case
         throw new Error(response || "Login failed");
@@ -151,6 +211,60 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
+  /**
+   * Refresh user data from API
+   * Call this after role permissions change to get updated router permissions
+   * @returns {Promise} Updated user data
+   */
+  const refreshUser = async () => {
+    try {
+      if (!user.value || !token.value) {
+        return { success: false, message: "No user logged in" };
+      }
+
+      // Call getUser API to get updated user data
+      const userResponse = await api.jewelry.get("api/user", {
+        id: user.value.userId || user.value.id,
+        username: user.value.username,
+      });
+
+      if (userResponse.isSuccess) {
+        // Update user data with new information
+        const updatedUserData = {
+          id: userResponse.id,
+          userId: userResponse.id,
+          username: userResponse.username,
+          email: userResponse.email,
+          tel: userResponse.tel,
+          firstName: userResponse.firstName,
+          lastName: userResponse.lastName,
+          createDate: userResponse.createDate,
+          createBy: userResponse.createBy,
+          lastLogin: userResponse.lastLogin,
+          roles: userResponse.roles, // Updated router permissions
+          expiresAt: user.value.expiresAt, // Keep original token expiration
+        };
+
+        user.value = updatedUserData;
+
+        // Update storage (check if rememberMe was enabled)
+        const rememberMe = localStorage.getItem("rememberMe") === "true";
+        if (rememberMe) {
+          localStorage.setItem("user", JSON.stringify(updatedUserData));
+        } else {
+          sessionStorage.setItem("user", JSON.stringify(updatedUserData));
+        }
+
+        return { success: true, data: updatedUserData };
+      } else {
+        return { success: false, message: userResponse.message };
+      }
+    } catch (error) {
+      console.error("Error refreshing user data:", error);
+      return { success: false, message: error.message };
+    }
+  };
+
   return {
     // State
     user,
@@ -163,5 +277,6 @@ export const useAuthStore = defineStore("auth", () => {
     register,
     checkAuth,
     clearAuthData,
+    refreshUser,
   };
 });

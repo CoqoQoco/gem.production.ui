@@ -259,11 +259,63 @@ const postData = async (url, data, optionsConfig = {}) => {
   return res.data;
 };
 
+// PUT method for Jewelry API
+const putData = async (url, data, optionsConfig = {}) => {
+  const token = getTokenInfo();
+  const { skipLoading = false, ...restOptions } = optionsConfig;
+
+  if (!skipLoading) {
+    loadingManager.showLoading();
+  }
+
+  const source = createCancelToken();
+
+  const res = await axiosInstance.put(url, data, {
+    ...restOptions,
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined,
+      ...restOptions?.headers,
+    },
+    cancelToken: source.token,
+    skipLoading,
+  });
+
+  return res.data;
+};
+
+// DELETE method for Jewelry API
+const deleteData = async (url, optionsConfig = {}) => {
+  const token = getTokenInfo();
+  const { skipLoading = false, ...restOptions } = optionsConfig;
+
+  if (!skipLoading) {
+    loadingManager.showLoading();
+  }
+
+  const source = createCancelToken();
+
+  const res = await axiosInstance.delete(url, {
+    ...restOptions,
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined,
+      ...restOptions?.headers,
+    },
+    cancelToken: source.token,
+    skipLoading,
+  });
+
+  return res.data;
+};
+
 export default {
   jewelry: {
     get: async (url, params, optionsConfig) =>
       await fetchData(`${url}`, params, optionsConfig),
     post: async (url, params, optionsConfig) =>
       await postData(`${url}`, params, optionsConfig),
+    put: async (url, params, optionsConfig) =>
+      await putData(`${url}`, params, optionsConfig),
+    delete: async (url, optionsConfig) =>
+      await deleteData(`${url}`, optionsConfig),
   },
 };

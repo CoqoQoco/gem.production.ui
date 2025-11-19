@@ -82,6 +82,7 @@
     "error": "ผิดพลาด",
     "warning": "คำเตือน",
     "info": "ข้อมูล",
+    "refresh": "รีเฟรช",
     "copyright": "© 2025 Gem Production",
     "comingSoon": "เร็วๆ นี้",
     "featureInDevelopment": "ฟีเจอร์นี้อยู่ระหว่างการพัฒนา",
@@ -129,7 +130,8 @@
       "workerData": "ข้อมูลพนักงาน",
       "guideList": "รายการไกด์",
       "salesList": "รายการพนักงานขาย",
-      "driverList": "รายการคนขับรถ"
+      "driverList": "รายการคนขับรถ",
+      "systemSettings": "ตั้งค่าระบบ"
     }
   },
   "workerData": {
@@ -222,6 +224,35 @@
       "invalidEmail": "รูปแบบอีเมลไม่ถูกต้อง",
       "invalidPhone": "รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง"
     }
+  },
+  "roleRouter": {
+    "title": "จัดการสิทธิ์เข้าถึงหน้า"
+  },
+  "adjustRole": {
+    "title": "จัดการสิทธิ์การเข้าถึง Router",
+    "subtitle": "กำหนดสิทธิ์การเข้าถึงหน้าต่างๆ สำหรับแต่ละ Role",
+    "selectRole": "เลือก Role ที่ต้องการปรับแต่ง",
+    "selectRolePlaceholder": "-- เลือก Role --",
+    "roleInfo": {
+      "roleName": "Role Name",
+      "description": "Description",
+      "level": "Level",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "selectRouters": "เลือก Router ที่อนุญาต",
+    "loading": "กำลังโหลดข้อมูล...",
+    "selectAll": "เลือกทั้งหมด",
+    "deselectAll": "ยกเลิกทั้งหมด",
+    "selectedCount": "เลือกแล้ว",
+    "hasChanges": "มีการเปลี่ยนแปลง",
+    "confirmCancel": "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก ต้องการยกเลิกหรือไม่?",
+    "saveSuccess": "อัปเดตสิทธิ์ Router สำเร็จ",
+    "saveError": "ไม่สามารถอัปเดตสิทธิ์ Router ได้",
+    "loadRolesError": "ไม่สามารถโหลดรายการ Role ได้",
+    "loadRoleDetailError": "ไม่สามารถโหลดรายละเอียด Role ได้",
+    "loadRoutersError": "เกิดข้อผิดพลาดในการโหลด Router"
   },
   "account": {
     "title": "จัดการบัญชีผู้ใช้",

@@ -82,6 +82,7 @@
     "error": "Error",
     "warning": "Warning",
     "info": "Information",
+    "refresh": "Refresh",
     "copyright": "© 2025 Gem Production",
     "comingSoon": "Coming Soon",
     "featureInDevelopment": "This feature is under development",
@@ -129,7 +130,8 @@
       "workerData": "Worker Data",
       "guideList": "Guide List",
       "salesList": "Sales Staff List",
-      "driverList": "Driver List"
+      "driverList": "Driver List",
+      "systemSettings": "System Settings"
     }
   },
   "workerData": {
@@ -222,6 +224,35 @@
       "invalidEmail": "Invalid email format",
       "invalidPhone": "Invalid phone format"
     }
+  },
+  "roleRouter": {
+    "title": "Manage Page Access"
+  },
+  "adjustRole": {
+    "title": "Manage Router Access Permissions",
+    "subtitle": "Configure access permissions for each Role",
+    "selectRole": "Select Role to Customize",
+    "selectRolePlaceholder": "-- Select Role --",
+    "roleInfo": {
+      "roleName": "Role Name",
+      "description": "Description",
+      "level": "Level",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "selectRouters": "Select Allowed Routers",
+    "loading": "Loading data...",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "selectedCount": "Selected",
+    "hasChanges": "Unsaved changes",
+    "confirmCancel": "You have unsaved changes. Do you want to cancel?",
+    "saveSuccess": "Router permissions updated successfully",
+    "saveError": "Failed to update router permissions",
+    "loadRolesError": "Failed to load roles",
+    "loadRoleDetailError": "Failed to load role details",
+    "loadRoutersError": "Error loading routers"
   },
   "account": {
     "title": "Account Management",
