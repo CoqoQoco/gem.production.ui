@@ -237,6 +237,9 @@
                 <li :class="{ met: /\d/.test(registerForm.password) }">
                   {{ $t("auth.register.passwordRequirements.number") }}
                 </li>
+                <li :class="{ met: /[\W_]/.test(registerForm.password) }">
+                  {{ $t("auth.register.passwordRequirements.specialChar") }}
+                </li>
               </ul>
             </div>
             <InlineMessage
@@ -420,15 +423,16 @@ export default {
       return emailRegex.test(email);
     },
 
-    // Password Strength Validation
+    // Password Strength Validation (matching Backend requirements)
     isStrongPassword(password) {
-      // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+      // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
       const minLength = password.length >= 8;
       const hasUppercase = /[A-Z]/.test(password);
       const hasLowercase = /[a-z]/.test(password);
       const hasNumber = /\d/.test(password);
+      const hasSpecialChar = /[\W_]/.test(password); // Special characters
 
-      return minLength && hasUppercase && hasLowercase && hasNumber;
+      return minLength && hasUppercase && hasLowercase && hasNumber && hasSpecialChar;
     },
 
     // Validation

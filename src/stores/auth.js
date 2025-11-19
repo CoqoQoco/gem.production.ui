@@ -52,14 +52,14 @@ export const useAuthStore = defineStore("auth", () => {
         return userData;
       } else {
         // This case should be handled by axios interceptor, but just in case
-        throw new Error(response.message || "Login failed");
+        throw new Error(response || "Login failed");
       }
     } catch (error) {
       // Clear any existing auth data
       clearAuthData();
 
       // Re-throw error for component to handle
-      throw error;
+      throw error.response ? error.response : error;
     }
   };
 

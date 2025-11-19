@@ -194,11 +194,32 @@
             </transition>
           </div>
 
-          <!-- Settings -->
-          <a href="#" class="nav-item" @click.prevent="comingSoon">
-            <i class="pi pi-cog"></i>
-            <span>{{ t('dashboard.settings') }}</span>
-          </a>
+          <!-- Settings Module with Submenu -->
+          <div class="nav-group">
+            <a href="#" class="nav-item" @click.prevent="toggleSubmenu('settings')">
+              <i class="pi pi-cog"></i>
+              <span>{{ t('dashboard.settings') }}</span>
+              <i class="pi pi-chevron-down submenu-icon" :class="{ 'rotate': openSubmenu === 'settings' }"></i>
+            </a>
+            <transition name="submenu-slide">
+              <div v-if="openSubmenu === 'settings'" class="submenu">
+                <router-link
+                  to="/setting/account"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('account.title') || 'จัดการบัญชีผู้ใช้' }}</span>
+                </router-link>
+                <a href="#" class="submenu-item" @click.prevent="comingSoon">
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.systemSettings') || 'ตั้งค่าระบบ' }}</span>
+                  <span class="badge">Soon</span>
+                </a>
+              </div>
+            </transition>
+          </div>
 
           <!-- Profile -->
           <a href="#" class="nav-item" @click.prevent="comingSoon">

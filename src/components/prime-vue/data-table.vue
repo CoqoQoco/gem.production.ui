@@ -574,23 +574,79 @@ const onSingleSelectionChange = (checked, item) => {
 
   // Paginator Styles - Pink Theme
   :deep(.p-paginator) {
-    font-size: 14px;
-    padding: 0.75rem;
+    font-size: 11px;
+    padding: 0.5rem;
     background: #ffffff;
     border: 1px solid #ffd7e1;
     border-radius: 8px;
+
+    // Override PrimeVue default grid layout
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    grid-template-areas: "left center right" !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+
+    // Left section (First, Prev buttons)
+    .p-paginator-left,
+    > .p-paginator-first,
+    > .p-paginator-prev {
+      grid-area: left !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.25rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    // Center section (Page numbers, dropdown, current report)
+    .p-paginator-pages,
+    > .p-paginator-pages,
+    > .p-dropdown,
+    .p-paginator-current,
+    > .p-paginator-current {
+      grid-area: center !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.25rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    // Right section (Next, Last buttons)
+    .p-paginator-right,
+    > .p-paginator-next,
+    > .p-paginator-last {
+      grid-area: right !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.25rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    // All elements forced to not wrap
+    * {
+      flex-wrap: nowrap !important;
+    }
 
     .p-paginator-first,
     .p-paginator-prev,
     .p-paginator-next,
     .p-paginator-last,
     .p-paginator-page {
-      min-width: 2.5rem;
-      height: 2.5rem;
-      margin: 0 0.125rem;
+      min-width: 1.75rem !important;
+      width: 1.75rem !important;
+      height: 1.75rem !important;
+      margin: 0 0.1rem !important;
       border: 1px solid #ffd7e1;
       border-radius: 6px;
       transition: all 0.2s;
+      flex-shrink: 0 !important;
+      font-size: 11px !important;
+      padding: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
 
       &:not(.p-disabled):not(.p-highlight):hover {
         background: rgba(255, 182, 193, 0.1);
@@ -604,30 +660,85 @@ const onSingleSelectionChange = (checked, item) => {
       }
     }
 
-    .p-dropdown {
-      height: 2.5rem;
-      width: 100px;
-      margin: 0 0.5rem;
-      border: 1px solid #ffd7e1;
-      border-radius: 6px;
+    .p-paginator-pages {
+      display: inline-flex !important;
+      align-items: center !important;
+      flex-wrap: nowrap !important;
+      gap: 0.1rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    // Rows per page dropdown
+    .p-dropdown,
+    .p-paginator-rpp-options {
+      height: 1.75rem !important;
+      width: 100px !important;
+      min-width: 100px !important;
+      max-width: 100px  !important;
+      margin: 0 0.25rem !important;
+      border: 1px solid #ffd7e1 !important;
+      border-radius: 6px !important;
+      flex-shrink: 0 !important;
+      flex-grow: 0 !important;
+      font-size: 11px !important;
 
       &:hover {
-        border-color: #ffb6c1;
+        border-color: #ffb6c1 !important;
       }
 
       .p-dropdown-label {
-        font-size: 14px;
-        padding: 0.5rem;
+        font-size: 11px !important;
+        padding: 0.2rem 0.3rem !important;
+        text-align: center !important;
       }
 
       .p-dropdown-trigger {
-        width: 2.5rem;
+        width: 1.25rem !important;
+      }
+
+      &.p-inputwrapper {
+        width: 100px !important;
+        max-width: 100px !important;
       }
     }
 
+    // Target the wrapper of dropdown if exists
+    .p-paginator-rpp-options,
+    span:has(> .p-dropdown) {
+      width: 100px !important;
+      max-width: 100px !important;
+      flex-shrink: 0 !important;
+    }
+
     .p-paginator-current {
-      margin: 0 0.5rem;
+      margin: 0 0.25rem !important;
       color: #6b7280;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      font-size: 11px !important;
+      min-width: max-content !important;
+      display: inline-block !important;
+    }
+
+    // Responsive: Switch to wrapped layout on smaller screens
+    @media (max-width: 1200px) {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+
+      .p-paginator-left,
+      .p-paginator-right,
+      .p-paginator-pages,
+      .p-paginator-current,
+      > * {
+        grid-area: unset !important;
+      }
+
+      .p-paginator-current {
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 
@@ -786,5 +897,44 @@ const onSingleSelectionChange = (checked, item) => {
 
 .justify-content-center {
   justify-content: center;
+}
+</style>
+
+<style lang="scss">
+// Global styles (not scoped) to override PrimeVue dropdown in paginator
+.base-datatable .p-datatable .p-paginator .p-dropdown,
+.base-datatable .p-paginator .p-dropdown,
+.p-paginator .p-dropdown.p-component.p-inputwrapper,
+.p-datatable-paginator .p-dropdown {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  flex-basis: 55px !important;
+}
+
+.base-datatable .p-paginator .p-dropdown .p-dropdown-label,
+.p-paginator .p-dropdown .p-dropdown-label {
+  font-size: 11px !important;
+  padding: 0.2rem 0.3rem !important;
+  width: 100% !important;
+}
+
+.base-datatable .p-paginator .p-dropdown .p-dropdown-trigger,
+.p-paginator .p-dropdown .p-dropdown-trigger {
+  width: 1.25rem !important;
+  flex-shrink: 0 !important;
+}
+
+// Additional override for inputwrapper
+.p-paginator .p-inputwrapper,
+.p-paginator .p-inputwrapper.p-inputwrapper-filled,
+.p-paginator .p-inputwrapper.p-inputwrapper-focus {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
 }
 </style>

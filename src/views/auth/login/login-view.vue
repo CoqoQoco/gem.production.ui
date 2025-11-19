@@ -279,6 +279,8 @@ const handleLogin = async () => {
   } catch (error) {
     isLoading.value = false;
 
+    console.error("Login failed:", error);
+
     // Handle error from axios interceptor
     errorMessage.value = error.message || t("auth.login.error");
     showErrorAlert.value = true;

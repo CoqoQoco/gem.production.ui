@@ -50,7 +50,8 @@
         "lowercase": "Lowercase letters (a-z)",
         "uppercase": "Uppercase letters (A-Z)",
         "number": "Numbers (0-9)",
-        "minLength": "At least 8 characters"
+        "minLength": "At least 8 characters",
+        "specialChar": "Special characters (!@#$%^&* etc.)"
       }
     },
     "validation": {
@@ -61,7 +62,7 @@
       "alphanumeric": "{field} must contain only letters, numbers, and underscore (_)",
       "invalidPhone": "Phone number must be 10 digits",
       "phone": "Phone number must be 10 digits",
-      "weakPassword": "Password must be at least 8 characters with lowercase, uppercase, and numbers",
+      "weakPassword": "Password must be at least 8 characters with lowercase, uppercase, numbers, and special characters",
       "passwordStrength": "Password must contain lowercase, uppercase, and numbers",
       "passwordMismatch": "Passwords do not match",
       "agreeToTerms": "Please agree to the Terms and Conditions"
@@ -220,6 +221,45 @@
       "requiredFields": "Please fill in all required fields",
       "invalidEmail": "Invalid email format",
       "invalidPhone": "Invalid phone format"
+    }
+  },
+  "account": {
+    "title": "Account Management",
+    "subtitle": "Manage and view user account details",
+    "searchPlaceholder": "Search name, email, or username...",
+    "activeFilters": "Filters:",
+    "searchText": "Search",
+    "noData": "No users found",
+    "noRole": "No role",
+    "active": "Active",
+    "inactive": "Inactive",
+    "userDetail": "User Detail",
+    "contactInfo": "Contact Information",
+    "activityInfo": "Activity Information",
+    "noDetailData": "User not found",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "activateUser": "Activate Account",
+    "deactivateUser": "Deactivate Account",
+    "confirmActivate": "Do you want to activate account {name}?",
+    "confirmDeactivate": "Do you want to deactivate account {name}?",
+    "activateSuccess": "Account activated successfully",
+    "deactivateSuccess": "Account deactivated successfully",
+    "activateError": "Failed to activate account",
+    "deactivateError": "Failed to deactivate account",
+    "loadError": "Failed to load data",
+    "getDetailError": "Failed to load user detail",
+    "columns": {
+      "id": "ID",
+      "fullName": "Full Name",
+      "username": "Username",
+      "email": "Email",
+      "tel": "Phone",
+      "roles": "Roles",
+      "status": "Status",
+      "lastLogin": "Last Login",
+      "createDate": "Created Date",
+      "createBy": "Created By"
     }
   }
 }
