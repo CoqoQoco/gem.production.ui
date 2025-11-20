@@ -47,8 +47,11 @@
             severity="info"
             class="list-tag"
           />
-          <span v-if="!data.roles || data.roles.length === 0" class="list-no-item">
-            {{ $t('account.noRole') || 'ไม่มีบทบาท' }}
+          <span
+            v-if="!data.roles || data.roles.length === 0"
+            class="list-no-item"
+          >
+            {{ $t("account.noRole") || "ไม่มีบทบาท" }}
           </span>
         </div>
       </template>
@@ -57,7 +60,17 @@
       <template #isActiveTemplate="{ data }">
         <div class="list-status-cell">
           <Tag
-            :value="data.isActive ? ($t('account.active') || 'ใช้งาน') : ($t('account.inactive') || 'ไม่ใช้งาน')"
+            v-if="data.isNew"
+            :value="$t('account.newUser') || 'ผู้ใช้ใหม่'"
+            :severity="data.isActive ? 'success' : 'danger'"
+          />
+          <Tag
+            v-else
+            :value="
+              data.isActive
+                ? $t('account.active') || 'ใช้งาน'
+                : $t('account.inactive') || 'ไม่ใช้งาน'
+            "
             :severity="data.isActive ? 'success' : 'danger'"
           />
         </div>
@@ -106,132 +119,133 @@
 </template>
 
 <script>
-import DataTableComponent from '@/components/prime-vue/data-table.vue'
-import Tag from 'primevue/tag'
-import Button from 'primevue/button'
+import DataTableComponent from "@/components/prime-vue/data-table.vue";
+import Tag from "primevue/tag";
+import Button from "primevue/button";
 
 export default {
-  name: 'DataTableView',
+  name: "DataTableView",
 
   components: {
     DataTableComponent,
     Tag,
-    Button
+    Button,
   },
 
   props: {
     users: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     totalRecords: {
       type: Number,
-      default: 0
+      default: 0,
     },
     perPage: {
       type: Number,
-      default: 10
+      default: 10,
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
     return {
       columns: [
         {
-          field: 'id',
-          header: this.$t('account.columns.id') || 'ID',
+          field: "id",
+          header: this.$t("account.columns.id") || "ID",
           sortable: true,
-          width: '80px',
-          align: 'center'
+          width: "80px",
+          align: "center",
         },
         {
-          field: 'fullName',
-          header: this.$t('account.columns.fullName') || 'ชื่อ-นามสกุล',
+          field: "fullName",
+          header: this.$t("account.columns.fullName") || "ชื่อ-นามสกุล",
           sortable: false,
-          minWidth: '200px'
+          minWidth: "200px",
         },
         {
-          field: 'username',
-          header: this.$t('account.columns.username') || 'ชื่อผู้ใช้',
+          field: "username",
+          header: this.$t("account.columns.username") || "ชื่อผู้ใช้",
           sortable: true,
-          minWidth: '150px'
+          minWidth: "150px",
         },
         {
-          field: 'email',
-          header: this.$t('account.columns.email') || 'อีเมล',
+          field: "email",
+          header: this.$t("account.columns.email") || "อีเมล",
           sortable: true,
-          minWidth: '200px'
+          minWidth: "200px",
         },
         {
-          field: 'roles',
-          header: this.$t('account.columns.roles') || 'บทบาท',
+          field: "roles",
+          header: this.$t("account.columns.roles") || "บทบาท",
           sortable: false,
-          minWidth: '180px'
+          minWidth: "180px",
         },
         {
-          field: 'isActive',
-          header: this.$t('account.columns.status') || 'สถานะ',
+          field: "isActive",
+          header: this.$t("account.columns.status") || "สถานะ",
           sortable: true,
-          width: '120px',
-          align: 'center'
+          width: "120px",
+          align: "center",
         },
+
         {
-          field: 'lastLogin',
-          header: this.$t('account.columns.lastLogin') || 'เข้าใช้ล่าสุด',
+          field: "lastLogin",
+          header: this.$t("account.columns.lastLogin") || "เข้าใช้ล่าสุด",
           sortable: true,
-          minWidth: '180px'
+          minWidth: "180px",
         },
         {
-          field: 'actions',
-          header: this.$t('common.actions') || 'จัดการ',
+          field: "actions",
+          header: this.$t("common.actions") || "จัดการ",
           sortable: false,
-          width: '120px',
-          align: 'center'
-        }
-      ]
-    }
+          width: "120px",
+          align: "center",
+        },
+      ],
+    };
   },
 
   methods: {
     handlePageChange(event) {
-      this.$emit('page-change', {
+      this.$emit("page-change", {
         pageIndex: event.first / event.rows,
-        pageSize: event.rows
-      })
+        pageSize: event.rows,
+      });
     },
 
     handleSortChange(event) {
-      const sortMeta = event.multiSortMeta
+      const sortMeta = event.multiSortMeta;
       if (sortMeta && sortMeta.length > 0) {
-        const primarySort = sortMeta[0]
-        this.$emit('sort-change', {
+        const primarySort = sortMeta[0];
+        this.$emit("sort-change", {
           sortBy: primarySort.field,
           isDescending: primarySort.order === -1,
           pageIndex: event.first / event.rows,
-          pageSize: event.rows
-        })
+          pageSize: event.rows,
+        });
       }
     },
 
     formatDateTime(dateString) {
-      if (!dateString) return '-'
-      const date = new Date(dateString)
-      return date.toLocaleString('th-TH', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    }
-  }
-}
+      if (!dateString) return "-";
+      const date = new Date(dateString);
+      return date.toLocaleString("th-TH", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/components/list-page-templete/data-table-view.scss';
+@import "@/assets/styles/components/list-page-templete/data-table-view.scss";
 </style>

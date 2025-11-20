@@ -27,6 +27,7 @@
         <nav class="sidebar-nav">
           <!-- Dashboard -->
           <router-link
+            v-if="canAccess('Dashboard')"
             to="/dashboard"
             class="nav-item"
             active-class="active"
@@ -42,7 +43,7 @@
           </div>
 
           <!-- Sales Module with Submenu -->
-          <div class="nav-group">
+          <div v-if="hasAccessibleChildren(['SalesOrder', 'Quotation', 'Invoice'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('sales')">
               <i class="pi pi-shopping-cart"></i>
               <span>{{ t('dashboard.menu.sales') }}</span>
@@ -51,6 +52,7 @@
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'sales'" class="submenu">
                 <router-link
+                  v-if="canAccess('SalesOrder')"
                   to="/sales/orders"
                   class="submenu-item"
                   active-class="active"
@@ -61,6 +63,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('Quotation')"
                   to="/sales/quotation"
                   class="submenu-item"
                   active-class="active"
@@ -71,6 +74,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('Invoice')"
                   to="/sales/invoice"
                   class="submenu-item"
                   active-class="active"
@@ -85,7 +89,7 @@
           </div>
 
           <!-- Inventory Module with Submenu -->
-          <div class="nav-group">
+          <div v-if="hasAccessibleChildren(['StockList', 'StockIn', 'StockOut', 'StockTransfer'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('inventory')">
               <i class="pi pi-box"></i>
               <span>{{ t('dashboard.menu.inventory') }}</span>
@@ -94,6 +98,7 @@
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'inventory'" class="submenu">
                 <router-link
+                  v-if="canAccess('StockList')"
                   to="/inventory/stock-list"
                   class="submenu-item"
                   active-class="active"
@@ -104,6 +109,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('StockIn')"
                   to="/inventory/stock-in"
                   class="submenu-item"
                   active-class="active"
@@ -114,6 +120,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('StockOut')"
                   to="/inventory/stock-out"
                   class="submenu-item"
                   active-class="active"
@@ -124,6 +131,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('StockTransfer')"
                   to="/inventory/stock-transfer"
                   class="submenu-item"
                   active-class="active"
@@ -138,7 +146,7 @@
           </div>
 
           <!-- Reports Module with Submenu -->
-          <div class="nav-group">
+          <div v-if="hasAccessibleChildren(['DailyReport', 'MonthlyReport', 'SalesReport', 'InventoryReport'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('reports')">
               <i class="pi pi-chart-bar"></i>
               <span>{{ t('dashboard.menu.reports') }}</span>
@@ -147,6 +155,7 @@
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'reports'" class="submenu">
                 <router-link
+                  v-if="canAccess('DailyReport')"
                   to="/reports/daily"
                   class="submenu-item"
                   active-class="active"
@@ -157,6 +166,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('MonthlyReport')"
                   to="/reports/monthly"
                   class="submenu-item"
                   active-class="active"
@@ -167,6 +177,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('SalesReport')"
                   to="/reports/sales"
                   class="submenu-item"
                   active-class="active"
@@ -177,6 +188,7 @@
                   <span class="badge">Soon</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('InventoryReport')"
                   to="/reports/inventory"
                   class="submenu-item"
                   active-class="active"
@@ -192,6 +204,7 @@
 
           <!-- Customers Module (No Submenu) -->
           <router-link
+            v-if="canAccess('Customers')"
             to="/customers"
             class="nav-item"
             active-class="active"
@@ -204,6 +217,7 @@
 
           <!-- Products Module (No Submenu) -->
           <router-link
+            v-if="canAccess('Products')"
             to="/products"
             class="nav-item"
             active-class="active"
@@ -220,7 +234,7 @@
           </div>
 
           <!-- Worker Data Module with Submenu -->
-          <div class="nav-group">
+          <div v-if="hasAccessibleChildren(['GuideList', 'SalesList', 'DriverList'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('workerData')">
               <i class="pi pi-id-card"></i>
               <span>{{ t('dashboard.menu.workerData') }}</span>
@@ -229,6 +243,7 @@
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'workerData'" class="submenu">
                 <router-link
+                  v-if="canAccess('GuideList')"
                   to="/worker-data/guides"
                   class="submenu-item"
                   active-class="active"
@@ -238,6 +253,7 @@
                   <span>{{ t('dashboard.menu.guideList') }}</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('SalesList')"
                   to="/worker-data/sales"
                   class="submenu-item"
                   active-class="active"
@@ -247,6 +263,7 @@
                   <span>{{ t('dashboard.menu.salesList') }}</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('DriverList')"
                   to="/worker-data/drivers"
                   class="submenu-item"
                   active-class="active"
@@ -260,7 +277,7 @@
           </div>
 
           <!-- Settings Module with Submenu -->
-          <div class="nav-group">
+          <div v-if="hasAccessibleChildren(['AccountManagement', 'AdjustRoleRouter', 'SystemSettings'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('settings')">
               <i class="pi pi-cog"></i>
               <span>{{ t('dashboard.settings') }}</span>
@@ -269,6 +286,7 @@
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'settings'" class="submenu">
                 <router-link
+                  v-if="canAccess('AccountManagement')"
                   to="/setting/account"
                   class="submenu-item"
                   active-class="active"
@@ -278,6 +296,7 @@
                   <span>{{ t('account.title') || 'จัดการบัญชีผู้ใช้' }}</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('AdjustRoleRouter')"
                   to="/setting/adjust-role-router"
                   class="submenu-item"
                   active-class="active"
@@ -287,6 +306,7 @@
                   <span>{{ t('roleRouter.title') || 'จัดการสิทธิ์เข้าถึงหน้า' }}</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('SystemSettings')"
                   to="/setting/system"
                   class="submenu-item"
                   active-class="active"
@@ -302,6 +322,7 @@
 
           <!-- Profile -->
           <router-link
+            v-if="canAccess('Profile')"
             to="/profile"
             class="nav-item"
             active-class="active"
@@ -323,9 +344,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
+import { hasRouterPermission, getUserRouterPermissions } from '@/utils/permissionHelper'
 
 const props = defineProps({
   isOpen: {
@@ -341,6 +363,20 @@ const toast = useToast()
 
 // Submenu state
 const openSubmenu = ref(null)
+
+// Get user permissions
+const userPermissions = computed(() => getUserRouterPermissions())
+
+// Helper function to check permission
+const canAccess = (routeName) => {
+  return hasRouterPermission(routeName)
+}
+
+// Check if parent menu has any accessible children
+const hasAccessibleChildren = (routeNames) => {
+  if (!routeNames || routeNames.length === 0) return false
+  return routeNames.some(name => canAccess(name))
+}
 
 const toggleSubmenu = (menuName) => {
   openSubmenu.value = openSubmenu.value === menuName ? null : menuName
