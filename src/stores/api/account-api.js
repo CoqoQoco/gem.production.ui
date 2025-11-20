@@ -74,6 +74,7 @@ export const useAccountApiStore = defineStore('accountApi', () => {
 
     try {
       const queryParams = new URLSearchParams()
+      
       if (params.id) queryParams.append('id', params.id)
       if (params.username) queryParams.append('username', params.username)
 
@@ -91,6 +92,8 @@ export const useAccountApiStore = defineStore('accountApi', () => {
             tel: response.tel,
             firstName: response.firstName,
             lastName: response.lastName,
+            isNew: response.isNew,
+            isActive: response.isActive,
             roles: response.roles || [],
             createDate: response.createDate,
             createBy: response.createBy,
@@ -192,6 +195,54 @@ export const useAccountApiStore = defineStore('accountApi', () => {
   }
 
   /**
+   * Update user role and optionally set isNew to false
+   * @param {Object} params - Update parameters
+   * @param {number} params.userId - User ID
+   * @param {number} params.roleId - Role ID
+   * @param {boolean|null} params.updateIsNew - Set isNew value (null to not update)
+   * @returns {Promise<Object>} Update response
+   */
+  const updateUserRole = async (params) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const payload = {
+        userId: params.userId,
+        roleId: params.roleId,
+        updateIsNew: params.updateIsNew
+      }
+
+      const response = await api.jewelry.put('api/user/update-role', payload)
+
+      isLoading.value = false
+
+      if (response.isSuccess) {
+        return {
+          success: true,
+          message: response.message || 'User role updated successfully',
+          data: {
+            userId: response.userId,
+            roleId: response.roleId,
+            roleName: response.roleName,
+            isNew: response.isNew
+          }
+        }
+      } else {
+        throw new Error(response.message || 'Failed to update user role')
+      }
+    } catch (err) {
+      isLoading.value = false
+      error.value = err.response?.data?.message || err.message
+
+      return {
+        success: false,
+        message: error.value
+      }
+    }
+  }
+
+  /**
    * Clear error state
    */
   const clearError = () => {
@@ -208,6 +259,7 @@ export const useAccountApiStore = defineStore('accountApi', () => {
     getUser,
     activateUser,
     deactivateUser,
+    updateUserRole,
     clearError
   }
 })

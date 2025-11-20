@@ -1,10 +1,12 @@
 <template>
   <router-view />
+  <loading-overlay />
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import LoadingOverlay from '@/components/common/loading-overlay.vue'
 
 const authStore = useAuthStore()
 

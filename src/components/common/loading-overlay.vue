@@ -4,20 +4,11 @@
       <div class="loader">
         <div style="--i: 1; --inset: 30%" class="box">
           <div class="logo">
-            <!-- <img src="@/assets/duangkaew-logo.png" alt="DK Logo" class="svg" /> -->
+            <img src="@/assets/images/logo.png" alt="Logo" class="logo-img" />
           </div>
         </div>
         <div style="--i: 2; --inset: 28%" class="box"></div>
         <div style="--i: 3; --inset: 22%" class="box"></div>
-        <!-- <div style="--i: 3; --inset: 36%" class="box"></div>
-        <div style="--i: 4; --inset: 32%" class="box"></div>
-        <div style="--i: 5; --inset: 28%" class="box"></div>
-        <div style="--i: 6; --inset: 24%" class="box"></div>
-        <div style="--i: 7; --inset: 20%" class="box"></div>
-        <div style="--i: 8; --inset: 16%" class="box"></div>
-        <div style="--i: 9; --inset: 13%" class="box"></div>
-        <div style="--i: 10; --inset: 10%" class="box"></div>
-        <div style="--i: 11; --inset: 15%" class="box"></div> -->
       </div>
 
       <div v-if="showTimeoutWarning" class="cancel-loading-container">
@@ -34,7 +25,7 @@
 
 <script>
 import { ref, watch, onBeforeUnmount } from "vue";
-import { useLoadingStore } from "@/stores/modules/master/loading-store";
+import { useLoadingStore } from "@/stores/loading-overlay/loading-store.js";
 import { storeToRefs } from "pinia";
 
 export default {
@@ -201,11 +192,14 @@ export default {
   display: grid;
   place-content: center;
   padding: 30%;
+  animation: logoFloat 2s ease-in-out infinite;
 }
 
-.svg {
-  width: 150px;
-  height: 100%;
+.logo-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(245, 133, 17, 0.5));
 }
 
 .cancel-loading-container {
@@ -254,6 +248,15 @@ export default {
     transform: scale(1);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 10px 0,
       inset rgba(175, 158, 158, 0.5) 0px 5px 10px -7px;
+  }
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
   }
 }
 </style>

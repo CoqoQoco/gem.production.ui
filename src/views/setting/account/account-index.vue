@@ -26,6 +26,8 @@
       v-model:visible="showDetailModal"
       :user-detail="selectedUserDetail"
       :loading="isLoadingDetail"
+      @role-updated="handleRoleUpdated"
+      @user-allowed="handleUserAllowed"
     />
 
     <!-- Confirmation Dialogs -->
@@ -266,6 +268,68 @@ export default {
         }
       } catch (error) {
         this.showError(error.message || this.$t('account.deactivateError') || 'เกิดข้อผิดพลาดในการปิดใช้งานบัญชี')
+      }
+    },
+
+    /**
+     * Handle role updated event from DetailView
+     */
+    async handleRoleUpdated(data) {
+      try {
+        const result = await this.accountApiStore.updateUserRole({
+          userId: data.userId,
+          roleId: data.roleId,
+          updateIsNew: null // ไม่เปลี่ยน isNew ในกรณีนี้
+        })
+
+        if (result.success) {
+          this.showSuccess(result.message || this.$t('account.updateRoleSuccess') || 'อัปเดตบทบาทสำเร็จ')
+
+          // Reload user detail
+          await this.handleViewDetail(this.selectedUser)
+
+          // Reload user list
+          await this.loadUsers()
+        } else {
+          this.showError(result.message || this.$t('account.updateRoleError') || 'เกิดข้อผิดพลาดในการอัปเดตบทบาท')
+        }
+      } catch (error) {
+        this.showError(error.message || this.$t('account.updateRoleError') || 'เกิดข้อผิดพลาดในการอัปเดตบทบาท')
+      }
+    },
+
+    /**
+     * Handle user allowed event from DetailView (isNew user approval)
+     */
+    async handleUserAllowed(data) {
+      try {
+        // Get current role from selectedUserDetail
+        if (!this.selectedUserDetail || !this.selectedUserDetail.roles || this.selectedUserDetail.roles.length === 0) {
+          this.showError(this.$t('account.selectRoleFirst') || 'กรุณาเลือกบทบาทก่อนอนุมัติผู้ใช้')
+          return
+        }
+
+        const currentRole = this.selectedUserDetail.roles[0]
+
+        const result = await this.accountApiStore.updateUserRole({
+          userId: data.userId,
+          roleId: currentRole.roleId,
+          updateIsNew: false // Set isNew to false เมื่อ allow user
+        })
+
+        if (result.success) {
+          this.showSuccess(result.message || this.$t('account.allowUserSuccess') || 'อนุมัติผู้ใช้สำเร็จ')
+
+          // Reload user detail
+          await this.handleViewDetail(this.selectedUser)
+
+          // Reload user list
+          await this.loadUsers()
+        } else {
+          this.showError(result.message || this.$t('account.allowUserError') || 'เกิดข้อผิดพลาดในการอนุมัติผู้ใช้')
+        }
+      } catch (error) {
+        this.showError(error.message || this.$t('account.allowUserError') || 'เกิดข้อผิดพลาดในการอนุมัติผู้ใช้')
       }
     },
 
