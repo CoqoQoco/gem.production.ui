@@ -363,7 +363,6 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
 import { useRegisterApiStore } from "@/stores/api/register-api";
 import LanguageSwitcher from "@/components/common/language-switcher.vue";
 import { AlertSubmit, AlertError } from "@/components/alert";
@@ -578,8 +577,7 @@ export default {
 
     // Handle Success Alert Confirm
     handleSuccessConfirm() {
-      const router = useRouter();
-      router.push("/login");
+      this.$router.push("/login");
     },
   },
 };
