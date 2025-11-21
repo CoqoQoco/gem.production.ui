@@ -276,6 +276,29 @@
             </transition>
           </div>
 
+          <!-- Master Data Module with Submenu -->
+          <div v-if="hasAccessibleChildren(['BranchManagement'])" class="nav-group">
+            <a href="#" class="nav-item" @click.prevent="toggleSubmenu('masterData')">
+              <i class="pi pi-database"></i>
+              <span>{{ t('dashboard.menu.masterData') || 'ข้อมูลหลัก' }}</span>
+              <i class="pi pi-chevron-down submenu-icon" :class="{ 'rotate': openSubmenu === 'masterData' }"></i>
+            </a>
+            <transition name="submenu-slide">
+              <div v-if="openSubmenu === 'masterData'" class="submenu">
+                <router-link
+                  v-if="canAccess('BranchManagement')"
+                  to="/setting/master-data/branch"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('branch.title') || 'จัดการสาขา' }}</span>
+                </router-link>
+              </div>
+            </transition>
+          </div>
+
           <!-- Settings Module with Submenu -->
           <div v-if="hasAccessibleChildren(['AccountManagement', 'AdjustRoleRouter', 'SystemSettings'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('settings')">

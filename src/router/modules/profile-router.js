@@ -7,7 +7,7 @@ const profileRoutes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/views/common/coming-soon-view.vue'),
+    component: () => import('@/views/setting/profile/profile-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Profile'

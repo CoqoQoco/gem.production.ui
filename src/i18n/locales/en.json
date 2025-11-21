@@ -131,7 +131,8 @@
       "guideList": "Guide List",
       "salesList": "Sales Staff List",
       "driverList": "Driver List",
-      "systemSettings": "System Settings"
+      "systemSettings": "System Settings",
+      "masterData": "Master Data"
     }
   },
   "workerData": {
@@ -254,6 +255,42 @@
     "loadRoleDetailError": "Failed to load role details",
     "loadRoutersError": "Error loading routers"
   },
+  "branch": {
+    "title": "Branch Management",
+    "subtitle": "Manage and view branch details",
+    "searchPlaceholder": "Search branch name or address...",
+    "noData": "No branches found",
+    "addBranch": "Add Branch",
+    "editBranch": "Edit Branch",
+    "createSuccess": "Branch created successfully",
+    "updateSuccess": "Branch updated successfully",
+    "createError": "Failed to create branch",
+    "updateError": "Failed to update branch",
+    "loadError": "Failed to load data",
+    "form": {
+      "branchInfo": "Branch Information",
+      "nameTh": "Branch Name (Thai)",
+      "nameThPlaceholder": "Enter branch name in Thai",
+      "nameEn": "Branch Name (English)",
+      "nameEnPlaceholder": "Enter branch name in English",
+      "address": "Address",
+      "addressPlaceholder": "Enter branch address"
+    },
+    "validation": {
+      "nameThRequired": "Please enter branch name (Thai)",
+      "nameEnRequired": "Please enter branch name (English)",
+      "addressRequired": "Please enter address"
+    },
+    "columns": {
+      "id": "ID",
+      "nameTh": "Branch Name (Thai)",
+      "nameEn": "Branch Name (English)",
+      "address": "Address",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "account": {
     "title": "Account Management",
     "subtitle": "Manage and view user account details",
@@ -303,5 +340,28 @@
       "createDate": "Created Date",
       "createBy": "Created By"
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Your personal information",
+    "personalInfo": "Personal Information",
+    "accountInfo": "Account Information",
+    "roleInfo": "Roles & Permissions",
+    "activityInfo": "Activity Information",
+    "fields": {
+      "username": "Username",
+      "email": "Email",
+      "tel": "Phone Number",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "fullName": "Full Name",
+      "roles": "Roles",
+      "createDate": "Account Created",
+      "createBy": "Created By",
+      "lastLogin": "Last Login"
+    },
+    "noData": "User data not found",
+    "noRole": "No role assigned",
+    "notAvailable": "Not available"
   }
 }

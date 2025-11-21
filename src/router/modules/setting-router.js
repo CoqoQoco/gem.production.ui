@@ -44,6 +44,17 @@ const settingRoutes = [
           requiresAuth: true,
           title: 'System Settings'
         }
+      },
+
+      // Master Data - Branch Management
+      {
+        path: 'master-data/branch',
+        name: 'BranchManagement',
+        component: () => import('@/views/setting/master-data/branch/branch-index.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Branch Management'
+        }
       }
     ]
   }

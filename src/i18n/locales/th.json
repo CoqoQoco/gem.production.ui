@@ -131,7 +131,8 @@
       "guideList": "รายการไกด์",
       "salesList": "รายการพนักงานขาย",
       "driverList": "รายการคนขับรถ",
-      "systemSettings": "ตั้งค่าระบบ"
+      "systemSettings": "ตั้งค่าระบบ",
+      "masterData": "ข้อมูลหลัก"
     }
   },
   "workerData": {
@@ -254,6 +255,94 @@
     "loadRoleDetailError": "ไม่สามารถโหลดรายละเอียด Role ได้",
     "loadRoutersError": "เกิดข้อผิดพลาดในการโหลด Router"
   },
+  "branch": {
+    "title": "จัดการสาขา",
+    "subtitle": "จัดการและดูรายละเอียดสาขาในระบบ",
+    "searchPlaceholder": "ค้นหาชื่อสาขา หรือที่อยู่...",
+    "noData": "ไม่พบข้อมูลสาขา",
+    "addBranch": "เพิ่มสาขา",
+    "editBranch": "แก้ไขสาขา",
+    "createSuccess": "เพิ่มสาขาสำเร็จ",
+    "updateSuccess": "อัปเดตสาขาสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มสาขา",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตสาขา",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "branchInfo": "ข้อมูลสาขา",
+      "nameTh": "ชื่อสาขา (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อสาขาภาษาไทย",
+      "nameEn": "ชื่อสาขา (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อสาขาภาษาอังกฤษ",
+      "address": "ที่อยู่",
+      "addressPlaceholder": "กรอกที่อยู่สาขา"
+    },
+    "validation": {
+      "nameThRequired": "กรุณากรอกชื่อสาขา (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อสาขา (อังกฤษ)",
+      "addressRequired": "กรุณากรอกที่อยู่"
+    },
+    "columns": {
+      "id": "ID",
+      "nameTh": "ชื่อสาขา (ไทย)",
+      "nameEn": "ชื่อสาขา (อังกฤษ)",
+      "address": "ที่อยู่",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    }
+  },
+  "workerSale": {
+    "title": "จัดการพนักงานขาย",
+    "subtitle": "จัดการและดูรายละเอียดพนักงานขายในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ, อีเมล หรือเบอร์โทร...",
+    "noData": "ไม่พบข้อมูลพนักงานขาย",
+    "addWorkerSale": "เพิ่มพนักงานขาย",
+    "editWorkerSale": "แก้ไขพนักงานขาย",
+    "createSuccess": "เพิ่มพนักงานขายสำเร็จ",
+    "updateSuccess": "อัปเดตพนักงานขายสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มพนักงานขาย",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตพนักงานขาย",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "personalInfo": "ข้อมูลส่วนตัว",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อภาษาไทย",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อภาษาอังกฤษ",
+      "email": "อีเมล",
+      "emailPlaceholder": "กรอกอีเมล",
+      "tel": "เบอร์โทร",
+      "telPlaceholder": "กรอกเบอร์โทร",
+      "gender": "เพศ",
+      "genderPlaceholder": "เลือกเพศ",
+      "branch": "สาขา",
+      "branchPlaceholder": "เลือกสาขา"
+    },
+    "validation": {
+      "nameThRequired": "กรุณากรอกชื่อ (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อ (อังกฤษ)",
+      "emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง",
+      "genderRequired": "กรุณาเลือกเพศ",
+      "branchRequired": "กรุณาเลือกสาขา"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "email": "อีเมล",
+      "tel": "เบอร์โทร",
+      "gender": "เพศ",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    },
+    "gender": {
+      "male": "ชาย",
+      "female": "หญิง"
+    }
+  },
   "account": {
     "title": "จัดการบัญชีผู้ใช้",
     "subtitle": "จัดการและดูรายละเอียดบัญชีผู้ใช้ในระบบ",
@@ -303,5 +392,28 @@
       "createDate": "วันที่สร้าง",
       "createBy": "สร้างโดย"
     }
+  },
+  "profile": {
+    "title": "โปรไฟล์",
+    "subtitle": "ข้อมูลส่วนตัวของคุณ",
+    "personalInfo": "ข้อมูลส่วนตัว",
+    "accountInfo": "ข้อมูลบัญชี",
+    "roleInfo": "บทบาทและสิทธิ์",
+    "activityInfo": "ข้อมูลกิจกรรม",
+    "fields": {
+      "username": "ชื่อผู้ใช้",
+      "email": "อีเมล",
+      "tel": "เบอร์โทรศัพท์",
+      "firstName": "ชื่อ",
+      "lastName": "นามสกุล",
+      "fullName": "ชื่อ-นามสกุล",
+      "roles": "บทบาท",
+      "createDate": "วันที่สร้างบัญชี",
+      "createBy": "สร้างโดย",
+      "lastLogin": "เข้าใช้ล่าสุด"
+    },
+    "noData": "ไม่พบข้อมูลผู้ใช้",
+    "noRole": "ไม่มีบทบาท",
+    "notAvailable": "ไม่ระบุ"
   }
 }

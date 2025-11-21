@@ -388,19 +388,32 @@ export default {
 .list-detail-edit-role {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 
   .edit-role-actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.75rem;
     justify-content: flex-end;
   }
 }
 
 .new-user-section {
-  background: #fffbf0;
-  border: 1px solid #ffc107;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #fffbf5 0%, #fff5e6 100%);
+  border: 2px solid #fbbf24;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  .list-detail-section-title {
+    color: #d97706;
+
+    i {
+      color: #fbbf24;
+    }
+  }
 
   .new-user-info {
     display: flex;
@@ -409,7 +422,20 @@ export default {
 
     .allow-user-button {
       align-self: flex-start;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+      }
     }
   }
+}
+
+.w-full {
+  width: 100%;
 }
 </style>

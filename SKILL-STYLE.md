@@ -1,39 +1,37 @@
 # Style Guide - Gem UI Project
 
-## *31: -H2@-*2#5IH-@5" CSS/SCSS
+## 🎨 CSS/SCSS Styling Standards
 
 ---
 
-## <� General Styling Principles
+## 📋 General Styling Principles
 
-### 1. **D!HC
-I List Page Template *3+#1+I25HD!HC
-H List Page**
+### 1. **ใช้ List Page Template สำหรับหน้า List Page**
 
-L **-"H23:**
+**การ Import:**
 ```scss
 @import '@/assets/styles/components/list-page-templete/index-view.scss';
 @import '@/assets/styles/components/list-page-templete/search-view.scss';
 @import '@/assets/styles/components/list-page-templete/data-table-view.scss';
+@import '@/assets/styles/components/list-page-templete/modal-view.scss';
 ```
 
- **3A5IA:**
-- @5" custom styles @	20*3+#1+I21IF
-- C
-I class names 5H*7H-'2!+!2"@	20+I2
-- 1'-"H2: `adjust-role-page`, `user-profile-page`, `settings-page`
+**ข้อควร:**
+- ไม่ควรเขียน custom styles ซ้ำกับที่มีใน template
+- ใช้ class names ที่กำหนดไว้ในระบบ
+- ตัวอย่าง: `page-header`, `page-content`, `section-card`
 
 ---
 
-## =� Layout & Spacing
+## 📐 Layout & Spacing
 
 ### Page Structure
 
 ```scss
-// Container +%1-+I2
+// Container หลักของหน้า
 .page-name-page {
   min-height: 100vh;
-  background: #f3f4f6; // *57I+%1 gray-100
+  background: #f3f4f6; // สีพื้นหลัง gray-100
   padding: 1.5rem;
 
   @media (max-width: 768px) {
@@ -41,12 +39,12 @@ I class names 5H*7H-'2!+!2"@	20+I2
   }
 }
 
-// Header -+I2
+// Header หน้า
 .page-header {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  margin-bottom: 0.75rem; // #0"0+H2@H21 sections -7HF
+  margin-bottom: 0.75rem; // ระยะห่างจาก sections ข้างล่าง
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
@@ -54,157 +52,180 @@ I class names 5H*7H-'2!+!2"@	20+I2
   }
 }
 
-// Content +%1-+I2
+// Content หลักของหน้า
 .page-content {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; // #0"0+H2#0+'H2 sections
+  gap: 0.75rem; // ระยะห่างระหว่าง sections
 }
 ```
 
 ### Standard Spacing
 
-**#0"0+H2!2#2:**
-- #0+'H2 sections: `0.75rem` (12px)
-- Padding  2"C card: `1.5rem` (24px)
-- Gap #0+'H2 elements @%GF: `0.5rem` - `1rem`
+**ระยะห่างมาตรฐาน:**
+- ระหว่าง sections: `0.75rem` (12px)
+- Padding ในการ์ด: `1.5rem` (24px)
+- Gap ระหว่าง elements ข้างใน: `0.5rem` - `1rem`
 
-**W *31: C
-I#0"0+H2@H211I+!**
+**⚠️ สำคัญ: ใช้ระยะห่างให้สม่ำเสมอ**
 ```scss
 .page-header {
-  margin-bottom: 0.75rem; //  @H21 gap - page-content
+  margin-bottom: 0.75rem; // ต้องเท่ากับ gap ของ page-content
 }
 
 .page-content {
-  gap: 0.75rem; //  @H21 margin-bottom - header
+  gap: 0.75rem; // ต้องเท่ากับ margin-bottom ของ header
 }
 ```
 
 ---
 
-## <� Common Sections
+## 🎯 Modal Styling Standards
 
-### Section Cards
+### 1. **Form Modals (Create/Edit)**
 
-```scss
-.section-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+ใช้สำหรับ modals ที่มีฟอร์ม input เช่น Create, Edit
 
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 1rem 0; // margin-bottom C+II-"%
-
-    i {
-      color: #f58511; // Primary color
-      font-size: 1.25rem;
-    }
-  }
-}
-```
-
-### Action Buttons Section
-
-** 8H! Action I--"9H
-4'2@*!-**
-
-```scss
-.action-section {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding: 1.5rem;
-  background: #f9fafb;
-  border-radius: 8px;
-
-  // Indicator +#7- message -"9HI2"
-  .info-indicator {
-    margin-right: auto; // %1DI2"
-  }
-
-  // 8H! Cancel H- Save
-  // Save button -"9H'2*8@*!-
-  .save-button {
-    margin-left: auto; // %1D'2 (I2D!H!5 indicator)
-    background: #f58511;
-    border: none;
-
-    &:hover {
-      background: #e67710;
-    }
-  }
-}
-```
-
-**Template Example:**
+**Structure:**
 ```vue
-<div class="action-section">
-  <!-- Info/Warning Message (Optional) -->
-  <span v-if="hasChanges" class="info-indicator">
-    <i class="pi pi-exclamation-circle"></i>
-    {{ $t('common.hasChanges') }}
-  </span>
+<Dialog
+  :visible="visible"
+  :header="title"
+  :style="{ width: '800px' }"
+  class="list-form-modal"
+>
+  <div class="list-form">
+    <!-- Form Section -->
+    <div class="form-section">
+      <div class="section-title">
+        <i class="pi pi-building"></i>
+        <span>ข้อมูลพื้นฐาน</span>
+      </div>
+      <div class="form-grid">
+        <!-- Form Groups (2 columns) -->
+        <div class="form-group">
+          <label>
+            ชื่อ
+            <span class="required">*</span>
+          </label>
+          <InputText v-model="form.name" />
+          <small v-if="errors.name" class="p-error">{{ errors.name }}</small>
+        </div>
 
-  <!-- Cancel Button (I2") -->
-  <Button
-    :label="$t('common.cancel')"
-    icon="pi pi-times"
-    @click="handleCancel"
-    outlined
-  />
+        <!-- Full Width Field -->
+        <div class="form-group form-grid-full">
+          <label>ที่อยู่</label>
+          <Textarea v-model="form.address" rows="3" />
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Save Button ('2*8) -->
-  <Button
-    :label="$t('common.save')"
-    icon="pi pi-save"
-    @click="handleSave"
-    class="save-button"
-  />
-</div>
+  <template #footer>
+    <div class="form-buttons">
+      <button class="btn-cancel" @click="handleCancel">
+        <i class="pi pi-times"></i>
+        <span>ยกเลิก</span>
+      </button>
+      <button class="btn-submit" @click="handleSave">
+        <i class="pi pi-check"></i>
+        <span>บันทึก</span>
+      </button>
+    </div>
+  </template>
+</Dialog>
 ```
+
+**Classes:**
+- `.list-form-modal` - Dialog wrapper
+- `.list-form` - Form container
+- `.form-section` - Section wrapper
+- `.section-title` - Section header with icon and pink underline
+- `.form-grid` - 2-column grid (responsive)
+- `.form-group` - Input field wrapper
+- `.form-grid-full` - Full width field
+- `.form-buttons` - Footer buttons container
+- `.btn-cancel` - Gray cancel button
+- `.btn-submit` - Pink gradient submit button
+
+### 2. **Detail View Modals**
+
+ใช้สำหรับ modals ที่แสดงข้อมูลแบบ read-only หรือมีการแก้ไขเล็กน้อย
+
+**Structure:**
+```vue
+<Dialog
+  :visible="visible"
+  :header="title"
+  :style="{ width: '700px' }"
+  class="list-detail-dialog"
+>
+  <div class="list-detail-content">
+    <!-- Header with Avatar -->
+    <div class="list-detail-header">
+      <div class="list-detail-avatar">
+        <i class="pi pi-user"></i>
+      </div>
+      <div class="list-detail-title-group">
+        <h3>ชื่อ นามสกุล</h3>
+        <p class="list-detail-subtitle">@username</p>
+      </div>
+      <div class="list-detail-status-badge">
+        <Tag value="ใช้งาน" severity="success" />
+      </div>
+    </div>
+
+    <!-- Information Sections -->
+    <div class="list-detail-sections">
+      <div class="list-detail-section">
+        <h4 class="list-detail-section-title">
+          <i class="pi pi-info-circle"></i>
+          ข้อมูลติดต่อ
+        </h4>
+        <div class="list-detail-info-grid">
+          <div class="list-detail-info-item">
+            <label>อีเมล</label>
+            <div class="list-detail-info-value">
+              <i class="pi pi-envelope"></i>
+              <span>email@example.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template #footer>
+    <div class="list-detail-footer">
+      <Button label="ปิด" @click="close" />
+    </div>
+  </template>
+</Dialog>
+```
+
+**Classes:**
+- `.list-detail-dialog` - Dialog wrapper with pink gradient header
+- `.list-detail-content` - Main content wrapper
+- `.list-detail-header` - Header section with avatar
+- `.list-detail-avatar` - Avatar circle with pink gradient
+- `.list-detail-title-group` - Title and subtitle
+- `.list-detail-sections` - Sections container
+- `.list-detail-section` - Individual section with light gray background
+- `.list-detail-section-title` - Section title with icon and **pink underline**
+- `.list-detail-info-grid` - Grid layout for info items
+- `.list-detail-info-item` - Single info field
+- `.list-detail-info-value` - Value container with icon
 
 ---
 
-## =� Max-Height / Fixed Height
+## 🎨 Colors
 
-**L -"H23+ max-height +#7- fixed height**
-
+### Primary Colors (Pink Theme)
 ```scss
-// L D!H5 - 312+I2-
-.content-wrapper {
-  max-height: calc(100vh - 380px);
-  overflow-y: auto;
-}
-
-//  5 - C+I content "2"2!4
-.content-wrapper {
-  // D!HI-3+ max-height
-}
-```
-
-**I-"@'I:** C
-IDI@	20#5:
-- Modal/Dialog 5HI-2# scroll  2"C
-- Table 5H!5 fixed header
-- Specific UI components 5H3@G
-
----
-
-## <� Colors
-
-### Primary Colors
-```scss
-$primary: #f58511;      // Orange (Main brand color)
-$primary-hover: #e67710;
-$primary-light: rgba(245, 133, 17, 0.1);
+$primary: #ff69b4;           // Hot Pink (Main brand color)
+$primary-dark: #ff1493;      // Deep Pink
+$primary-darker: #c71585;    // Medium Violet Red (for hover)
+$primary-light: rgba(255, 105, 180, 0.1);
 ```
 
 ### Neutral Colors
@@ -227,9 +248,21 @@ $danger: #ef4444;
 $info: #3b82f6;
 ```
 
+### Color Usage Guidelines
+
+**DO:**
+- ใช้ `#ff69b4` (Hot Pink) สำหรับ primary elements: buttons, icons, borders, gradients
+- ใช้ `#ff1493` (Deep Pink) สำหรับ gradient และ hover states
+- ใช้ `#c71585` (Medium Violet Red) สำหรับ active/pressed states
+
+**DON'T:**
+- ❌ ห้ามใช้สีส้ม (#f58511) - เป็นสีเก่าที่เปลี่ยนไปแล้ว
+- ❌ ห้ามใช้สีอื่นที่ไม่ใช่สีใน palette ที่กำหนด
+- ❌ ห้ามใช้สี custom ที่ไม่ได้มีใน style guide
+
 ---
 
-## =� Responsive Design
+## 📱 Responsive Design
 
 ### Breakpoints
 ```scss
@@ -243,104 +276,12 @@ $info: #3b82f6;
 @media (min-width: 769px) { }
 ```
 
-### Mobile-First Approach
+### Grid Responsive Pattern
 ```scss
-.section-title {
-  font-size: 1.5rem; // Mobile default
-
-  @media (max-width: 768px) {
-    font-size: 1.25rem; // Tablet
-  }
-
-  @media (min-width: 769px) {
-    font-size: 1.75rem; // Desktop
-  }
-}
-```
-
----
-
-## <� Component Patterns
-
-### Title with Actions
-
-```scss
-.title-with-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  width: 100%;
-
-  .title-group {
-    flex: 1;
-
-    .page-title {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #1f2937;
-      margin: 0 0 0.5rem 0;
-
-      i {
-        color: #f58511;
-      }
-    }
-
-    .page-subtitle {
-      color: #6b7280;
-      font-size: 0.95rem;
-      margin: 0;
-    }
-  }
-
-  .action-group {
-    display: flex;
-    gap: 1rem;
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-
-    .action-group {
-      width: 100%;
-    }
-  }
-}
-```
-
-### Info Card/Grid
-
-```scss
-.info-card {
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-  background: #f9fafb;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-
-  .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-
-    label {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #6b7280;
-      text-transform: uppercase;
-    }
-
-    span {
-      font-size: 0.875rem;
-      color: #1f2937;
-    }
-  }
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -350,7 +291,94 @@ $info: #3b82f6;
 
 ---
 
-## =� Shadow & Border Radius
+## 🎯 Component Patterns
+
+### Section Title with Underline
+
+**สำคัญ:** ทุก section title ต้องมี border-bottom สีชมพู
+
+```scss
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ff69b4; // ⭐ สีชมพู
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.25rem;
+    color: #ff69b4; // ⭐ icon สีชมพู
+  }
+}
+```
+
+### Form Buttons
+
+```scss
+.form-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+
+  .btn-cancel {
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #6b7280;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+    }
+  }
+
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%); // ⭐ สีชมพู
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+```
+
+### Input Focus States
+
+```scss
+input, textarea, select {
+  &:focus {
+    outline: none;
+    border-color: #ff69b4; // ⭐ สีชมพู
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+  }
+}
+```
+
+---
+
+## 📦 Shadow & Border Radius
 
 ### Shadows
 ```scss
@@ -362,6 +390,9 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
 // Strong shadow for modals
 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+// Pink shadow for buttons
+box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
 ```
 
 ### Border Radius
@@ -378,111 +409,98 @@ border-radius: 6px;
 
 ---
 
-## ( Scrollbar Styling
+## ✅ Checklist
 
-```scss
-.scrollable-area {
-  overflow-y: auto;
+เมื่อสร้าง styles ใหม่ ต้องตรวจสอบ:
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-
-    &:hover {
-      background: #9ca3af;
-    }
-  }
-}
-```
+- [ ] Import list-page-template ถ้าเป็นหน้า list
+- [ ] ใช้ระยะห่างระหว่าง sections ให้สม่ำเสมอ (0.75rem)
+- [ ] ใช้สีชมพู (#ff69b4) เป็น primary color
+- [ ] Section title มี border-bottom สีชมพู
+- [ ] Icon ใช้สีชมพู
+- [ ] Form modals ใช้ `.list-form-modal` และ structure ที่กำหนด
+- [ ] Detail modals ใช้ `.list-detail-dialog` และ structure ที่กำหนด
+- [ ] Buttons ใช้ gradient สีชมพู
+- [ ] Input focus states ใช้สีชมพู
+- [ ] Responsive design สำหรับ mobile/tablet
+- [ ] Shadow และ border-radius ตามมาตรฐาน
+- [ ] Class names ชัดเจนและสื่อความหมาย
 
 ---
 
-## = Example: Complete Page Structure
+## 🚫 ข้อห้าม (DON'Ts)
 
+### ❌ ห้ามใช้สีส้ม
 ```scss
-// Main page container
-.feature-page {
-  min-height: 100vh;
-  background: #f3f4f6;
-  padding: 1.5rem;
-}
+// ❌ WRONG - สีเก่า
+$primary: #f58511;
+border-bottom: 2px solid #f58511;
+background: linear-gradient(135deg, #f58511 0%, #ff9a3c 100%);
 
-// Page header with title and actions
-.page-header {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+// ✅ CORRECT - สีใหม่
+$primary: #ff69b4;
+border-bottom: 2px solid #ff69b4;
+background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+```
 
-// Main content area
-.page-content {
+### ❌ ห้าม Section Title ไม่มี Underline
+```scss
+// ❌ WRONG
+.section-title {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-// Content sections
-.content-section {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-// Action buttons area
-.action-section {
-  display: flex;
-  gap: 1rem;
   align-items: center;
-  padding: 1.5rem;
-  background: #f9fafb;
-  border-radius: 8px;
-
-  .info-message {
-    margin-right: auto;
-  }
-
-  .primary-button {
-    margin-left: auto;
-    background: #f58511;
-
-    &:hover {
-      background: #e67710;
-    }
-  }
+  margin: 0 0 1rem 0;
+  // ไม่มี border-bottom!
 }
+
+// ✅ CORRECT
+.section-title {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ff69b4; // ⭐ จำเป็น!
+}
+```
+
+### ❌ ห้ามใช้ Modal Class ผิด
+```scss
+// ❌ WRONG - ใช้ class ผิดประเภท
+// Form modal ใช้ list-detail-dialog
+<Dialog class="list-detail-dialog">
+  <div class="list-form">...</div>
+</Dialog>
+
+// ✅ CORRECT
+<Dialog class="list-form-modal">
+  <div class="list-form">...</div>
+</Dialog>
 ```
 
 ---
 
-## =� Checklist
+## 📚 Template Import Guide
 
-@!7H-@5" styles C+I#'*-:
+### สำหรับหน้า List
+```scss
+@import '@/assets/styles/components/list-page-templete/index-view.scss';
+@import '@/assets/styles/components/list-page-templete/search-view.scss';
+@import '@/assets/styles/components/list-page-templete/data-table-view.scss';
+```
 
-- [ ] D!HDI import list-page-template B"D!H3@G
-- [ ] #0"0+H2#0+'H2 sections @H211I+! (0.75rem)
-- [ ] 8H! Action -"9H
-4'2
-- [ ] D!H!5 max-height 5HD!H3@G
-- [ ] Responsive design *3+#1 mobile/tablet
-- [ ] C
-I*52!!2#2 (#f58511 *3+#1 primary)
-- [ ] Shadow A%0 border-radius 2!!2#2
-- [ ] Class names *7H-'2!+!2"
-1@
+### สำหรับ Modals
+```scss
+@import '@/assets/styles/components/list-page-templete/modal-view.scss';
+```
+
+### สำหรับหน้าทั่วไป (Settings, Profile, etc.)
+```scss
+// ใช้เฉพาะ style ที่จำเป็น
+// ตั้งชื่อ class ตามชื่อหน้า เช่น .profile-page, .settings-page
+```
 
 ---
 
-**Last Updated:** 2025-01-19
-**Version:** 1.0
+**Last Updated:** 2025-01-20
+**Version:** 2.0 (Pink Theme Update)
+**Breaking Changes:** สีหลักเปลี่ยนจากสีส้ม (#f58511) เป็นสีชมพู (#ff69b4)
