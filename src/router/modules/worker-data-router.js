@@ -22,7 +22,7 @@ export default [
   {
     path: 'worker-data/sales',
     name: 'SalesList',
-    component: () => import('@/views/worker-data/sales/SalesList.vue'),
+    component: () => import('@/views/worker-data/sales/worker-sale-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Sales Staff List',
