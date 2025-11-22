@@ -80,10 +80,11 @@
                 id="email"
                 type="email"
                 v-model="registerForm.email"
-                :placeholder="$t('auth.register.emailPlaceholder')"
+                placeholder="example@email.com"
                 :class="{ 'is-invalid': errors.email }"
                 @input="clearError('email')"
               />
+                <!-- :placeholder="$t('auth.register.emailPlaceholder')" -->
             </div>
             <InlineMessage
               v-if="errors.email"

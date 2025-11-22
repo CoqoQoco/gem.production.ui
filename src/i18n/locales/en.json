@@ -25,7 +25,7 @@
       "lastName": "Last Name",
       "lastNamePlaceholder": "Please enter last name",
       "email": "Email",
-      "emailPlaceholder": "example@email.com",
+      "emailPlaceholder": "example{'@'}email.com",
       "username": "Username",
       "usernamePlaceholder": "Username for login",
       "phone": "Phone Number",
