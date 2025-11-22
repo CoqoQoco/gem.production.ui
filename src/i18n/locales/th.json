@@ -343,6 +343,104 @@
       "female": "หญิง"
     }
   },
+  "workerDriver": {
+    "title": "จัดการพนักงานขับรถ",
+    "subtitle": "จัดการและดูรายละเอียดพนักงานขับรถในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ, เบอร์โทร หรือทะเบียนรถ...",
+    "noData": "ไม่พบข้อมูลพนักงานขับรถ",
+    "addWorkerDriver": "เพิ่มพนักงานขับรถ",
+    "editWorkerDriver": "แก้ไขพนักงานขับรถ",
+    "createSuccess": "เพิ่มพนักงานขับรถสำเร็จ",
+    "updateSuccess": "อัปเดตพนักงานขับรถสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มพนักงานขับรถ",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตพนักงานขับรถ",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "personalInfo": "ข้อมูลส่วนตัว",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อภาษาไทย",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อภาษาอังกฤษ",
+      "tel": "เบอร์โทร",
+      "telPlaceholder": "กรอกเบอร์โทร",
+      "gender": "เพศ",
+      "genderPlaceholder": "เลือกเพศ",
+      "vehicleRegistration": "ทะเบียนรถ",
+      "vehicleRegistrationPlaceholder": "กรอกทะเบียนรถ"
+    },
+    "validation": {
+      "nameThRequired": "กรุณากรอกชื่อ (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อ (อังกฤษ)",
+      "genderRequired": "กรุณาเลือกเพศ",
+      "vehicleRegistrationRequired": "กรุณากรอกทะเบียนรถ"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "tel": "เบอร์โทร",
+      "gender": "เพศ",
+      "vehicleRegistration": "ทะเบียนรถ",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    },
+    "gender": {
+      "male": "ชาย",
+      "female": "หญิง"
+    }
+  },
+  "workerGuide": {
+    "title": "จัดการมัคคุเทศก์",
+    "subtitle": "จัดการและดูรายละเอียดมัคคุเทศก์ในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ, อีเมล หรือเบอร์โทร...",
+    "noData": "ไม่พบข้อมูลมัคคุเทศก์",
+    "addWorkerGuide": "เพิ่มมัคคุเทศก์",
+    "editWorkerGuide": "แก้ไขมัคคุเทศก์",
+    "createSuccess": "เพิ่มมัคคุเทศก์สำเร็จ",
+    "updateSuccess": "อัปเดตมัคคุเทศก์สำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มมัคคุเทศก์",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตมัคคุเทศก์",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "personalInfo": "ข้อมูลส่วนตัว",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อภาษาไทย",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อภาษาอังกฤษ",
+      "email": "อีเมล",
+      "emailPlaceholder": "กรอกอีเมล",
+      "tel": "เบอร์โทร",
+      "telPlaceholder": "กรอกเบอร์โทร",
+      "gender": "เพศ",
+      "genderPlaceholder": "เลือกเพศ"
+    },
+    "validation": {
+      "nameThRequired": "กรุณากรอกชื่อ (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อ (อังกฤษ)",
+      "emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง",
+      "genderRequired": "กรุณาเลือกเพศ"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "รหัส",
+      "nameTh": "ชื่อ (ไทย)",
+      "nameEn": "ชื่อ (อังกฤษ)",
+      "email": "อีเมล",
+      "tel": "เบอร์โทร",
+      "gender": "เพศ",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    },
+    "gender": {
+      "male": "ชาย",
+      "female": "หญิง"
+    }
+  },
   "account": {
     "title": "จัดการบัญชีผู้ใช้",
     "subtitle": "จัดการและดูรายละเอียดบัญชีผู้ใช้ในระบบ",

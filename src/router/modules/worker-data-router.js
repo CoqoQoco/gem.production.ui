@@ -11,7 +11,7 @@ export default [
   {
     path: 'worker-data/guides',
     name: 'GuideList',
-    component: () => import('@/views/worker-data/guides/GuideList.vue'),
+    component: () => import('@/views/worker-data/guides/worker-guide-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Guide List',
@@ -33,7 +33,7 @@ export default [
   {
     path: 'worker-data/drivers',
     name: 'DriverList',
-    component: () => import('@/views/worker-data/drivers/DriverList.vue'),
+    component: () => import('@/views/worker-data/drivers/worker-driver-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Driver List',
