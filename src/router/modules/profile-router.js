@@ -10,6 +10,7 @@ const profileRoutes = [
     component: () => import('@/views/setting/profile/profile-index.vue'),
     meta: {
       requiresAuth: true,
+      skipPermissionCheck: true, // Allow all authenticated users to access their profile
       title: 'Profile'
     }
   }

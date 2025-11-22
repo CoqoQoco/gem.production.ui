@@ -242,9 +242,16 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath } // Save intended destination
       })
     } else {
+      // Check if route should skip permission check
+      if (to.meta.skipPermissionCheck === true) {
+        console.log(`[Router Guard] Route skips permission check, allowing access`)
+        next()
+        return
+      }
+
       // Check router permission if route has a name
       if (to.name) {
-        const hasPermission = hasRouterPermission(to.name)
+        const hasPermission = hasRouterPermission(to.name, to.meta)
 
         if (!hasPermission) {
           // User doesn't have permission to access this route

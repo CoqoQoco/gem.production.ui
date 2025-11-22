@@ -370,6 +370,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 import { hasRouterPermission, getUserRouterPermissions } from '@/utils/permissionHelper'
 
 const props = defineProps({
@@ -383,6 +384,7 @@ const emit = defineEmits(['close'])
 
 const { t } = useI18n()
 const toast = useToast()
+const router = useRouter()
 
 // Submenu state
 const openSubmenu = ref(null)
@@ -391,8 +393,17 @@ const openSubmenu = ref(null)
 const userPermissions = computed(() => getUserRouterPermissions())
 
 // Helper function to check permission
+// Automatically allows public and guest-only routes
 const canAccess = (routeName) => {
-  return hasRouterPermission(routeName)
+  // Find the route by name to get its meta information
+  const route = router.getRoutes().find(r => r.name === routeName)
+
+  // If route not found, deny access
+  if (!route) return false
+
+  // Check permission with route meta
+  // This will automatically return true for public and guest routes
+  return hasRouterPermission(routeName, route.meta)
 }
 
 // Check if parent menu has any accessible children

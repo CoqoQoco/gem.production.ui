@@ -116,7 +116,14 @@ export const useAuthStore = defineStore("auth", () => {
       }
     } catch (error) {
       // Clear any existing auth data
+      /* `clearAuthData` is a function that is responsible for clearing the authentication data stored
+      in the application. It resets the user, token, and isAuthenticated values to their initial
+      state, removes the token, user, and rememberMe data from localStorage, and removes the user
+      data from sessionStorage. Essentially, it cleans up any stored authentication information and
+      resets the authentication state to a logged-out state. */
       clearAuthData();
+
+      console.log("Login error:", error); 
 
       // Re-throw error for component to handle
       throw error.response ? error.response : error;
@@ -152,7 +159,7 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("token-gem");
     localStorage.removeItem("user");
     localStorage.removeItem("rememberMe");
-    
+
     sessionStorage.removeItem("user");
   };
 

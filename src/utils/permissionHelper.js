@@ -46,10 +46,24 @@ export const getUserRouterPermissions = () => {
 /**
  * Check if user has permission to access a specific router
  * @param {string} routerName - The router name to check
+ * @param {Object} routeMeta - Optional route meta object to check for public/guest routes
  * @returns {boolean} True if user has permission
  */
-export const hasRouterPermission = (routerName) => {
+export const hasRouterPermission = (routerName, routeMeta = null) => {
   if (!routerName) return false
+
+  // Check if route is public or guest-only (no permission required)
+  if (routeMeta) {
+    if (routeMeta.public === true || routeMeta.requiresGuest === true) {
+      return true
+    }
+
+    // Check if route should skip permission check
+    // Routes with skipPermissionCheck=true require authentication but no specific permission
+    if (routeMeta.skipPermissionCheck === true) {
+      return true
+    }
+  }
 
   const permissions = getUserRouterPermissions()
   return permissions.includes(routerName)
@@ -85,6 +99,7 @@ export const hasAllRouterPermissions = (routerNames) => {
 
 /**
  * Filter routes based on user permissions
+ * Automatically allows public, guest-only, and skipPermissionCheck routes
  * @param {Array} routes - Array of route objects
  * @returns {Array} Filtered routes that user has permission to access
  */
@@ -97,7 +112,22 @@ export const filterRoutesByPermission = (routes) => {
     // If no name, don't filter (might be parent route)
     if (!route.name) return true
 
-    // Check if user has permission for this route
+    // Allow public routes (no authentication required)
+    if (route.isPublic === true || route.meta?.public === true) {
+      return true
+    }
+
+    // Allow guest-only routes (login, register pages)
+    if (route.requiresGuest === true || route.meta?.requiresGuest === true) {
+      return true
+    }
+
+    // Allow routes that skip permission check (require auth but no specific permission)
+    if (route.meta?.skipPermissionCheck === true) {
+      return true
+    }
+
+    // For protected routes, check if user has permission
     return permissions.includes(route.name)
   })
 }
