@@ -239,7 +239,8 @@
                   {{ $t("auth.register.passwordRequirements.number") }}
                 </li>
                 <li :class="{ met: /[\W_]/.test(registerForm.password) }">
-                  {{ $t("auth.register.passwordRequirements.specialChar") }}
+                  <!-- {{ $t("auth.register.passwordRequirements.specialChar") }} -->
+                    Special characters (!@#$%^&* etc.)
                 </li>
               </ul>
             </div>
