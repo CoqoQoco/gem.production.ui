@@ -192,7 +192,7 @@ const getUserData = () => {
 const hasRequiredRole = (userRole, requiredRoles) => {
 
   //bypass
-  return false
+  //return false
   // If no roles specified, allow access
   if (!requiredRoles || requiredRoles.length === 0) return true
 
