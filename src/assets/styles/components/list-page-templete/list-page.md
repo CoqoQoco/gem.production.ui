@@ -229,6 +229,77 @@ All template classes use `list-` prefix for:
 
 ---
 
+## API Request/Response Pattern
+
+### Standard List API Pattern
+
+All list pages must follow this standard API request/response pattern for consistency and proper pagination functionality.
+
+#### API Store Function (e.g., customer-api.js, worker-sale-api.js)
+
+```javascript
+const listItems = async (params = {}) => {
+  isLoading.value = true
+  error.value = null
+
+  try {
+    // ✅ CORRECT: Use skip and take for backend API
+    const payload = {
+      skip: params.pageIndex || 0,
+      take: params.pageSize || 10,
+      sortBy: params.sortBy || 'CreateDate',
+      isDescending: params.isDescending !== undefined ? params.isDescending : true,
+      criteria: {
+        searchText: params.criteria?.searchText || null
+      }
+    }
+
+    const response = await api.jewelry.post('api/endpoint/list', payload)
+
+    isLoading.value = false
+
+    // ✅ CORRECT: Map response fields for frontend
+    return {
+      success: true,
+      data: response.data || [],
+      totalRecords: response.total || 0,
+      pageIndex: payload.skip || 0,
+      pageSize: payload.take || 10,
+      //totalPages: response.totalPages || 0
+    }
+  } catch (err) {
+    isLoading.value = false
+    error.value = err.response?.data?.message || err.message
+
+    return {
+      success: false,
+      message: error.value,
+      data: [],
+      totalRecords: 0
+    }
+  }
+}
+```
+
+#### Key Points
+
+1. **Request Payload (to Backend)**:
+   - Use `skip` - maps from `params.pageIndex`
+   - Use `take` - maps from `params.pageSize`
+   - Backend expects `skip` and `take` fields
+
+2. **Response Mapping (from Backend to Frontend)**:
+   - Use `response.total` (backend returns `total`)
+   - Map `payload.skip` to `pageIndex` for frontend
+   - Map `payload.take` to `pageSize` for frontend
+
+3. **Why This Pattern**:
+   - Backend API uses `skip/take` convention
+   - Frontend components use `pageIndex/pageSize` convention
+   - API store acts as translator between backend and frontend
+
+---
+
 ## Benefits
 
 ✅ **Reusability** - Write once, use everywhere
@@ -238,5 +309,5 @@ All template classes use `list-` prefix for:
 
 ---
 
-**Last Updated**: 2025-11-19
-**Version**: 1.0
+**Last Updated**: 2025-12-01
+**Version**: 1.1

@@ -27,8 +27,8 @@ export const useWorkerGuideApiStore = defineStore('workerGuideApi', () => {
 
     try {
       const payload = {
-        pageIndex: params.pageIndex || 0,
-        pageSize: params.pageSize || 10,
+        skip: params.pageIndex || 0,
+        take: params.pageSize || 10,
         sortBy: params.sortBy || 'CreateDate',
         isDescending: params.isDescending !== undefined ? params.isDescending : true,
         criteria: {
@@ -43,10 +43,10 @@ export const useWorkerGuideApiStore = defineStore('workerGuideApi', () => {
       return {
         success: true,
         data: response.data || [],
-        totalRecords: response.totalRecords || 0,
-        pageIndex: response.pageIndex || 0,
-        pageSize: response.pageSize || 10,
-        totalPages: response.totalPages || 0
+        totalRecords: response.total || 0,
+        pageIndex: payload.skip || 0,
+        pageSize: payload.take || 10,
+        //totalPages: response.totalPages || 0
       }
     } catch (err) {
       isLoading.value = false

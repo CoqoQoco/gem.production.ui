@@ -672,9 +672,9 @@ const onSingleSelectionChange = (checked, item) => {
     .p-dropdown,
     .p-paginator-rpp-options {
       height: 1.75rem !important;
-      width: 100px !important;
-      min-width: 100px !important;
-      max-width: 100px  !important;
+      width: 90px !important;
+      min-width: 90px !important;
+      max-width: 90px  !important;
       margin: 0 0.25rem !important;
       border: 1px solid #ffd7e1 !important;
       border-radius: 6px !important;
@@ -688,8 +688,9 @@ const onSingleSelectionChange = (checked, item) => {
 
       .p-dropdown-label {
         font-size: 11px !important;
-        padding: 0.2rem 0.3rem !important;
+        padding: 0.25rem 0.3rem !important;
         text-align: center !important;
+        line-height: 1.2 !important;
       }
 
       .p-dropdown-trigger {
@@ -697,16 +698,16 @@ const onSingleSelectionChange = (checked, item) => {
       }
 
       &.p-inputwrapper {
-        width: 100px !important;
-        max-width: 100px !important;
+        width: 90px !important;
+        max-width: 90px !important;
       }
     }
 
     // Target the wrapper of dropdown if exists
     .p-paginator-rpp-options,
     span:has(> .p-dropdown) {
-      width: 100px !important;
-      max-width: 100px !important;
+      width: 90px !important;
+      max-width: 90px !important;
       flex-shrink: 0 !important;
     }
 
@@ -906,19 +907,21 @@ const onSingleSelectionChange = (checked, item) => {
 .base-datatable .p-paginator .p-dropdown,
 .p-paginator .p-dropdown.p-component.p-inputwrapper,
 .p-datatable-paginator .p-dropdown {
-  width: 100px !important;
-  min-width: 100px !important;
-  max-width: 100px !important;
+  width: 90px !important;
+  min-width: 90px !important;
+  max-width: 90px !important;
+  height: 1.75rem !important;
   flex-shrink: 0 !important;
   flex-grow: 0 !important;
-  flex-basis: 55px !important;
+  flex-basis: 90px !important;
 }
 
 .base-datatable .p-paginator .p-dropdown .p-dropdown-label,
 .p-paginator .p-dropdown .p-dropdown-label {
   font-size: 11px !important;
-  padding: 0.2rem 0.3rem !important;
+  padding: 0.25rem 0.3rem !important;
   width: 100% !important;
+  line-height: 1.2 !important;
 }
 
 .base-datatable .p-paginator .p-dropdown .p-dropdown-trigger,
@@ -931,10 +934,30 @@ const onSingleSelectionChange = (checked, item) => {
 .p-paginator .p-inputwrapper,
 .p-paginator .p-inputwrapper.p-inputwrapper-filled,
 .p-paginator .p-inputwrapper.p-inputwrapper-focus {
-  width: 100px !important;
-  min-width: 100px !important;
-  max-width: 100px !important;
+  width: 90px !important;
+  min-width: 90px !important;
+  max-width: 90px !important;
+  height: 1.75rem !important;
   flex-shrink: 0 !important;
   flex-grow: 0 !important;
+}
+
+// Force enable dropdown (override disabled state)
+.p-paginator .p-dropdown,
+.p-paginator .p-dropdown.p-disabled {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+.p-paginator .p-dropdown .p-dropdown-trigger,
+.p-paginator .p-dropdown.p-disabled .p-dropdown-trigger {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.p-paginator .p-dropdown .p-dropdown-label,
+.p-paginator .p-dropdown.p-disabled .p-dropdown-label {
+  cursor: pointer !important;
 }
 </style>

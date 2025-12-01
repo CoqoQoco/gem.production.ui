@@ -513,5 +513,58 @@
     "noData": "ไม่พบข้อมูลผู้ใช้",
     "noRole": "ไม่มีบทบาท",
     "notAvailable": "ไม่ระบุ"
+  },
+  "customer": {
+    "title": "จัดการลูกค้า",
+    "subtitle": "จัดการและดูรายละเอียดลูกค้าในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ, อีเมล, เบอร์โทร หรือที่อยู่...",
+    "noData": "ไม่พบข้อมูลลูกค้า",
+    "addCustomer": "เพิ่มลูกค้า",
+    "editCustomer": "แก้ไขลูกค้า",
+    "createSuccess": "เพิ่มลูกค้าสำเร็จ",
+    "updateSuccess": "อัปเดตลูกค้าสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มลูกค้า",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตลูกค้า",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "basicInfo": "ข้อมูลพื้นฐาน",
+      "customerNumber": "รหัสลูกค้า",
+      "customerNumberPlaceholder": "กรอกรหัสลูกค้า",
+      "customerName": "ชื่อลูกค้า",
+      "customerNamePlaceholder": "กรอกชื่อลูกค้า",
+      "email": "อีเมล",
+      "emailPlaceholder": "กรอกอีเมล",
+      "phone": "เบอร์โทร",
+      "phonePlaceholder": "กรอกเบอร์โทร",
+      "address1": "ที่อยู่ 1",
+      "address1Placeholder": "กรอกที่อยู่",
+      "address2": "ที่อยู่ 2",
+      "address2Placeholder": "กรอกที่อยู่เพิ่มเติม",
+      "country": "ประเทศ",
+      "countryPlaceholder": "กรอกประเทศ",
+      "postcode": "รหัสไปรษณีย์",
+      "postcodePlaceholder": "กรอกรหัสไปรษณีย์",
+      "discount": "ส่วนลด",
+      "discountPlaceholder": "กรอกส่วนลด",
+      "remark": "หมายเหตุ",
+      "remarkPlaceholder": "กรอกหมายเหตุ",
+      "status": "สถานะ"
+    },
+    "validation": {
+      "customerNumberRequired": "กรุณากรอกรหัสลูกค้า",
+      "customerNameRequired": "กรุณากรอกชื่อลูกค้า",
+      "emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง"
+    },
+    "columns": {
+      "id": "ID",
+      "customerNumber": "รหัสลูกค้า",
+      "customerName": "ชื่อลูกค้า",
+      "email": "อีเมล",
+      "phone": "เบอร์โทร",
+      "country": "ประเทศ",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    }
   }
 }

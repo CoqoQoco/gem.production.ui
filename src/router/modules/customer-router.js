@@ -7,7 +7,7 @@ const customerRoutes = [
   {
     path: '/customers',
     name: 'Customers',
-    component: () => import('@/views/common/coming-soon-view.vue'),
+    component: () => import('@/views/customer/customer-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Customers'

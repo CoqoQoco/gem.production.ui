@@ -363,5 +363,58 @@
     "noData": "User data not found",
     "noRole": "No role assigned",
     "notAvailable": "Not available"
+  },
+  "customer": {
+    "title": "Customer Management",
+    "subtitle": "Manage and view customer details",
+    "searchPlaceholder": "Search code, name, email, phone or address...",
+    "noData": "No customers found",
+    "addCustomer": "Add Customer",
+    "editCustomer": "Edit Customer",
+    "createSuccess": "Customer created successfully",
+    "updateSuccess": "Customer updated successfully",
+    "createError": "Failed to create customer",
+    "updateError": "Failed to update customer",
+    "loadError": "Failed to load data",
+    "form": {
+      "basicInfo": "Basic Information",
+      "customerNumber": "Customer Number",
+      "customerNumberPlaceholder": "Enter customer number",
+      "customerName": "Customer Name",
+      "customerNamePlaceholder": "Enter customer name",
+      "email": "Email",
+      "emailPlaceholder": "Enter email",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter phone number",
+      "address1": "Address 1",
+      "address1Placeholder": "Enter address",
+      "address2": "Address 2",
+      "address2Placeholder": "Enter additional address",
+      "country": "Country",
+      "countryPlaceholder": "Enter country",
+      "postcode": "Postcode",
+      "postcodePlaceholder": "Enter postcode",
+      "discount": "Discount",
+      "discountPlaceholder": "Enter discount",
+      "remark": "Remark",
+      "remarkPlaceholder": "Enter remark",
+      "status": "Status"
+    },
+    "validation": {
+      "customerNumberRequired": "Please enter customer number",
+      "customerNameRequired": "Please enter customer name",
+      "emailInvalid": "Invalid email format"
+    },
+    "columns": {
+      "id": "ID",
+      "customerNumber": "Customer Number",
+      "customerName": "Customer Name",
+      "email": "Email",
+      "phone": "Phone",
+      "country": "Country",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   }
 }
