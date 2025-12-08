@@ -15,8 +15,7 @@ export const useCustomerApiStore = defineStore('customerApi', () => {
    * @param {Object} params - Search parameters
    * @param {number} params.pageIndex - Page index (0-based)
    * @param {number} params.pageSize - Number of items per page
-   * @param {string} params.sortBy - Sort field
-   * @param {boolean} params.isDescending - Sort direction
+   * @param {Array} params.sort - Sort array [{ field: 'fieldName', dir: 'asc' or 'desc' }]
    * @param {Object} params.criteria - Search criteria
    * @param {string} params.criteria.searchText - Search text (customerNumber, customerName, phone, email, address)
    * @returns {Promise<Object>} List response with pagination
@@ -29,8 +28,7 @@ export const useCustomerApiStore = defineStore('customerApi', () => {
       const payload = {
         skip: params.pageIndex || 0,
         take: params.pageSize || 10,
-        sortBy: params.sortBy || 
-        isDescending: params.isDescending !== undefined ? params.isDescending : true,
+        sort: params.sort || [],
         criteria: {
           searchText: params.criteria?.searchText || null
         }

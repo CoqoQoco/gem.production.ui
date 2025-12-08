@@ -212,7 +212,7 @@
           >
             <i class="pi pi-users"></i>
             <span>{{ t('dashboard.menu.customers') }}</span>
-            <span class="badge">Soon</span>
+            <!-- <span class="badge">Soon</span> -->
           </router-link>
 
           <!-- Products Module (No Submenu) -->

@@ -80,8 +80,7 @@ export default {
       searchParams: {
         pageIndex: 0,
         pageSize: 10,
-        sortBy: 'CreateDate',
-        isDescending: true,
+        sort: [],
         searchText: ''
       },
 
@@ -110,8 +109,7 @@ export default {
         const result = await this.customerApiStore.listCustomers({
           pageIndex: this.searchParams.pageIndex,
           pageSize: this.searchParams.pageSize,
-          sortBy: this.searchParams.sortBy,
-          isDescending: this.searchParams.isDescending,
+          sort: this.searchParams.sort,
           criteria: {
             searchText: this.searchParams.searchText || null
           }
@@ -120,7 +118,7 @@ export default {
         if (result.success) {
           console.log('API result:', result);
           this.customers = result.data
-          this.totalRecords = result.totalRecords 
+          this.totalRecords = result.totalRecords
           this.perPage = this.searchParams.pageSize
           console.log('Updated data - customers:', this.customers.length, 'totalRecords:', this.totalRecords, 'perPage:', this.perPage);
         } else {
@@ -148,8 +146,7 @@ export default {
     handleRefresh() {
       this.searchParams.searchText = ''
       this.searchParams.pageIndex = 0
-      this.searchParams.sortBy = 'CreateDate'
-      this.searchParams.isDescending = true
+      this.searchParams.sort = []
       this.loadCustomers()
     },
 
@@ -175,10 +172,11 @@ export default {
      * Handle sort change event from DataTable
      */
     handleSortChange(params) {
-      this.searchParams.sortBy = params.sortBy
-      this.searchParams.isDescending = params.isDescending
-      this.searchParams.pageIndex = params.pageIndex
-      this.searchParams.pageSize = params.pageSize
+      console.log('handleSortChange received:', params);
+      this.searchParams.sort = params.sort || []
+      this.searchParams.pageIndex = params.first / params.rows
+      this.searchParams.pageSize = params.rows
+      console.log('Updated sort:', this.searchParams.sort);
       this.loadCustomers()
     },
 

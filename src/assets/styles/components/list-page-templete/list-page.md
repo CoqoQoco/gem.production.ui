@@ -243,12 +243,11 @@ const listItems = async (params = {}) => {
   error.value = null
 
   try {
-    // ✅ CORRECT: Use skip and take for backend API
+    // ✅ CORRECT: Use skip, take, and sort array for backend API
     const payload = {
       skip: params.pageIndex || 0,
       take: params.pageSize || 10,
-      sortBy: params.sortBy || 'CreateDate',
-      isDescending: params.isDescending !== undefined ? params.isDescending : true,
+      sort: params.sort || [],  // Multi-sort array
       criteria: {
         searchText: params.criteria?.searchText || null
       }
@@ -281,20 +280,54 @@ const listItems = async (params = {}) => {
 }
 ```
 
+#### Sort Array Format
+
+The `sort` parameter is an array of sort objects supporting **multi-column sorting**:
+
+```javascript
+// Single sort
+sort: [
+  { field: 'CreateDate', dir: 'desc' }
+]
+
+// Multi-sort (e.g., sort by name ascending, then by date descending)
+sort: [
+  { field: 'customerName', dir: 'asc' },
+  { field: 'CreateDate', dir: 'desc' }
+]
+
+// No sort (let backend use default)
+sort: []
+```
+
+**Important Notes**:
+- **NO default sort** - Always pass empty array `[]` if no sort is selected
+- Direction values: `'asc'` or `'desc'` (lowercase)
+- Field names must match backend entity property names
+- Order matters - first item is primary sort, second is secondary, etc.
+
 #### Key Points
 
 1. **Request Payload (to Backend)**:
    - Use `skip` - maps from `params.pageIndex`
    - Use `take` - maps from `params.pageSize`
-   - Backend expects `skip` and `take` fields
+   - Use `sort` - array of `{ field, dir }` objects
+   - Backend expects `skip`, `take`, and `sort` fields
 
 2. **Response Mapping (from Backend to Frontend)**:
    - Use `response.total` (backend returns `total`)
    - Map `payload.skip` to `pageIndex` for frontend
    - Map `payload.take` to `pageSize` for frontend
 
-3. **Why This Pattern**:
-   - Backend API uses `skip/take` convention
+3. **Multi-Sort Support**:
+   - Frontend DataTable component uses `sortMode="multiple"`
+   - Users can hold Ctrl/Cmd and click multiple column headers
+   - Data-table.vue automatically converts PrimeVue's multiSortMeta to sort array format
+   - Sort array is passed through: DataTable → data-table-view.vue → index.vue → API store
+
+4. **Why This Pattern**:
+   - Backend API uses `skip/take` convention for pagination
+   - Backend uses `sort` array for flexible multi-column sorting
    - Frontend components use `pageIndex/pageSize` convention
    - API store acts as translator between backend and frontend
 

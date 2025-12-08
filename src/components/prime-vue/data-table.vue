@@ -310,10 +310,18 @@ const handlePageChange = (event) => {
 }
 
 const handleSortChange = (event) => {
+  // Convert PrimeVue multiSortMeta to backend format
+  // PrimeVue format: [{ field: 'fieldName', order: 1 or -1 }]
+  // Backend format: [{ field: 'fieldName', dir: 'asc' or 'desc' }]
+  const sortArray = (event.multiSortMeta || []).map(sort => ({
+    field: sort.field,
+    dir: sort.order === 1 ? 'asc' : 'desc'
+  }))
+
   emit('sort', {
     first: event.first,
     rows: event.rows,
-    multiSortMeta: event.multiSortMeta,
+    sort: sortArray
   })
 }
 
