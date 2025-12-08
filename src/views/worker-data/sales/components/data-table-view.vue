@@ -200,6 +200,7 @@ export default {
     },
 
     handlePageChange(event) {
+      console.log('Page change event:', event);
       this.$emit("page-change", {
         pageIndex: event.first / event.rows,
         pageSize: event.rows
@@ -207,16 +208,9 @@ export default {
     },
 
     handleSortChange(event) {
-      const sortMeta = event.multiSortMeta;
-      if (sortMeta && sortMeta.length > 0) {
-        const primarySort = sortMeta[0];
-        this.$emit("sort-change", {
-          sortBy: primarySort.field,
-          isDescending: primarySort.order === -1,
-          pageIndex: event.first / event.rows,
-          pageSize: event.rows
-        });
-      }
+      console.log('Sort change event:', event);
+      // Forward the event directly from data-table.vue which already has the correct format
+      this.$emit("sort-change", event);
     }
   }
 };
