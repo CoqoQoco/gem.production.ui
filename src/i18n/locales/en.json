@@ -416,5 +416,44 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+  "gem": {
+    "title": "Gem Management",
+    "subtitle": "Manage and view gem details in the system",
+    "searchPlaceholder": "Search code, name (Thai), name (English), or color...",
+    "noData": "No gems found",
+    "addGem": "Add Gem",
+    "editGem": "Edit Gem",
+    "createSuccess": "Gem created successfully",
+    "updateSuccess": "Gem updated successfully",
+    "createError": "Failed to create gem",
+    "updateError": "Failed to update gem",
+    "loadError": "Failed to load data",
+    "form": {
+      "gemInfo": "Gem Information",
+      "code": "Gem Code",
+      "codePlaceholder": "Enter gem code",
+      "nameTh": "Gem Name (Thai)",
+      "nameThPlaceholder": "Enter gem name in Thai",
+      "nameEn": "Gem Name (English)",
+      "nameEnPlaceholder": "Enter gem name in English",
+      "color": "Color",
+      "colorPlaceholder": "Enter gem color"
+    },
+    "validation": {
+      "codeRequired": "Please enter gem code",
+      "nameThRequired": "Please enter gem name (Thai)",
+      "nameEnRequired": "Please enter gem name (English)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "Gem Code",
+      "nameTh": "Gem Name (Thai)",
+      "nameEn": "Gem Name (English)",
+      "color": "Color",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   }
 }

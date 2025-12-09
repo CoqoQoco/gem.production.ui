@@ -55,6 +55,17 @@ const settingRoutes = [
           requiresAuth: true,
           title: 'Branch Management'
         }
+      },
+
+      // Master Data - Gem Management
+      {
+        path: 'master-data/gem',
+        name: 'GemManagement',
+        component: () => import('@/views/setting/master-data/gem/gem-index.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Gem Management'
+        }
       }
     ]
   }

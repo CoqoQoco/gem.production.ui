@@ -1,0 +1,236 @@
+<template>
+  <Dialog
+    :visible="visible"
+    @update:visible="$emit('update:visible', $event)"
+    :header="$t('gem.editGem') || 'แก้ไขพลอย'"
+    :style="{ width: '800px' }"
+    :modal="true"
+    :draggable="false"
+    class="list-form-modal"
+  >
+    <div v-if="isLoading" class="list-detail-loading">
+      <ProgressSpinner />
+    </div>
+
+    <div v-else-if="!gem" class="list-detail-no-data">
+      <i class="pi pi-info-circle"></i>
+      <p>{{ $t('gem.noData') || 'ไม่พบข้อมูลพลอย' }}</p>
+    </div>
+
+    <div v-else class="list-form">
+      <!-- Gem Information Section -->
+      <div class="form-section">
+        <div class="section-title">
+          <i class="pi pi-diamond"></i>
+          <span>{{ $t('gem.form.gemInfo') || 'ข้อมูลพลอย' }}</span>
+        </div>
+        <div class="form-grid">
+          <!-- Code (Read-only) -->
+          <div class="form-group">
+            <label>
+              {{ $t('gem.form.code') || 'รหัสพลอย' }}
+            </label>
+            <InputText
+              v-model="form.code"
+              :disabled="true"
+            />
+          </div>
+
+          <!-- Name (Thai) -->
+          <div class="form-group">
+            <label>
+              {{ $t('gem.form.nameTh') || 'ชื่อพลอย (ไทย)' }}
+              <span class="required">*</span>
+            </label>
+            <InputText
+              v-model="form.nameTh"
+              :placeholder="$t('gem.form.nameThPlaceholder') || 'กรอกชื่อพลอยภาษาไทย'"
+              :class="{ 'p-invalid': errors.nameTh }"
+            />
+            <small v-if="errors.nameTh" class="p-error">{{ errors.nameTh }}</small>
+          </div>
+
+          <!-- Name (English) -->
+          <div class="form-group">
+            <label>
+              {{ $t('gem.form.nameEn') || 'ชื่อพลอย (อังกฤษ)' }}
+              <span class="required">*</span>
+            </label>
+            <InputText
+              v-model="form.nameEn"
+              :placeholder="$t('gem.form.nameEnPlaceholder') || 'กรอกชื่อพลอยภาษาอังกฤษ'"
+              :class="{ 'p-invalid': errors.nameEn }"
+            />
+            <small v-if="errors.nameEn" class="p-error">{{ errors.nameEn }}</small>
+          </div>
+
+          <!-- Color -->
+          <div class="form-group">
+            <label>
+              {{ $t('gem.form.color') || 'สี' }}
+            </label>
+            <InputText
+              v-model="form.color"
+              :placeholder="$t('gem.form.colorPlaceholder') || 'กรอกสีของพลอย'"
+              :class="{ 'p-invalid': errors.color }"
+            />
+            <small v-if="errors.color" class="p-error">{{ errors.color }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="form-buttons">
+        <button class="btn-cancel" @click="handleCancel">
+          <i class="pi pi-times"></i>
+          <span>{{ $t('common.cancel') || 'ยกเลิก' }}</span>
+        </button>
+        <button v-if="gem" class="btn-submit" @click="handleSave" :disabled="isSaving">
+          <i class="pi pi-check"></i>
+          <span>{{ $t('common.save') || 'บันทึก' }}</span>
+        </button>
+      </div>
+    </template>
+  </Dialog>
+</template>
+
+<script>
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import ProgressSpinner from "primevue/progressspinner";
+import { useGemApiStore } from "@/stores/api/gem-api";
+import { useToast } from "primevue/usetoast";
+
+export default {
+  name: "EditView",
+
+  components: {
+    Dialog,
+    Button,
+    InputText,
+    ProgressSpinner
+  },
+
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    gemId: {
+      type: Number,
+      default: null
+    }
+  },
+
+  data() {
+    return {
+      gemApiStore: useGemApiStore(),
+      toast: useToast(),
+      gem: null,
+      form: {
+        code: "",
+        nameTh: "",
+        nameEn: "",
+        color: ""
+      },
+      errors: {},
+      isLoading: false,
+      isSaving: false
+    };
+  },
+
+  watch: {
+    visible(newVal) {
+      if (newVal && this.gemId) {
+        this.loadGem();
+      }
+    }
+  },
+
+  methods: {
+    async loadGem() {
+      this.isLoading = true;
+
+      try {
+        const result = await this.gemApiStore.getGem({ id: this.gemId });
+
+        if (result.success) {
+          this.gem = result.data;
+          this.form = {
+            code: result.data.code || "",
+            nameTh: result.data.nameTh || "",
+            nameEn: result.data.nameEn || "",
+            color: result.data.color || ""
+          };
+        } else {
+          this.toast.add({
+            severity: "error",
+            summary: this.$t("common.error") || "ผิดพลาด",
+            detail: result.message || this.$t("gem.loadError") || "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+            life: 5000
+          });
+        }
+      } catch (error) {
+        this.toast.add({
+          severity: "error",
+          summary: this.$t("common.error") || "ผิดพลาด",
+          detail: error.message || this.$t("gem.loadError") || "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+          life: 5000
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    validateForm() {
+      this.errors = {};
+
+      if (!this.form.nameTh || this.form.nameTh.trim() === "") {
+        this.errors.nameTh = this.$t('gem.validation.nameThRequired') || 'กรุณากรอกชื่อพลอย (ไทย)';
+      }
+
+      if (!this.form.nameEn || this.form.nameEn.trim() === "") {
+        this.errors.nameEn = this.$t('gem.validation.nameEnRequired') || 'กรุณากรอกชื่อพลอย (อังกฤษ)';
+      }
+
+      return Object.keys(this.errors).length === 0;
+    },
+
+    async handleSave() {
+      if (!this.validateForm()) {
+        return;
+      }
+
+      // Note: Update API not implemented yet in backend
+      this.toast.add({
+        severity: "info",
+        summary: this.$t("common.info") || "ข้อมูล",
+        detail: "ฟีเจอร์แก้ไขยังไม่พร้อมใช้งาน",
+        life: 3000
+      });
+    },
+
+    handleCancel() {
+      this.$emit("update:visible", false);
+      this.resetForm();
+    },
+
+    resetForm() {
+      this.gem = null;
+      this.form = {
+        code: "",
+        nameTh: "",
+        nameEn: "",
+        color: ""
+      };
+      this.errors = {};
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/components/list-page-templete/modal-view.scss";
+</style>

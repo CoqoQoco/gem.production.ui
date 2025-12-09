@@ -277,7 +277,7 @@
           </div>
 
           <!-- Master Data Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['BranchManagement'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['BranchManagement', 'GemManagement'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('masterData')">
               <i class="pi pi-database"></i>
               <span>{{ t('dashboard.menu.masterData') || 'ข้อมูลหลัก' }}</span>
@@ -294,6 +294,16 @@
                 >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('branch.title') || 'จัดการสาขา' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('GemManagement')"
+                  to="/setting/master-data/gem"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('gem.title') || 'จัดการข้อมูลพลอย' }}</span>
                 </router-link>
               </div>
             </transition>
