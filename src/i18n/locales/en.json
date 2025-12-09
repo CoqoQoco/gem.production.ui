@@ -456,6 +456,42 @@
       "inactive": "Inactive"
     }
   },
+  "gold": {
+    "title": "Gold Management",
+    "subtitle": "Manage and view gold details in the system",
+    "searchPlaceholder": "Search code, name (Thai), name (English)...",
+    "noData": "No gold found",
+    "addGold": "Add Gold",
+    "editGold": "Edit Gold",
+    "createSuccess": "Gold created successfully",
+    "updateSuccess": "Gold updated successfully",
+    "createError": "Failed to create gold",
+    "updateError": "Failed to update gold",
+    "loadError": "Failed to load data",
+    "form": {
+      "goldInfo": "Gold Information",
+      "code": "Gold Code",
+      "codePlaceholder": "Enter gold code",
+      "nameTh": "Gold Name (Thai)",
+      "nameThPlaceholder": "Enter gold name in Thai",
+      "nameEn": "Gold Name (English)",
+      "nameEnPlaceholder": "Enter gold name in English"
+    },
+    "validation": {
+      "codeRequired": "Please enter gold code",
+      "nameThRequired": "Please enter gold name (Thai)",
+      "nameEnRequired": "Please enter gold name (English)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "Gold Code",
+      "nameTh": "Gold Name (Thai)",
+      "nameEn": "Gold Name (English)",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "gemShape": {
     "title": "Gem Shape Management",
     "subtitle": "Manage and view gem shape details in the system",

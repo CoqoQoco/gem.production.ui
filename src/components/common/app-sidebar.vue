@@ -277,7 +277,7 @@
           </div>
 
           <!-- Master Data Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['BranchManagement', 'GemManagement', 'GemShapeManagement'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['BranchManagement', 'GemManagement', 'GoldManagement', 'GemShapeManagement'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('masterData')">
               <i class="pi pi-database"></i>
               <span>{{ t('dashboard.menu.masterData') || 'ข้อมูลหลัก' }}</span>
@@ -304,6 +304,16 @@
                 >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('gem.title') || 'จัดการข้อมูลพลอย' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('GoldManagement')"
+                  to="/setting/master-data/gold"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('gold.title') || 'จัดการข้อมูลทอง' }}</span>
                 </router-link>
                 <router-link
                   v-if="canAccess('GemShapeManagement')"
