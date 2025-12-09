@@ -66,6 +66,17 @@ const settingRoutes = [
           requiresAuth: true,
           title: 'Gem Management'
         }
+      },
+
+      // Master Data - Gem Shape Management
+      {
+        path: 'master-data/gem-shape',
+        name: 'GemShapeManagement',
+        component: () => import('@/views/setting/master-data/gemShape/gem-shape-index.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Gem Shape Management'
+        }
       }
     ]
   }

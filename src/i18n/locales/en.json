@@ -455,5 +455,41 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+  "gemShape": {
+    "title": "Gem Shape Management",
+    "subtitle": "Manage and view gem shape details in the system",
+    "searchPlaceholder": "Search code, name (Thai), name (English)...",
+    "noData": "No gem shapes found",
+    "addGemShape": "Add Gem Shape",
+    "editGemShape": "Edit Gem Shape",
+    "createSuccess": "Gem shape created successfully",
+    "updateSuccess": "Gem shape updated successfully",
+    "createError": "Failed to create gem shape",
+    "updateError": "Failed to update gem shape",
+    "loadError": "Failed to load data",
+    "form": {
+      "gemShapeInfo": "Gem Shape Information",
+      "code": "Shape Code",
+      "codePlaceholder": "Enter gem shape code",
+      "nameTh": "Shape Name (Thai)",
+      "nameThPlaceholder": "Enter shape name in Thai",
+      "nameEn": "Shape Name (English)",
+      "nameEnPlaceholder": "Enter shape name in English"
+    },
+    "validation": {
+      "codeRequired": "Please enter shape code",
+      "nameThRequired": "Please enter shape name (Thai)",
+      "nameEnRequired": "Please enter shape name (English)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "Shape Code",
+      "nameTh": "Shape Name (Thai)",
+      "nameEn": "Shape Name (English)",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   }
 }
