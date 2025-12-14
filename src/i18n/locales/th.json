@@ -793,6 +793,13 @@
         "qtyRequired": "กรุณากรอกจำนวน",
         "qtyUnitRequired": "กรุณากรอกหน่วยนับ"
       }
+    },
+    "confirmModal": {
+      "title": "ยืนยันข้อมูลการบันทึกสินค้า",
+      "productInfo": "ข้อมูลสินค้า",
+      "branchProductType": "สาขาและประเภทสินค้า",
+      "confirmSave": "ยืนยันบันทึกสินค้า",
+      "backToEdit": "กลับไปแก้ไข"
     }
   }
 }

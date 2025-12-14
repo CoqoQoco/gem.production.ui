@@ -643,6 +643,13 @@
         "qtyRequired": "Please enter quantity",
         "qtyUnitRequired": "Please enter quantity unit"
       }
+    },
+    "confirmModal": {
+      "title": "Confirm Goods Receipt Data",
+      "productInfo": "Product Information",
+      "branchProductType": "Branch and Product Type",
+      "confirmSave": "Confirm Save",
+      "backToEdit": "Back to Edit"
     }
   }
 }

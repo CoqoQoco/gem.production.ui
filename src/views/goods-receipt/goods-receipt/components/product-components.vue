@@ -34,13 +34,13 @@
                 <span class="required">*</span>
               </label>
               <FormDropdown
-                v-model="goldComp.goldCode"
+                :model-value="goldComp.goldCode"
                 :options="golds"
                 option-label="nameTh"
                 option-value="code"
                 :placeholder="$t('goodsReceipt.components.goldPlaceholder') || 'เลือกทอง'"
                 :invalid="!!errors[`gold-${index}`]"
-                @change="handleGoldChange(index, $event)"
+                @update:model-value="handleGoldChange(index, $event)"
               />
               <small v-if="errors[`gold-${index}`]" class="p-error">
                 {{ errors[`gold-${index}`] }}
@@ -54,13 +54,13 @@
                 <span class="required">*</span>
               </label>
               <FormDropdown
-                v-model="goldComp.shapeCode"
+                :model-value="goldComp.shapeCode"
                 :options="gemShapes"
                 option-label="nameTh"
                 option-value="code"
                 :placeholder="$t('goodsReceipt.components.goldShapePlaceholder') || 'เลือกรูปร่าง'"
                 :invalid="!!errors[`gold-shape-${index}`]"
-                @change="handleGoldShapeChange(index, $event)"
+                @update:model-value="handleGoldShapeChange(index, $event)"
               />
               <small v-if="errors[`gold-shape-${index}`]" class="p-error">
                 {{ errors[`gold-shape-${index}`] }}
@@ -76,13 +76,13 @@
                 </label>
                 <input
                   type="number"
-                  v-model.number="goldComp.weight"
+                  :value="goldComp.weight"
                   :placeholder="$t('goodsReceipt.components.weightPlaceholder') || 'กรอกน้ำหนัก'"
                   :class="{ 'is-invalid': !!errors[`gold-weight-${index}`] }"
                   class="custom-input"
                   step="0.01"
                   min="0"
-                  @input="clearError(`gold-weight-${index}`)"
+                  @input="updateGoldField(index, 'weight', $event.target.value)"
                 />
                 <small v-if="errors[`gold-weight-${index}`]" class="p-error">
                   {{ errors[`gold-weight-${index}`] }}
@@ -95,10 +95,10 @@
                   <span class="required">*</span>
                 </label>
                 <InputText
-                  v-model="goldComp.weightUnit"
+                  :model-value="goldComp.weightUnit"
                   :placeholder="$t('goodsReceipt.components.weightUnitPlaceholder') || 'กรอกหน่วยน้ำหนัก'"
                   :class="{ 'p-invalid': !!errors[`gold-weightUnit-${index}`] }"
-                  @input="clearError(`gold-weightUnit-${index}`)"
+                  @update:model-value="updateGoldField(index, 'weightUnit', $event)"
                 />
                 <small v-if="errors[`gold-weightUnit-${index}`]" class="p-error">
                   {{ errors[`gold-weightUnit-${index}`] }}
@@ -115,13 +115,13 @@
                 </label>
                 <input
                   type="number"
-                  v-model.number="goldComp.qty"
+                  :value="goldComp.qty"
                   :placeholder="$t('goodsReceipt.components.qtyPlaceholder') || 'กรอกจำนวน'"
                   :class="{ 'is-invalid': !!errors[`gold-qty-${index}`] }"
                   class="custom-input"
                   step="0.01"
                   min="0"
-                  @input="clearError(`gold-qty-${index}`)"
+                  @input="updateGoldField(index, 'qty', $event.target.value)"
                 />
                 <small v-if="errors[`gold-qty-${index}`]" class="p-error">
                   {{ errors[`gold-qty-${index}`] }}
@@ -134,10 +134,10 @@
                   <span class="required">*</span>
                 </label>
                 <InputText
-                  v-model="goldComp.qtyUnit"
+                  :model-value="goldComp.qtyUnit"
                   :placeholder="$t('goodsReceipt.components.qtyUnitPlaceholder') || 'กรอกหน่วยนับ'"
                   :class="{ 'p-invalid': !!errors[`gold-qtyUnit-${index}`] }"
-                  @input="clearError(`gold-qtyUnit-${index}`)"
+                  @update:model-value="updateGoldField(index, 'qtyUnit', $event)"
                 />
                 <small v-if="errors[`gold-qtyUnit-${index}`]" class="p-error">
                   {{ errors[`gold-qtyUnit-${index}`] }}
@@ -188,13 +188,13 @@
                 <span class="required">*</span>
               </label>
               <FormDropdown
-                v-model="gemComp.gemCode"
+                :model-value="gemComp.gemCode"
                 :options="gems"
                 option-label="nameTh"
                 option-value="code"
                 :placeholder="$t('goodsReceipt.components.gemPlaceholder') || 'เลือกพลอย'"
                 :invalid="!!errors[`gem-${index}`]"
-                @change="handleGemChange(index, $event)"
+                @update:model-value="handleGemChange(index, $event)"
               />
               <small v-if="errors[`gem-${index}`]" class="p-error">
                 {{ errors[`gem-${index}`] }}
@@ -208,13 +208,13 @@
                 <span class="required">*</span>
               </label>
               <FormDropdown
-                v-model="gemComp.shapeCode"
+                :model-value="gemComp.shapeCode"
                 :options="gemShapes"
                 option-label="nameTh"
                 option-value="code"
                 :placeholder="$t('goodsReceipt.components.gemShapePlaceholder') || 'เลือกรูปร่าง'"
                 :invalid="!!errors[`gem-shape-${index}`]"
-                @change="handleGemShapeChange(index, $event)"
+                @update:model-value="handleGemShapeChange(index, $event)"
               />
               <small v-if="errors[`gem-shape-${index}`]" class="p-error">
                 {{ errors[`gem-shape-${index}`] }}
@@ -230,13 +230,13 @@
                 </label>
                 <input
                   type="number"
-                  v-model.number="gemComp.weight"
+                  :value="gemComp.weight"
                   :placeholder="$t('goodsReceipt.components.weightPlaceholder') || 'กรอกน้ำหนัก'"
                   :class="{ 'is-invalid': !!errors[`gem-weight-${index}`] }"
                   class="custom-input"
                   step="0.01"
                   min="0"
-                  @input="clearError(`gem-weight-${index}`)"
+                  @input="updateGemField(index, 'weight', $event.target.value)"
                 />
                 <small v-if="errors[`gem-weight-${index}`]" class="p-error">
                   {{ errors[`gem-weight-${index}`] }}
@@ -249,10 +249,10 @@
                   <span class="required">*</span>
                 </label>
                 <InputText
-                  v-model="gemComp.weightUnit"
+                  :model-value="gemComp.weightUnit"
                   :placeholder="$t('goodsReceipt.components.weightUnitPlaceholder') || 'กรอกหน่วยน้ำหนัก'"
                   :class="{ 'p-invalid': !!errors[`gem-weightUnit-${index}`] }"
-                  @input="clearError(`gem-weightUnit-${index}`)"
+                  @update:model-value="updateGemField(index, 'weightUnit', $event)"
                 />
                 <small v-if="errors[`gem-weightUnit-${index}`]" class="p-error">
                   {{ errors[`gem-weightUnit-${index}`] }}
@@ -269,13 +269,13 @@
                 </label>
                 <input
                   type="number"
-                  v-model.number="gemComp.qty"
+                  :value="gemComp.qty"
                   :placeholder="$t('goodsReceipt.components.qtyPlaceholder') || 'กรอกจำนวน'"
                   :class="{ 'is-invalid': !!errors[`gem-qty-${index}`] }"
                   class="custom-input"
                   step="0.01"
                   min="0"
-                  @input="clearError(`gem-qty-${index}`)"
+                  @input="updateGemField(index, 'qty', $event.target.value)"
                 />
                 <small v-if="errors[`gem-qty-${index}`]" class="p-error">
                   {{ errors[`gem-qty-${index}`] }}
@@ -288,10 +288,10 @@
                   <span class="required">*</span>
                 </label>
                 <InputText
-                  v-model="gemComp.qtyUnit"
+                  :model-value="gemComp.qtyUnit"
                   :placeholder="$t('goodsReceipt.components.qtyUnitPlaceholder') || 'กรอกหน่วยนับ'"
                   :class="{ 'p-invalid': !!errors[`gem-qtyUnit-${index}`] }"
-                  @input="clearError(`gem-qtyUnit-${index}`)"
+                  @update:model-value="updateGemField(index, 'qtyUnit', $event)"
                 />
                 <small v-if="errors[`gem-qtyUnit-${index}`]" class="p-error">
                   {{ errors[`gem-qtyUnit-${index}`] }}
@@ -355,7 +355,8 @@ export default {
       golds: [],
       gems: [],
       gemShapes: [],
-      errors: {}
+      errors: {},
+      isUpdatingFromParent: false
     }
   },
 
@@ -368,8 +369,12 @@ export default {
   watch: {
     modelValue: {
       handler(newValue) {
-        if (newValue) {
-          this.componentsData = { ...newValue }
+        if (newValue && !this.isUpdatingFromParent) {
+          this.isUpdatingFromParent = true
+          this.componentsData = JSON.parse(JSON.stringify(newValue))
+          this.$nextTick(() => {
+            this.isUpdatingFromParent = false
+          })
         }
       },
       deep: true,
@@ -378,7 +383,9 @@ export default {
 
     componentsData: {
       handler(newValue) {
-        this.$emit('update:modelValue', newValue)
+        if (!this.isUpdatingFromParent) {
+          this.$emit('update:modelValue', newValue)
+        }
       },
       deep: true
     }
@@ -431,22 +438,33 @@ export default {
     },
 
     addGoldComponent() {
-      this.componentsData.goldComponents.push({
-        goldCode: '',
-        goldNameTh: '',
-        goldNameEn: '',
-        shapeCode: '',
-        shapeNameTh: '',
-        shapeNameEn: '',
-        weight: null,
-        weightUnit: '',
-        qty: null,
-        qtyUnit: ''
-      })
+      const newGoldComponents = [
+        ...this.componentsData.goldComponents,
+        {
+          goldCode: '',
+          goldNameTh: '',
+          goldNameEn: '',
+          shapeCode: '',
+          shapeNameTh: '',
+          shapeNameEn: '',
+          weight: null,
+          weightUnit: '',
+          qty: null,
+          qtyUnit: ''
+        }
+      ]
+      this.componentsData = {
+        ...this.componentsData,
+        goldComponents: newGoldComponents
+      }
     },
 
     removeGoldComponent(index) {
-      this.componentsData.goldComponents.splice(index, 1)
+      const newGoldComponents = this.componentsData.goldComponents.filter((_, i) => i !== index)
+      this.componentsData = {
+        ...this.componentsData,
+        goldComponents: newGoldComponents
+      }
       delete this.errors[`gold-${index}`]
       delete this.errors[`gold-shape-${index}`]
       delete this.errors[`gold-weight-${index}`]
@@ -456,22 +474,33 @@ export default {
     },
 
     addGemComponent() {
-      this.componentsData.gemComponents.push({
-        gemCode: '',
-        gemNameTh: '',
-        gemNameEn: '',
-        shapeCode: '',
-        shapeNameTh: '',
-        shapeNameEn: '',
-        weight: null,
-        weightUnit: '',
-        qty: null,
-        qtyUnit: ''
-      })
+      const newGemComponents = [
+        ...this.componentsData.gemComponents,
+        {
+          gemCode: '',
+          gemNameTh: '',
+          gemNameEn: '',
+          shapeCode: '',
+          shapeNameTh: '',
+          shapeNameEn: '',
+          weight: null,
+          weightUnit: '',
+          qty: null,
+          qtyUnit: ''
+        }
+      ]
+      this.componentsData = {
+        ...this.componentsData,
+        gemComponents: newGemComponents
+      }
     },
 
     removeGemComponent(index) {
-      this.componentsData.gemComponents.splice(index, 1)
+      const newGemComponents = this.componentsData.gemComponents.filter((_, i) => i !== index)
+      this.componentsData = {
+        ...this.componentsData,
+        gemComponents: newGemComponents
+      }
       delete this.errors[`gem-${index}`]
       delete this.errors[`gem-shape-${index}`]
       delete this.errors[`gem-weight-${index}`]
@@ -480,42 +509,90 @@ export default {
       delete this.errors[`gem-qtyUnit-${index}`]
     },
 
-    handleGoldChange(index, event) {
-      const selectedGold = this.golds.find(g => g.code === event.value)
+    updateGoldField(index, field, value) {
+      const newComponents = [...this.componentsData.goldComponents]
+      if (field === 'weight' || field === 'qty') {
+        newComponents[index][field] = value ? parseFloat(value) : null
+      } else {
+        newComponents[index][field] = value
+      }
+      this.componentsData = {
+        ...this.componentsData,
+        goldComponents: newComponents
+      }
+      this.clearError(`gold-${field}-${index}`)
+    },
+
+    updateGemField(index, field, value) {
+      const newComponents = [...this.componentsData.gemComponents]
+      if (field === 'weight' || field === 'qty') {
+        newComponents[index][field] = value ? parseFloat(value) : null
+      } else {
+        newComponents[index][field] = value
+      }
+      this.componentsData = {
+        ...this.componentsData,
+        gemComponents: newComponents
+      }
+      this.clearError(`gem-${field}-${index}`)
+    },
+
+    handleGoldChange(index, value) {
+      const selectedGold = this.golds.find(g => g.code === value)
       if (selectedGold) {
-        this.componentsData.goldComponents[index].goldCode = selectedGold.code
-        this.componentsData.goldComponents[index].goldNameTh = selectedGold.nameTh
-        this.componentsData.goldComponents[index].goldNameEn = selectedGold.nameEn
+        const newComponents = [...this.componentsData.goldComponents]
+        newComponents[index].goldCode = selectedGold.code
+        newComponents[index].goldNameTh = selectedGold.nameTh
+        newComponents[index].goldNameEn = selectedGold.nameEn
+        this.componentsData = {
+          ...this.componentsData,
+          goldComponents: newComponents
+        }
       }
       this.clearError(`gold-${index}`)
     },
 
-    handleGoldShapeChange(index, event) {
-      const selectedShape = this.gemShapes.find(s => s.code === event.value)
+    handleGoldShapeChange(index, value) {
+      const selectedShape = this.gemShapes.find(s => s.code === value)
       if (selectedShape) {
-        this.componentsData.goldComponents[index].shapeCode = selectedShape.code
-        this.componentsData.goldComponents[index].shapeNameTh = selectedShape.nameTh
-        this.componentsData.goldComponents[index].shapeNameEn = selectedShape.nameEn
+        const newComponents = [...this.componentsData.goldComponents]
+        newComponents[index].shapeCode = selectedShape.code
+        newComponents[index].shapeNameTh = selectedShape.nameTh
+        newComponents[index].shapeNameEn = selectedShape.nameEn
+        this.componentsData = {
+          ...this.componentsData,
+          goldComponents: newComponents
+        }
       }
       this.clearError(`gold-shape-${index}`)
     },
 
-    handleGemChange(index, event) {
-      const selectedGem = this.gems.find(g => g.code === event.value)
+    handleGemChange(index, value) {
+      const selectedGem = this.gems.find(g => g.code === value)
       if (selectedGem) {
-        this.componentsData.gemComponents[index].gemCode = selectedGem.code
-        this.componentsData.gemComponents[index].gemNameTh = selectedGem.nameTh
-        this.componentsData.gemComponents[index].gemNameEn = selectedGem.nameEn
+        const newComponents = [...this.componentsData.gemComponents]
+        newComponents[index].gemCode = selectedGem.code
+        newComponents[index].gemNameTh = selectedGem.nameTh
+        newComponents[index].gemNameEn = selectedGem.nameEn
+        this.componentsData = {
+          ...this.componentsData,
+          gemComponents: newComponents
+        }
       }
       this.clearError(`gem-${index}`)
     },
 
-    handleGemShapeChange(index, event) {
-      const selectedShape = this.gemShapes.find(s => s.code === event.value)
+    handleGemShapeChange(index, value) {
+      const selectedShape = this.gemShapes.find(s => s.code === value)
       if (selectedShape) {
-        this.componentsData.gemComponents[index].shapeCode = selectedShape.code
-        this.componentsData.gemComponents[index].shapeNameTh = selectedShape.nameTh
-        this.componentsData.gemComponents[index].shapeNameEn = selectedShape.nameEn
+        const newComponents = [...this.componentsData.gemComponents]
+        newComponents[index].shapeCode = selectedShape.code
+        newComponents[index].shapeNameTh = selectedShape.nameTh
+        newComponents[index].shapeNameEn = selectedShape.nameEn
+        this.componentsData = {
+          ...this.componentsData,
+          gemComponents: newComponents
+        }
       }
       this.clearError(`gem-shape-${index}`)
     },

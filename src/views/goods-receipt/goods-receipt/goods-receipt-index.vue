@@ -51,6 +51,17 @@
         />
       </div>
     </div>
+
+    <!-- Confirmation Modal -->
+    <ConfirmationModal
+      v-model="showConfirmModal"
+      :product-data="productData"
+      :branch-product-type-data="branchProductTypeData"
+      :components-data="componentsData"
+      :is-saving="isSaving"
+      @confirm="handleConfirmSave"
+      @back="showConfirmModal = false"
+    />
   </div>
 </template>
 
@@ -58,6 +69,8 @@
 import ProductDetail from './components/product-detail.vue'
 import BranchProductTypeSelection from './components/branch-product-type-selection.vue'
 import ProductComponents from './components/product-components.vue'
+import ConfirmationModal from './modal/confirmation-modal.vue'
+import { useGoodsReceiptApiStore } from '@/stores/api/goods-receipt-api'
 
 export default {
   name: 'GoodsReceiptIndex',
@@ -65,7 +78,15 @@ export default {
   components: {
     ProductDetail,
     BranchProductTypeSelection,
-    ProductComponents
+    ProductComponents,
+    ConfirmationModal
+  },
+
+  setup() {
+    const goodsReceiptApiStore = useGoodsReceiptApiStore()
+    return {
+      goodsReceiptApiStore
+    }
   },
 
   data() {
@@ -92,6 +113,7 @@ export default {
         goldComponents: [],
         gemComponents: []
       },
+      showConfirmModal: false,
       isSaving: false
     }
   },
@@ -132,38 +154,90 @@ export default {
         return
       }
 
+      // Show confirmation modal instead of saving directly
+      this.showConfirmModal = true
+    },
+
+    async handleConfirmSave() {
       // Save logic here
       this.isSaving = true
 
       try {
-        // Combine all data
-        const fullData = {
-          ...this.productData,
-          ...this.branchProductTypeData,
-          ...this.componentsData
+        // Map gold components to API format
+        const goldComponents = this.componentsData.goldComponents.map((goldComp) => ({
+          typrCode: goldComp.goldCode,
+          typeNameTh: goldComp.goldNameTh,
+          typeNameEn: goldComp.goldNameEn,
+          typrCode2: goldComp.shapeCode,
+          typeNameTh2: goldComp.shapeNameTh,
+          typeNameEn2: goldComp.shapeNameEn,
+          qty: goldComp.qty,
+          qtyUnit: goldComp.qtyUnit,
+          weight: goldComp.weight,
+          weightUnit: goldComp.weightUnit,
+          size: goldComp.shapeCode
+        }))
+
+        // Map gem components to API format
+        const gemComponents = this.componentsData.gemComponents.map((gemComp) => ({
+          typrCode: gemComp.gemCode,
+          typeNameTh: gemComp.gemNameTh,
+          typeNameEn: gemComp.gemNameEn,
+          typrCode2: gemComp.shapeCode,
+          typeNameTh2: gemComp.shapeNameTh,
+          typeNameEn2: gemComp.shapeNameEn,
+          qty: gemComp.qty,
+          qtyUnit: gemComp.qtyUnit,
+          weight: gemComp.weight,
+          weightUnit: gemComp.weightUnit,
+          size: gemComp.shapeCode
+        }))
+
+        // Prepare API payload
+        const payload = {
+          mold: this.productData.mold,
+          originNumber: this.productData.originNumber,
+          productNameTh: this.productData.productNameTH,
+          productNameEn: this.productData.productNameEn,
+          qty: this.productData.qty,
+          qtyUnit: this.productData.qtyUnit,
+          price: this.productData.price,
+          priceUnit: this.productData.unitPrice,
+          branchId: this.branchProductTypeData.branchId,
+          branchNameTh: this.branchProductTypeData.branchNameTh,
+          branchNameEn: this.branchProductTypeData.branchNameEn,
+          productTypeCode: this.branchProductTypeData.productTypeCode,
+          productTypeNameTh: this.branchProductTypeData.productTypeNameTh,
+          productTypeNameEn: this.branchProductTypeData.productTypeNameEn,
+          gold: goldComponents,
+          gem: gemComponents
         }
 
-        // TODO: Call API to save data
-        console.log('Saving full data:', fullData)
+        console.log('Sending payload to API:', payload)
 
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        // Call API to save data
+        const result = await this.goodsReceiptApiStore.manualReceipt(payload)
 
-        this.$toast.add({
-          severity: 'success',
-          summary: this.$t('common.success'),
-          detail: 'บันทึกข้อมูลสำเร็จ',
-          life: 3000
-        })
+        if (result.success) {
+          this.$toast.add({
+            severity: 'success',
+            summary: this.$t('common.success'),
+            detail: result.message || 'บันทึกข้อมูลสำเร็จ',
+            life: 3000
+          })
 
-        // Reset form after successful save
-        this.resetForm()
+          // Close modal and reset form after successful save
+          this.showConfirmModal = false
+          this.resetForm()
+        } else {
+          throw new Error(result.message || 'Failed to save goods receipt')
+        }
       } catch (error) {
         console.error('Error saving product data:', error)
         this.$toast.add({
           severity: 'error',
           summary: this.$t('common.error'),
-          detail: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+          detail: error.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
           life: 3000
         })
       } finally {

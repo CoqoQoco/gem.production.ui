@@ -93,7 +93,8 @@ export default {
       },
       branches: [],
       productTypes: [],
-      errors: {}
+      errors: {},
+      isUpdatingFromParent: false
     }
   },
 
@@ -105,8 +106,12 @@ export default {
   watch: {
     modelValue: {
       handler(newValue) {
-        if (newValue) {
-          this.selectionData = { ...newValue }
+        if (newValue && !this.isUpdatingFromParent) {
+          this.isUpdatingFromParent = true
+          this.selectionData = JSON.parse(JSON.stringify(newValue))
+          this.$nextTick(() => {
+            this.isUpdatingFromParent = false
+          })
         }
       },
       deep: true,
@@ -115,7 +120,9 @@ export default {
 
     selectionData: {
       handler(newValue) {
-        this.$emit('update:modelValue', newValue)
+        if (!this.isUpdatingFromParent) {
+          this.$emit('update:modelValue', newValue)
+        }
       },
       deep: true
     }

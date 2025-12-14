@@ -196,14 +196,19 @@ export default {
         unitPrice: "",
       },
       errors: {},
+      isUpdatingFromParent: false
     };
   },
 
   watch: {
     modelValue: {
       handler(newValue) {
-        if (newValue) {
-          this.productData = { ...newValue };
+        if (newValue && !this.isUpdatingFromParent) {
+          this.isUpdatingFromParent = true
+          this.productData = JSON.parse(JSON.stringify(newValue))
+          this.$nextTick(() => {
+            this.isUpdatingFromParent = false
+          })
         }
       },
       deep: true,
@@ -212,7 +217,9 @@ export default {
 
     productData: {
       handler(newValue) {
-        this.$emit("update:modelValue", newValue);
+        if (!this.isUpdatingFromParent) {
+          this.$emit("update:modelValue", newValue);
+        }
       },
       deep: true,
     },
