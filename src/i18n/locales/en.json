@@ -119,6 +119,7 @@
       "stockIn": "Stock In",
       "stockOut": "Stock Out",
       "stockTransfer": "Stock Transfer",
+      "goodsReceipt": "Goods Receipt",
       "reports": "Reports",
       "dailyReport": "Daily Report",
       "monthlyReport": "Monthly Report",
@@ -526,6 +527,79 @@
       "status": "Status",
       "active": "Active",
       "inactive": "Inactive"
+    }
+  },
+  "productType": {
+    "title": "Product Type Management",
+    "subtitle": "Manage and view product type details in the system",
+    "searchPlaceholder": "Search code, name (Thai), name (English)...",
+    "noData": "No product types found",
+    "addProductType": "Add Product Type",
+    "editProductType": "Edit Product Type",
+    "createSuccess": "Product type created successfully",
+    "updateSuccess": "Product type updated successfully",
+    "createError": "Failed to create product type",
+    "updateError": "Failed to update product type",
+    "loadError": "Failed to load data",
+    "form": {
+      "productTypeInfo": "Product Type Information",
+      "code": "Product Type Code",
+      "codePlaceholder": "Enter product type code",
+      "nameTh": "Product Type Name (Thai)",
+      "nameThPlaceholder": "Enter product type name in Thai",
+      "nameEn": "Product Type Name (English)",
+      "nameEnPlaceholder": "Enter product type name in English",
+      "productCode": "Product Code",
+      "productCodePlaceholder": "Enter product code",
+      "silverCode": "Silver Code",
+      "silverCodePlaceholder": "Enter silver code"
+    },
+    "validation": {
+      "codeRequired": "Please enter product type code",
+      "nameThRequired": "Please enter product type name (Thai)",
+      "nameEnRequired": "Please enter product type name (English)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "Product Type Code",
+      "nameTh": "Product Type Name (Thai)",
+      "nameEn": "Product Type Name (English)",
+      "productCode": "Product Code",
+      "silverCode": "Silver Code",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "goodsReceipt": {
+    "title": "Goods Receipt",
+    "subtitle": "System for recording goods into the system",
+    "productInfo": "Product Information",
+    "componentInfo": "Product Components",
+    "form": {
+      "originNumber": "Origin Number",
+      "originNumberPlaceholder": "Enter origin number",
+      "productNameEn": "Product Name (English)",
+      "productNameEnPlaceholder": "Enter product name in English",
+      "productNameTH": "Product Name (Thai)",
+      "productNameTHPlaceholder": "Enter product name in Thai",
+      "qty": "Quantity",
+      "qtyPlaceholder": "Enter quantity",
+      "qtyUnit": "Quantity Unit",
+      "qtyUnitPlaceholder": "Enter quantity unit",
+      "price": "Price",
+      "pricePlaceholder": "Enter price",
+      "unitPrice": "Unit Price",
+      "unitPricePlaceholder": "Enter unit price"
+    },
+    "validation": {
+      "originNumberRequired": "Please enter origin number",
+      "productNameEnRequired": "Please enter product name (English)",
+      "productNameTHRequired": "Please enter product name (Thai)",
+      "qtyRequired": "Please enter quantity",
+      "qtyUnitRequired": "Please enter quantity unit",
+      "priceRequired": "Please enter price",
+      "unitPriceRequired": "Please enter unit price"
     }
   }
 }

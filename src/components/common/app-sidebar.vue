@@ -89,7 +89,7 @@
           </div>
 
           <!-- Inventory Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['StockList', 'StockIn', 'StockOut', 'StockTransfer'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['StockList', 'StockIn', 'StockOut', 'StockTransfer', 'GoodsReceipt'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('inventory')">
               <i class="pi pi-box"></i>
               <span>{{ t('dashboard.menu.inventory') }}</span>
@@ -140,6 +140,16 @@
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockTransfer') }}</span>
                   <span class="badge">Soon</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('GoodsReceipt')"
+                  to="/inventory/goods-receipt"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.goodsReceipt') }}</span>
                 </router-link>
               </div>
             </transition>
@@ -277,7 +287,7 @@
           </div>
 
           <!-- Master Data Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['BranchManagement', 'GemManagement', 'GoldManagement', 'GemShapeManagement'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['BranchManagement', 'GemManagement', 'GoldManagement', 'GemShapeManagement', 'ProductTypeManagement'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('masterData')">
               <i class="pi pi-database"></i>
               <span>{{ t('dashboard.menu.masterData') || 'ข้อมูลหลัก' }}</span>
@@ -324,6 +334,16 @@
                 >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('gemShape.title') || 'จัดการข้อมูลรูปร่างพลอย' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('ProductTypeManagement')"
+                  to="/setting/master-data/product-type"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('productType.title') || 'จัดการประเภทสินค้า' }}</span>
                 </router-link>
               </div>
             </transition>

@@ -48,6 +48,15 @@ const inventoryRoutes = [
       requiresAuth: true,
       title: 'Stock Transfer'
     }
+  },
+  {
+    path: '/inventory/goods-receipt',
+    name: 'GoodsReceipt',
+    component: () => import('@/views/goods-receipt/goods-receipt/goods-receipt-index.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Manual Goods Receipt'
+    }
   }
 ]
 

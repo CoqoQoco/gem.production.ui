@@ -88,6 +88,17 @@ const settingRoutes = [
           requiresAuth: true,
           title: 'Gem Shape Management'
         }
+      },
+
+      // Master Data - Product Type Management
+      {
+        path: 'master-data/product-type',
+        name: 'ProductTypeManagement',
+        component: () => import('@/views/setting/master-data/product-type/product-type-index.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Product Type Management'
+        }
       }
     ]
   }

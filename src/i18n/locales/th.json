@@ -119,6 +119,7 @@
       "stockIn": "รับเข้าคลัง",
       "stockOut": "เบิกออกคลัง",
       "stockTransfer": "โอนย้ายสต็อก",
+      "goodsReceipt": "บันทึกสินค้า",
       "reports": "รายงาน",
       "dailyReport": "รายงานประจำวัน",
       "monthlyReport": "รายงานประจำเดือน",
@@ -676,6 +677,79 @@
       "status": "สถานะ",
       "active": "ใช้งาน",
       "inactive": "ไม่ใช้งาน"
+    }
+  },
+  "productType": {
+    "title": "จัดการประเภทสินค้า",
+    "subtitle": "จัดการและดูรายละเอียดประเภทสินค้าในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ (ไทย), ชื่อ (อังกฤษ)...",
+    "noData": "ไม่พบข้อมูลประเภทสินค้า",
+    "addProductType": "เพิ่มประเภทสินค้า",
+    "editProductType": "แก้ไขประเภทสินค้า",
+    "createSuccess": "เพิ่มประเภทสินค้าสำเร็จ",
+    "updateSuccess": "อัปเดตประเภทสินค้าสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มประเภทสินค้า",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตประเภทสินค้า",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "productTypeInfo": "ข้อมูลประเภทสินค้า",
+      "code": "รหัสประเภทสินค้า",
+      "codePlaceholder": "กรอกรหัสประเภทสินค้า",
+      "nameTh": "ชื่อประเภทสินค้า (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อประเภทสินค้าภาษาไทย",
+      "nameEn": "ชื่อประเภทสินค้า (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อประเภทสินค้าภาษาอังกฤษ",
+      "productCode": "รหัสสินค้า",
+      "productCodePlaceholder": "กรอกรหัสสินค้า",
+      "silverCode": "รหัสเงิน",
+      "silverCodePlaceholder": "กรอกรหัสเงิน"
+    },
+    "validation": {
+      "codeRequired": "กรุณากรอกรหัสประเภทสินค้า",
+      "nameThRequired": "กรุณากรอกชื่อประเภทสินค้า (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อประเภทสินค้า (อังกฤษ)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "รหัสประเภทสินค้า",
+      "nameTh": "ชื่อประเภทสินค้า (ไทย)",
+      "nameEn": "ชื่อประเภทสินค้า (อังกฤษ)",
+      "productCode": "รหัสสินค้า",
+      "silverCode": "รหัสเงิน",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    }
+  },
+  "goodsReceipt": {
+    "title": "บันทึกสินค้า",
+    "subtitle": "ระบบบันทึกข้อมูลสินค้าเข้าระบบ",
+    "productInfo": "ข้อมูลสินค้า",
+    "componentInfo": "ส่วนประกอบสินค้า",
+    "form": {
+      "originNumber": "รหัสต้นทาง",
+      "originNumberPlaceholder": "กรอกรหัสต้นทาง",
+      "productNameEn": "ชื่อสินค้า (อังกฤษ)",
+      "productNameEnPlaceholder": "กรอกชื่อสินค้าภาษาอังกฤษ",
+      "productNameTH": "ชื่อสินค้า (ไทย)",
+      "productNameTHPlaceholder": "กรอกชื่อสินค้าภาษาไทย",
+      "qty": "จำนวน",
+      "qtyPlaceholder": "กรอกจำนวน",
+      "qtyUnit": "หน่วยนับ",
+      "qtyUnitPlaceholder": "กรอกหน่วยนับ",
+      "price": "ราคา",
+      "pricePlaceholder": "กรอกราคา",
+      "unitPrice": "หน่วยราคา",
+      "unitPricePlaceholder": "กรอกหน่วยราคา"
+    },
+    "validation": {
+      "originNumberRequired": "กรุณากรอกรหัสต้นทาง",
+      "productNameEnRequired": "กรุณากรอกชื่อสินค้า (อังกฤษ)",
+      "productNameTHRequired": "กรุณากรอกชื่อสินค้า (ไทย)",
+      "qtyRequired": "กรุณากรอกจำนวน",
+      "qtyUnitRequired": "กรุณากรอกหน่วยนับ",
+      "priceRequired": "กรุณากรอกราคา",
+      "unitPriceRequired": "กรุณากรอกหน่วยราคา"
     }
   }
 }
