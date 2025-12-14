@@ -3,33 +3,53 @@
     <!-- Section Title -->
     <div class="section-title">
       <i class="pi pi-tag"></i>
-      <span>{{ $t('goodsReceipt.productInfo') }}</span>
+      <span>{{ $t("goodsReceipt.productInfo") }}</span>
     </div>
 
     <!-- Product Form -->
     <div class="product-form">
-      <!-- Origin Number (Full Width) -->
-      <div class="form-group form-group-full">
-        <label>
-          {{ $t('goodsReceipt.form.originNumber') }}
-          <span class="required">*</span>
-        </label>
-        <InputText
-          v-model="productData.originNumber"
-          :placeholder="$t('goodsReceipt.form.originNumberPlaceholder')"
-          :class="{ 'p-invalid': errors.originNumber }"
-          @input="clearError('originNumber')"
-        />
-        <small v-if="errors.originNumber" class="p-error">
-          {{ errors.originNumber }}
-        </small>
+      <!-- Origin Number + Mold Row -->
+      <div class="form-group-row">
+        <div class="form-group">
+          <label>
+            {{ $t("goodsReceipt.form.originNumber") }}
+            <span class="required">*</span>
+          </label>
+          <InputText
+            v-model="productData.originNumber"
+            :placeholder="$t('goodsReceipt.form.originNumberPlaceholder')"
+            :class="{ 'p-invalid': errors.originNumber }"
+            @input="clearError('originNumber')"
+          />
+          <small v-if="errors.originNumber" class="p-error">
+            {{ errors.originNumber }}
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>
+            {{ $t("goodsReceipt.form.mold") || "รหัสแม่พิมพ์" }}
+            <span class="required">*</span>
+          </label>
+          <InputText
+            v-model="productData.mold"
+            :placeholder="
+              $t('goodsReceipt.form.moldPlaceholder') || 'กรอกรหัสแม่พิมพ์'
+            "
+            :class="{ 'p-invalid': errors.mold }"
+            @input="clearError('mold')"
+          />
+          <small v-if="errors.mold" class="p-error">
+            {{ errors.mold }}
+          </small>
+        </div>
       </div>
 
       <!-- Product Name Row (English + Thai in same row) -->
       <div class="form-group-row">
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.productNameEn') }}
+            {{ $t("goodsReceipt.form.productNameEn") }}
             <span class="required">*</span>
           </label>
           <InputText
@@ -45,7 +65,7 @@
 
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.productNameTH') }}
+            {{ $t("goodsReceipt.form.productNameTH") }}
             <span class="required">*</span>
           </label>
           <InputText
@@ -64,7 +84,7 @@
       <div class="form-group-row">
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.qty') }}
+            {{ $t("goodsReceipt.form.qty") }}
             <span class="required">*</span>
           </label>
           <input
@@ -84,7 +104,7 @@
 
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.qtyUnit') }}
+            {{ $t("goodsReceipt.form.qtyUnit") }}
             <span class="required">*</span>
           </label>
           <InputText
@@ -103,7 +123,7 @@
       <div class="form-group-row">
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.price') }}
+            {{ $t("goodsReceipt.form.price") }}
             <span class="required">*</span>
           </label>
           <input
@@ -123,7 +143,7 @@
 
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.unitPrice') }}
+            {{ $t("goodsReceipt.form.unitPrice") }}
             <span class="required">*</span>
           </label>
           <InputText
@@ -143,123 +163,150 @@
 
 <script>
 export default {
-  name: 'ProductDetail',
+  name: "ProductDetail",
 
   props: {
     modelValue: {
       type: Object,
       default: () => ({
-        originNumber: '',
-        productNameEn: '',
-        productNameTH: '',
+        originNumber: "",
+        mold: "",
+        productNameEn: "",
+        productNameTH: "",
         qty: null,
-        qtyUnit: '',
+        qtyUnit: "",
         price: null,
-        unitPrice: ''
-      })
-    }
+        unitPrice: "",
+      }),
+    },
   },
 
-  emits: ['update:modelValue', 'validate'],
+  emits: ["update:modelValue", "validate"],
 
   data() {
     return {
       productData: {
-        originNumber: '',
-        productNameEn: '',
-        productNameTH: '',
+        originNumber: "",
+        mold: "",
+        productNameEn: "",
+        productNameTH: "",
         qty: null,
-        qtyUnit: '',
+        qtyUnit: "",
         price: null,
-        unitPrice: ''
+        unitPrice: "",
       },
-      errors: {}
-    }
+      errors: {},
+    };
   },
 
   watch: {
     modelValue: {
       handler(newValue) {
         if (newValue) {
-          this.productData = { ...newValue }
+          this.productData = { ...newValue };
         }
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
 
     productData: {
       handler(newValue) {
-        this.$emit('update:modelValue', newValue)
+        this.$emit("update:modelValue", newValue);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
 
   methods: {
     clearError(field) {
       if (this.errors[field]) {
-        delete this.errors[field]
+        delete this.errors[field];
       }
     },
 
     validate() {
-      this.errors = {}
+      this.errors = {};
 
       // Origin Number validation
-      if (!this.productData.originNumber || !this.productData.originNumber.trim()) {
-        this.errors.originNumber = this.$t('goodsReceipt.validation.originNumberRequired')
+      if (
+        !this.productData.originNumber ||
+        !this.productData.originNumber.trim()
+      ) {
+        this.errors.originNumber = this.$t(
+          "goodsReceipt.validation.originNumberRequired"
+        );
+      }
+
+      // Mold validation
+      if (!this.productData.mold || !this.productData.mold.trim()) {
+        this.errors.mold = this.$t("goodsReceipt.validation.moldRequired");
       }
 
       // Product Name (English) validation
-      if (!this.productData.productNameEn || !this.productData.productNameEn.trim()) {
-        this.errors.productNameEn = this.$t('goodsReceipt.validation.productNameEnRequired')
+      if (
+        !this.productData.productNameEn ||
+        !this.productData.productNameEn.trim()
+      ) {
+        this.errors.productNameEn = this.$t(
+          "goodsReceipt.validation.productNameEnRequired"
+        );
       }
 
       // Product Name (Thai) validation
-      if (!this.productData.productNameTH || !this.productData.productNameTH.trim()) {
-        this.errors.productNameTH = this.$t('goodsReceipt.validation.productNameTHRequired')
+      if (
+        !this.productData.productNameTH ||
+        !this.productData.productNameTH.trim()
+      ) {
+        this.errors.productNameTH = this.$t(
+          "goodsReceipt.validation.productNameTHRequired"
+        );
       }
 
       // Quantity validation
       if (!this.productData.qty || this.productData.qty <= 0) {
-        this.errors.qty = this.$t('goodsReceipt.validation.qtyRequired')
+        this.errors.qty = this.$t("goodsReceipt.validation.qtyRequired");
       }
 
       // Quantity Unit validation
       if (!this.productData.qtyUnit || !this.productData.qtyUnit.trim()) {
-        this.errors.qtyUnit = this.$t('goodsReceipt.validation.qtyUnitRequired')
+        this.errors.qtyUnit = this.$t(
+          "goodsReceipt.validation.qtyUnitRequired"
+        );
       }
 
       // Price validation
       if (!this.productData.price || this.productData.price <= 0) {
-        this.errors.price = this.$t('goodsReceipt.validation.priceRequired')
+        this.errors.price = this.$t("goodsReceipt.validation.priceRequired");
       }
 
       // Unit Price validation
       if (!this.productData.unitPrice || !this.productData.unitPrice.trim()) {
-        this.errors.unitPrice = this.$t('goodsReceipt.validation.unitPriceRequired')
+        this.errors.unitPrice = this.$t(
+          "goodsReceipt.validation.unitPriceRequired"
+        );
       }
 
-      const isValid = Object.keys(this.errors).length === 0
-      this.$emit('validate', isValid)
-      return isValid
+      const isValid = Object.keys(this.errors).length === 0;
+      this.$emit("validate", isValid);
+      return isValid;
     },
 
     reset() {
       this.productData = {
-        originNumber: '',
-        productNameEn: '',
-        productNameTH: '',
+        originNumber: "",
+        mold: "",
+        productNameEn: "",
+        productNameTH: "",
         qty: null,
-        qtyUnit: '',
+        qtyUnit: "",
         price: null,
-        unitPrice: ''
-      }
-      this.errors = {}
-    }
-  }
-}
+        unitPrice: "",
+      };
+      this.errors = {};
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

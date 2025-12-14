@@ -579,6 +579,12 @@
     "form": {
       "originNumber": "Origin Number",
       "originNumberPlaceholder": "Enter origin number",
+      "mold": "Mold Code",
+      "moldPlaceholder": "Enter mold code",
+      "branch": "Branch",
+      "branchPlaceholder": "Select branch",
+      "productType": "Product Type",
+      "productTypePlaceholder": "Select product type",
       "productNameEn": "Product Name (English)",
       "productNameEnPlaceholder": "Enter product name in English",
       "productNameTH": "Product Name (Thai)",
@@ -594,12 +600,49 @@
     },
     "validation": {
       "originNumberRequired": "Please enter origin number",
+      "branchRequired": "Please select branch",
+      "productTypeRequired": "Please select product type",
       "productNameEnRequired": "Please enter product name (English)",
       "productNameTHRequired": "Please enter product name (Thai)",
       "qtyRequired": "Please enter quantity",
       "qtyUnitRequired": "Please enter quantity unit",
       "priceRequired": "Please enter price",
       "unitPriceRequired": "Please enter unit price"
+    },
+    "components": {
+      "title": "Product Components",
+      "goldComponents": "Gold Components",
+      "gemComponents": "Gem Components",
+      "addGold": "Add Gold",
+      "addGem": "Add Gem",
+      "gold": "Gold",
+      "goldPlaceholder": "Select gold",
+      "goldShape": "Gold Shape",
+      "goldShapePlaceholder": "Select shape",
+      "gem": "Gem",
+      "gemPlaceholder": "Select gem",
+      "gemShape": "Gem Shape",
+      "gemShapePlaceholder": "Select shape",
+      "weight": "Weight",
+      "weightPlaceholder": "Enter weight",
+      "weightUnit": "Weight Unit",
+      "weightUnitPlaceholder": "Enter weight unit",
+      "qty": "Quantity",
+      "qtyPlaceholder": "Enter quantity",
+      "qtyUnit": "Quantity Unit",
+      "qtyUnitPlaceholder": "Enter quantity unit",
+      "noGoldComponents": "No gold components yet",
+      "noGemComponents": "No gem components yet",
+      "validation": {
+        "goldRequired": "Please select gold",
+        "goldShapeRequired": "Please select shape",
+        "gemRequired": "Please select gem",
+        "gemShapeRequired": "Please select shape",
+        "weightRequired": "Please enter weight",
+        "weightUnitRequired": "Please enter weight unit",
+        "qtyRequired": "Please enter quantity",
+        "qtyUnitRequired": "Please enter quantity unit"
+      }
     }
   }
 }

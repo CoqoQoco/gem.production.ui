@@ -729,6 +729,12 @@
     "form": {
       "originNumber": "รหัสต้นทาง",
       "originNumberPlaceholder": "กรอกรหัสต้นทาง",
+      "mold": "รหัสแม่พิมพ์",
+      "moldPlaceholder": "กรอกรหัสแม่พิมพ์",
+      "branch": "สาขา",
+      "branchPlaceholder": "เลือกสาขา",
+      "productType": "ประเภทสินค้า",
+      "productTypePlaceholder": "เลือกประเภทสินค้า",
       "productNameEn": "ชื่อสินค้า (อังกฤษ)",
       "productNameEnPlaceholder": "กรอกชื่อสินค้าภาษาอังกฤษ",
       "productNameTH": "ชื่อสินค้า (ไทย)",
@@ -744,12 +750,49 @@
     },
     "validation": {
       "originNumberRequired": "กรุณากรอกรหัสต้นทาง",
+      "branchRequired": "กรุณาเลือกสาขา",
+      "productTypeRequired": "กรุณาเลือกประเภทสินค้า",
       "productNameEnRequired": "กรุณากรอกชื่อสินค้า (อังกฤษ)",
       "productNameTHRequired": "กรุณากรอกชื่อสินค้า (ไทย)",
       "qtyRequired": "กรุณากรอกจำนวน",
       "qtyUnitRequired": "กรุณากรอกหน่วยนับ",
       "priceRequired": "กรุณากรอกราคา",
       "unitPriceRequired": "กรุณากรอกหน่วยราคา"
+    },
+    "components": {
+      "title": "ส่วนประกอบสินค้า",
+      "goldComponents": "ส่วนประกอบทอง",
+      "gemComponents": "ส่วนประกอบพลอย",
+      "addGold": "เพิ่มทอง",
+      "addGem": "เพิ่มพลอย",
+      "gold": "ทอง",
+      "goldPlaceholder": "เลือกทอง",
+      "goldShape": "รูปร่างทอง",
+      "goldShapePlaceholder": "เลือกรูปร่าง",
+      "gem": "พลอย",
+      "gemPlaceholder": "เลือกพลอย",
+      "gemShape": "รูปร่างพลอย",
+      "gemShapePlaceholder": "เลือกรูปร่าง",
+      "weight": "น้ำหนัก",
+      "weightPlaceholder": "กรอกน้ำหนัก",
+      "weightUnit": "หน่วยน้ำหนัก",
+      "weightUnitPlaceholder": "กรอกหน่วยน้ำหนัก",
+      "qty": "จำนวน",
+      "qtyPlaceholder": "กรอกจำนวน",
+      "qtyUnit": "หน่วยนับ",
+      "qtyUnitPlaceholder": "กรอกหน่วยนับ",
+      "noGoldComponents": "ยังไม่มีส่วนประกอบทอง",
+      "noGemComponents": "ยังไม่มีส่วนประกอบพลอย",
+      "validation": {
+        "goldRequired": "กรุณาเลือกทอง",
+        "goldShapeRequired": "กรุณาเลือกรูปร่าง",
+        "gemRequired": "กรุณาเลือกพลอย",
+        "gemShapeRequired": "กรุณาเลือกรูปร่าง",
+        "weightRequired": "กรุณากรอกน้ำหนัก",
+        "weightUnitRequired": "กรุณากรอกหน่วยน้ำหนัก",
+        "qtyRequired": "กรุณากรอกจำนวน",
+        "qtyUnitRequired": "กรุณากรอกหน่วยนับ"
+      }
     }
   }
 }

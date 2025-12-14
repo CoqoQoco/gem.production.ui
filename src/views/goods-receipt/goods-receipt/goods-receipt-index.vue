@@ -10,15 +10,6 @@
             <p class="header-subtitle">{{ $t('goodsReceipt.subtitle') }}</p>
           </div>
         </div>
-        <div class="header-right">
-          <Button
-            :label="$t('common.save')"
-            icon="pi pi-check"
-            class="p-button-success"
-            @click="handleSave"
-            :disabled="isSaving"
-          />
-        </div>
       </div>
     </div>
 
@@ -30,13 +21,34 @@
         v-model="productData"
       />
 
-      <!-- Placeholder for Part 2 (Product Components) -->
-      <div class="placeholder-section">
-        <div class="placeholder-content">
-          <i class="pi pi-info-circle"></i>
-          <p>{{ $t('goodsReceipt.componentInfo') }}</p>
-          <small>ส่วนที่ 2 จะเพิ่มในภายหลัง</small>
-        </div>
+      <!-- Branch and Product Type Selection -->
+      <BranchProductTypeSelection
+        ref="branchProductTypeRef"
+        v-model="branchProductTypeData"
+      />
+
+      <!-- Part 2: Product Components -->
+      <ProductComponents
+        ref="productComponentsRef"
+        v-model="componentsData"
+      />
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <Button
+          :label="$t('common.cancel') || 'ยกเลิก'"
+          icon="pi pi-times"
+          class="p-button-secondary btn-clear"
+          @click="handleClear"
+          :disabled="isSaving"
+        />
+        <Button
+          :label="$t('common.save') || 'บันทึก'"
+          icon="pi pi-check"
+          class="p-button-success btn-submit"
+          @click="handleSave"
+          :disabled="isSaving"
+        />
       </div>
     </div>
   </div>
@@ -44,18 +56,23 @@
 
 <script>
 import ProductDetail from './components/product-detail.vue'
+import BranchProductTypeSelection from './components/branch-product-type-selection.vue'
+import ProductComponents from './components/product-components.vue'
 
 export default {
   name: 'GoodsReceiptIndex',
 
   components: {
-    ProductDetail
+    ProductDetail,
+    BranchProductTypeSelection,
+    ProductComponents
   },
 
   data() {
     return {
       productData: {
         originNumber: '',
+        mold: '',
         productNameEn: '',
         productNameTH: '',
         qty: null,
@@ -63,22 +80,49 @@ export default {
         price: null,
         unitPrice: ''
       },
+      branchProductTypeData: {
+        branchId: null,
+        branchNameTh: '',
+        branchNameEn: '',
+        productTypeCode: '',
+        productTypeNameTh: '',
+        productTypeNameEn: ''
+      },
+      componentsData: {
+        goldComponents: [],
+        gemComponents: []
+      },
       isSaving: false
     }
   },
 
   methods: {
     async handleSave() {
-      // Validate product detail
+      // Validate all sections
       const productDetailRef = this.$refs.productDetailRef
+      const branchProductTypeRef = this.$refs.branchProductTypeRef
+      const productComponentsRef = this.$refs.productComponentsRef
+
       if (!productDetailRef) {
         console.error('Product detail ref not found')
         return
       }
 
-      const isValid = productDetailRef.validate()
+      if (!branchProductTypeRef) {
+        console.error('Branch product type ref not found')
+        return
+      }
 
-      if (!isValid) {
+      if (!productComponentsRef) {
+        console.error('Product components ref not found')
+        return
+      }
+
+      const isProductValid = productDetailRef.validate()
+      const isBranchProductTypeValid = branchProductTypeRef.validate()
+      const isComponentsValid = productComponentsRef.validate()
+
+      if (!isProductValid || !isBranchProductTypeValid || !isComponentsValid) {
         this.$toast.add({
           severity: 'error',
           summary: this.$t('common.error'),
@@ -92,8 +136,15 @@ export default {
       this.isSaving = true
 
       try {
+        // Combine all data
+        const fullData = {
+          ...this.productData,
+          ...this.branchProductTypeData,
+          ...this.componentsData
+        }
+
         // TODO: Call API to save data
-        console.log('Saving product data:', this.productData)
+        console.log('Saving full data:', fullData)
 
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -123,6 +174,7 @@ export default {
     resetForm() {
       this.productData = {
         originNumber: '',
+        mold: '',
         productNameEn: '',
         productNameTH: '',
         qty: null,
@@ -131,10 +183,53 @@ export default {
         unitPrice: ''
       }
 
+      this.branchProductTypeData = {
+        branchId: null,
+        branchNameTh: '',
+        branchNameEn: '',
+        productTypeCode: '',
+        productTypeNameTh: '',
+        productTypeNameEn: ''
+      }
+
+      this.componentsData = {
+        goldComponents: [],
+        gemComponents: []
+      }
+
       const productDetailRef = this.$refs.productDetailRef
       if (productDetailRef && productDetailRef.reset) {
         productDetailRef.reset()
       }
+
+      const branchProductTypeRef = this.$refs.branchProductTypeRef
+      if (branchProductTypeRef && branchProductTypeRef.reset) {
+        branchProductTypeRef.reset()
+      }
+
+      const productComponentsRef = this.$refs.productComponentsRef
+      if (productComponentsRef && productComponentsRef.reset) {
+        productComponentsRef.reset()
+      }
+    },
+
+    handleClear() {
+      this.$confirm.require({
+        message: 'คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?',
+        header: 'ยืนยันการล้างข้อมูล',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'ใช่',
+        rejectLabel: 'ไม่',
+        accept: () => {
+          this.resetForm()
+          this.$toast.add({
+            severity: 'info',
+            summary: 'ล้างข้อมูลสำเร็จ',
+            detail: 'ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว',
+            life: 3000
+          })
+        }
+      })
     }
   }
 }
@@ -165,14 +260,8 @@ export default {
 
 .header-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
 .header-left {
@@ -216,56 +305,55 @@ export default {
   margin: 0;
 }
 
-.header-right {
-  display: flex;
-  gap: 0.75rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-
-    :deep(.p-button) {
-      flex: 1;
-    }
-  }
-}
-
 .page-content {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.placeholder-section {
+.action-buttons {
   background: white;
   border-radius: 12px;
-  padding: 3rem;
+  padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+
+    :deep(.p-button) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 }
 
-.placeholder-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  color: #9ca3af;
+.btn-clear {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: white;
+  color: #6b7280;
+  border: 2px solid #d1d5db;
 
-  i {
-    font-size: 3rem;
-    color: #d1d5db;
+  &:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #374151;
   }
 
-  p {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #6b7280;
-    margin: 0;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
+}
 
-  small {
-    font-size: 0.875rem;
-    color: #9ca3af;
-  }
+.btn-submit {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 :deep(.p-button-success) {
