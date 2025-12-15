@@ -160,9 +160,9 @@ export default {
     },
 
     handleBranchChange(event) {
-      const selectedBranch = this.branches.find(b => b.id === event.value)
+      const selectedBranch = this.branches.find(b => b.branchId === event.value)
       if (selectedBranch) {
-        this.selectionData.branchId = selectedBranch.id
+        this.selectionData.branchId = selectedBranch.branchId
         this.selectionData.branchNameTh = selectedBranch.nameTh
         this.selectionData.branchNameEn = selectedBranch.nameEn
       }

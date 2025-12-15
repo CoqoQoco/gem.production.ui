@@ -56,6 +56,8 @@ export const useStockApiStore = defineStore('stockApi', () => {
         }
       }
 
+      console.log('Stock API - Payload being sent:', JSON.stringify(payload, null, 2))
+
       const response = await api.jewelry.post('api/stock/inventory/list', payload)
 
       isLoading.value = false

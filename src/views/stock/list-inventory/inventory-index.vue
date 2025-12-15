@@ -68,8 +68,8 @@ export default {
 
       // Main Filters (visible in search bar)
       mainFilters: {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       },
@@ -118,8 +118,8 @@ export default {
       try {
         // Merge main filters and advanced filters
         const criteria = {
-          receiptDateMin: this.mainFilters.receiptDateMin,
-          receiptDateMax: this.mainFilters.receiptDateMax,
+          receiptDateMin: this.mainFilters.receiptDateMin ? this.formatDateToLocalISO(this.mainFilters.receiptDateMin, true) : null,
+          receiptDateMax: this.mainFilters.receiptDateMax ? this.formatDateToLocalISO(this.mainFilters.receiptDateMax, false) : null,
           productCodes: this.mainFilters.productCodes,
           stockNumbers: this.mainFilters.stockNumbers,
           productTypeCodes: this.advancedFilters.productTypeCodes,
@@ -130,6 +130,7 @@ export default {
           gemFilter: this.advancedFilters.gemFilter
         }
 
+
         const result = await this.stockApiStore.listStockInventory({
           pageIndex: this.searchParams.pageIndex,
           pageSize: this.searchParams.pageSize,
@@ -138,11 +139,9 @@ export default {
         })
 
         if (result.success) {
-          console.log('API result:', result)
           this.stocks = result.data
           this.totalRecords = result.totalRecords
           this.perPage = this.searchParams.pageSize
-          console.log('Updated data - stocks:', this.stocks.length, 'totalRecords:', this.totalRecords, 'perPage:', this.perPage)
         } else {
           this.showError(result.message || this.$t('stockInventory.loadError') || 'เกิดข้อผิดพลาดในการโหลดข้อมูล')
         }
@@ -157,7 +156,9 @@ export default {
      * Handle search event from SearchView (main filters)
      */
     handleSearch(filters) {
+      console.log('Inventory Index - handleSearch received filters:', filters)
       this.mainFilters = { ...filters }
+      console.log('Inventory Index - mainFilters updated to:', this.mainFilters)
       this.searchParams.pageIndex = 0 // Reset to first page
       this.loadStocks()
     },
@@ -198,8 +199,8 @@ export default {
      */
     handleClearAll() {
       this.mainFilters = {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       }
@@ -226,9 +227,9 @@ export default {
      */
     handleRemoveFilter(key) {
       if (key === 'stockNumbers') {
-        this.mainFilters.stockNumbers = null
+        this.mainFilters.stockNumbers = []
       } else if (key === 'productCodes') {
-        this.mainFilters.productCodes = null
+        this.mainFilters.productCodes = []
       } else if (key === 'receiptDate') {
         this.mainFilters.receiptDateMin = null
         this.mainFilters.receiptDateMax = null
@@ -242,8 +243,8 @@ export default {
      */
     handleRefresh() {
       this.mainFilters = {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       }
@@ -287,6 +288,42 @@ export default {
       this.searchParams.pageSize = params.rows
       console.log('Updated sort:', this.searchParams.sort)
       this.loadStocks()
+    },
+
+    /**
+     * Format date to local ISO string (keeping timezone offset)
+     * @param {Date} date - The date to format
+     * @param {Boolean} isStartOfDay - If true, set to 00:00:00, otherwise 23:59:59
+     * @returns {String} ISO string with local timezone offset
+     */
+    formatDateToLocalISO(date, isStartOfDay = true) {
+      if (!date) return null
+
+      const d = new Date(date)
+
+      if (isStartOfDay) {
+        // Set to start of day: 00:00:00
+        d.setHours(0, 0, 0, 0)
+      } else {
+        // Set to end of day: 23:59:59
+        d.setHours(23, 59, 59, 999)
+      }
+
+      // Get timezone offset in minutes
+      const tzOffset = d.getTimezoneOffset()
+      const offsetHours = Math.floor(Math.abs(tzOffset) / 60)
+      const offsetMinutes = Math.abs(tzOffset) % 60
+      const offsetSign = tzOffset <= 0 ? '+' : '-'
+
+      // Format: YYYY-MM-DDTHH:mm:ss+07:00
+      const year = d.getFullYear()
+      const month = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      const hours = String(d.getHours()).padStart(2, '0')
+      const minutes = String(d.getMinutes()).padStart(2, '0')
+      const seconds = String(d.getSeconds()).padStart(2, '0')
+
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`
     },
 
     /**

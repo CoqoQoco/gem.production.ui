@@ -742,12 +742,12 @@ export default {
   color: #374151;
 
   .gold-icon {
-    color: #fbbf24;
+    color: #ff69b4;
     font-size: 0.75rem;
   }
 
   .gem-icon {
-    color: #8b5cf6;
+    color: #ff69b4;
     font-size: 0.75rem;
   }
 }

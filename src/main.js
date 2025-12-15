@@ -20,6 +20,7 @@ import Select from 'primevue/select'
 import InputMask from 'primevue/inputmask'
 import InlineMessage from 'primevue/inlinemessage'
 import ProgressSpinner from 'primevue/progressspinner'
+import InputChips from 'primevue/inputchips'
 
 // Styles
 import 'primeicons/primeicons.css' // PrimeIcons
@@ -76,6 +77,7 @@ app.component('Select', Select)
 app.component('InputMask', InputMask)
 app.component('InlineMessage', InlineMessage)
 app.component('ProgressSpinner', ProgressSpinner)
+app.component('InputChips', InputChips)
 
 // Register tooltip directive
 app.directive('tooltip', Tooltip)

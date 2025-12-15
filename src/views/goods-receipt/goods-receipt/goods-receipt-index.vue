@@ -154,6 +154,10 @@ export default {
         return
       }
 
+      console.log('All validations passed. Preparing to save data.')
+      console.log('Product Data:', this.productData)
+      console.log('Branch & Product Type Data:', this.branchProductTypeData)    
+
       // Show confirmation modal instead of saving directly
       this.showConfirmModal = true
     },

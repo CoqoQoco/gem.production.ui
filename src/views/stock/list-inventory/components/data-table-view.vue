@@ -221,7 +221,7 @@ export default {
           align: "center",
         },
         {
-          field: "productPrice",
+          field: "productCost",
           header: this.$t("stockInventory.table.price") || "Price",
           sortable: true,
           minWidth: "120px",
@@ -337,6 +337,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/components/list-page-templete/data-table-view.scss";
+
+// Override row height for this table
+:deep(.base-datatable) {
+  .p-datatable-tbody > tr > td {
+    padding: 0.5rem 0.75rem !important;
+  }
+}
 
 // Expand Row Styles
 .stock-material-expansion {

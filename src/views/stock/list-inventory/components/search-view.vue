@@ -17,7 +17,7 @@
         <!-- Stock Number -->
         <div class="filter-field">
           <label class="filter-label">{{ $t('stockInventory.filters.stockNumber') || 'Stock Number' }}</label>
-          <Chips
+          <InputChips
             v-model="localFilters.stockNumbers"
             :placeholder="$t('stockInventory.filters.stockNumberPlaceholder') || 'กด Enter เพื่อเพิ่ม'"
             class="filter-chips"
@@ -27,7 +27,7 @@
         <!-- Product Code -->
         <div class="filter-field">
           <label class="filter-label">{{ $t('stockInventory.filters.productCode') || 'Product Code' }}</label>
-          <Chips
+          <InputChips
             v-model="localFilters.productCodes"
             :placeholder="$t('stockInventory.filters.productCodePlaceholder') || 'กด Enter เพื่อเพิ่ม'"
             class="filter-chips"
@@ -43,6 +43,7 @@
               :placeholder="$t('stockInventory.filters.dateFrom') || 'จาก'"
               dateFormat="dd/mm/yy"
               :showIcon="true"
+              :maxDate="localFilters.receiptDateMax || maxSelectableDate"
               class="date-input"
             />
             <span class="date-separator">-</span>
@@ -51,6 +52,8 @@
               :placeholder="$t('stockInventory.filters.dateTo') || 'ถึง'"
               dateFormat="dd/mm/yy"
               :showIcon="true"
+              :minDate="localFilters.receiptDateMin"
+              :maxDate="maxSelectableDate"
               class="date-input"
             />
           </div>
@@ -121,7 +124,7 @@
 <script>
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
-import Chips from "primevue/chips"
+import InputChips from "primevue/inputchips"
 import Calendar from "primevue/calendar"
 import Chip from "primevue/chip"
 
@@ -131,7 +134,7 @@ export default {
   components: {
     InputText,
     Button,
-    Chips,
+    InputChips,
     Calendar,
     Chip
   },
@@ -161,8 +164,8 @@ export default {
   data() {
     return {
       localFilters: {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       }
@@ -188,6 +191,11 @@ export default {
       if (this.advancedFilters.gemFilter?.typeCode1?.length > 0 ||
           this.advancedFilters.gemFilter?.typeCode2?.length > 0) count++
       return count
+    },
+
+    maxSelectableDate() {
+      // ไม่ให้เลือกวันที่เกินวันปัจจุบัน
+      return new Date()
     },
 
     activeFiltersList() {
@@ -226,8 +234,8 @@ export default {
     filters: {
       handler(newVal) {
         this.localFilters = {
-          stockNumbers: newVal.stockNumbers ? [...newVal.stockNumbers] : null,
-          productCodes: newVal.productCodes ? [...newVal.productCodes] : null,
+          stockNumbers: newVal.stockNumbers && newVal.stockNumbers.length > 0 ? [...newVal.stockNumbers] : [],
+          productCodes: newVal.productCodes && newVal.productCodes.length > 0 ? [...newVal.productCodes] : [],
           receiptDateMin: newVal.receiptDateMin,
           receiptDateMax: newVal.receiptDateMax
         }
@@ -245,13 +253,15 @@ export default {
         receiptDateMin: this.localFilters.receiptDateMin,
         receiptDateMax: this.localFilters.receiptDateMax
       }
+      console.log('SearchView - localFilters:', this.localFilters)
+      console.log('SearchView - cleanFilters emitted:', cleanFilters)
       this.$emit('search', cleanFilters)
     },
 
     handleRefresh() {
       this.localFilters = {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       }
@@ -264,8 +274,8 @@ export default {
 
     handleClearAll() {
       this.localFilters = {
-        stockNumbers: null,
-        productCodes: null,
+        stockNumbers: [],
+        productCodes: [],
         receiptDateMin: null,
         receiptDateMax: null
       }
@@ -274,9 +284,9 @@ export default {
 
     removeFilter(key) {
       if (key === 'stockNumbers') {
-        this.localFilters.stockNumbers = null
+        this.localFilters.stockNumbers = []
       } else if (key === 'productCodes') {
-        this.localFilters.productCodes = null
+        this.localFilters.productCodes = []
       } else if (key === 'receiptDate') {
         this.localFilters.receiptDateMin = null
         this.localFilters.receiptDateMax = null
@@ -326,7 +336,7 @@ export default {
 .filter-chips {
   width: 100%;
 
-  :deep(.p-chips) {
+  :deep(.p-inputchips) {
     width: 100%;
   }
 
@@ -335,7 +345,7 @@ export default {
     font-size: 0.875rem;
   }
 
-  :deep(.p-chips-token) {
+  :deep(.p-inputchips-chip) {
     background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
     color: white;
     padding: 0.25rem 0.5rem;
