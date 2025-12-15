@@ -16,7 +16,7 @@ const inventoryRoutes = [
   {
     path: '/inventory/stock-list',
     name: 'StockList',
-    component: () => import('@/views/common/coming-soon-view.vue'),
+    component: () => import('@/views/stock/list-inventory/inventory-index.vue'),
     meta: {
       requiresAuth: true,
       title: 'Stock List'

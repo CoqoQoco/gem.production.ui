@@ -333,6 +333,217 @@ sort: []
 
 ---
 
+## Expandable Row Pattern (Nested Table)
+
+### Overview
+For list pages that need to show child/detail data in expandable rows (e.g., showing stock materials within stock products), use PrimeVue DataTable's expandable row feature with nested tables.
+
+### When to Use
+- Show hierarchical data (parent-child relationships)
+- Display detailed components/materials for each main row
+- Provide additional information without navigating to another page
+- Keep user context while exploring details
+
+### Implementation Pattern
+
+#### 1. data-table-view.vue with Expandable Rows
+
+```vue
+<template>
+  <div class="list-data-table-container">
+    <DataTable
+      :value="stocks"
+      v-model:expandedRows="expandedRows"
+      dataKey="stockNumber"
+    >
+      <!-- Expand Column -->
+      <Column :expander="true" headerStyle="width: 3rem" />
+
+      <!-- Main Data Columns -->
+      <Column field="stockNumber" header="Stock Number" />
+      <Column field="productName" header="Product Name" />
+
+      <!-- Expanded Row Template (Child Table) -->
+      <template #expansion="{ data }">
+        <div class="stock-material-expansion">
+          <h4 class="material-section-title">
+            <i class="pi pi-th-large"></i>
+            Material Components
+          </h4>
+
+          <!-- Nested DataTable for Child Data -->
+          <div v-if="data.materials && data.materials.length > 0" class="materials-table">
+            <DataTable :value="data.materials" class="nested-material-table">
+              <Column field="type" header="Type" />
+              <Column field="weight" header="Weight" />
+              <Column field="qty" header="Qty" />
+              <Column field="price" header="Price" />
+            </DataTable>
+          </div>
+
+          <!-- Empty State -->
+          <div v-else class="no-materials">
+            <i class="pi pi-inbox"></i>
+            <p>No material data</p>
+          </div>
+        </div>
+      </template>
+    </DataTable>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      expandedRows: []  // Tracks which rows are expanded
+    }
+  }
+}
+</script>
+```
+
+#### 2. Styling for Expandable Rows
+
+```scss
+// In your component's scoped style or custom SCSS file
+
+// Expansion Section Wrapper
+.stock-material-expansion {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-top: 2px solid #ff69b4;  // Use your theme color
+
+  .material-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #ff69b4;
+
+    i {
+      color: #ff69b4;
+      font-size: 1.125rem;
+    }
+  }
+
+  // Nested Table Container
+  .materials-table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+
+    :deep(.nested-material-table) {
+      .p-datatable-thead > tr > th {
+        background: #f3f4f6;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .p-datatable-tbody > tr > td {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Empty State
+  .no-materials {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #9ca3af;
+
+    i {
+      font-size: 2rem;
+      color: #d1d5db;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+}
+```
+
+#### 3. Key Implementation Notes
+
+**DataTable Props**:
+- `v-model:expandedRows` - Two-way binding to track expanded rows state
+- `dataKey` - Unique identifier for each row (required for expansion tracking)
+
+**Expander Column**:
+- Use `<Column :expander="true" />` for expand/collapse toggle
+- Automatically renders expand icon and handles click events
+- Typically placed as first column with fixed width (3rem)
+
+**Expansion Template**:
+- Use `#expansion="{ data }"` slot to access row data
+- `data` contains the full row object with all properties
+- Can contain any content: nested tables, forms, charts, images, etc.
+
+**Nested Table Styling**:
+- Use `:deep()` selector to style nested PrimeVue DataTable
+- Different background colors to distinguish parent/child tables
+- Smaller font sizes for child table (0.875rem vs 1rem)
+- Consistent padding and spacing
+
+**Empty State**:
+- Always provide empty state for child data
+- Use consistent empty state design with icon and message
+- Helps user understand when no child data exists
+
+#### 4. Data Structure Example
+
+```javascript
+// Parent row data should include child array
+stocks = [
+  {
+    stockNumber: 'STK-001',
+    productName: 'Gold Ring',
+    qty: 10,
+    materials: [  // Child data array
+      { type: 'Gold', weight: 5.2, qty: 1, price: 15000 },
+      { type: 'Diamond', weight: 0.5, qty: 2, price: 8000 }
+    ]
+  },
+  {
+    stockNumber: 'STK-002',
+    productName: 'Silver Bracelet',
+    qty: 15,
+    materials: []  // Empty child data
+  }
+]
+```
+
+#### 5. Real Example Reference
+
+See complete implementation in:
+- `gem-ui/src/views/stock/list-inventory/components/data-table-view.vue`
+- Stock Inventory page with expandable materials table
+
+### Benefits
+
+✅ **Better UX** - View details without page navigation
+✅ **Context Preservation** - Keep main list visible while exploring details
+✅ **Space Efficient** - Show detailed data only when needed
+✅ **Hierarchical Data** - Perfect for parent-child relationships
+✅ **Flexible Content** - Can display any content in expansion area
+
+---
+
 ## Benefits
 
 ✅ **Reusability** - Write once, use everywhere
@@ -342,5 +553,5 @@ sort: []
 
 ---
 
-**Last Updated**: 2025-12-01
-**Version**: 1.1
+**Last Updated**: 2025-12-15
+**Version**: 1.2

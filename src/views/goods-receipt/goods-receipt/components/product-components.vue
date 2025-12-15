@@ -55,7 +55,7 @@
               </label>
               <FormDropdown
                 :model-value="goldComp.shapeCode"
-                :options="gemShapes"
+                :options="goldSizes"
                 option-label="nameTh"
                 option-value="code"
                 :placeholder="$t('goodsReceipt.components.goldShapePlaceholder') || 'เลือกรูปร่าง'"
@@ -322,6 +322,7 @@ import InputText from 'primevue/inputtext'
 import { useGoldApiStore } from '@/stores/api/gold-api'
 import { useGemApiStore } from '@/stores/api/gem-api'
 import { useGemShapeApiStore } from '@/stores/api/gem-shape-api'
+import { useGoldSizeApiStore } from '@/stores/api/gold-size-api'
 
 export default {
   name: 'ProductComponents',
@@ -348,6 +349,7 @@ export default {
       goldApiStore: useGoldApiStore(),
       gemApiStore: useGemApiStore(),
       gemShapeApiStore: useGemShapeApiStore(),
+      goldSizeApiStore: useGoldSizeApiStore(),
       componentsData: {
         goldComponents: [],
         gemComponents: []
@@ -355,6 +357,7 @@ export default {
       golds: [],
       gems: [],
       gemShapes: [],
+      goldSizes: [],
       errors: {},
       isUpdatingFromParent: false
     }
@@ -364,6 +367,7 @@ export default {
     await this.loadGolds()
     await this.loadGems()
     await this.loadGemShapes()
+    await this.loadGoldSizes()
   },
 
   watch: {
@@ -434,6 +438,21 @@ export default {
         }
       } catch (error) {
         console.error('Error loading gem shapes:', error)
+      }
+    },
+
+    async loadGoldSizes() {
+      try {
+        const result = await this.goldSizeApiStore.listGoldSizes({
+          pageIndex: 0,
+          pageSize: 1000,
+          criteria: { searchText: null }
+        })
+        if (result.success) {
+          this.goldSizes = result.data
+        }
+      } catch (error) {
+        console.error('Error loading gold sizes:', error)
       }
     },
 
@@ -553,7 +572,7 @@ export default {
     },
 
     handleGoldShapeChange(index, value) {
-      const selectedShape = this.gemShapes.find(s => s.code === value)
+      const selectedShape = this.goldSizes.find(s => s.code === value)
       if (selectedShape) {
         const newComponents = [...this.componentsData.goldComponents]
         newComponents[index].shapeCode = selectedShape.code

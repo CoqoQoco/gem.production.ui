@@ -79,6 +79,17 @@ const settingRoutes = [
         }
       },
 
+      // Master Data - Gold Size Management
+      {
+        path: 'master-data/gold-size',
+        name: 'GoldSizeManagement',
+        component: () => import('@/views/setting/master-data/gold-size/gold-size-index.vue'),
+        meta: {
+          requiresAuth: true,
+          title: 'Gold Size Management'
+        }
+      },
+
       // Master Data - Gem Shape Management
       {
         path: 'master-data/gem-shape',

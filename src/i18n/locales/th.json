@@ -643,6 +643,42 @@
       "inactive": "ไม่ใช้งาน"
     }
   },
+  "goldSize": {
+    "title": "จัดการข้อมูลขนาดทอง",
+    "subtitle": "จัดการและดูรายละเอียดขนาดทองในระบบ",
+    "searchPlaceholder": "ค้นหารหัส, ชื่อ (ไทย), ชื่อ (อังกฤษ)...",
+    "noData": "ไม่พบข้อมูลขนาดทอง",
+    "addGoldSize": "เพิ่มขนาดทอง",
+    "editGoldSize": "แก้ไขขนาดทอง",
+    "createSuccess": "เพิ่มขนาดทองสำเร็จ",
+    "updateSuccess": "อัปเดตขนาดทองสำเร็จ",
+    "createError": "เกิดข้อผิดพลาดในการเพิ่มขนาดทอง",
+    "updateError": "เกิดข้อผิดพลาดในการอัปเดตขนาดทอง",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "form": {
+      "goldSizeInfo": "ข้อมูลขนาดทอง",
+      "code": "รหัสขนาดทอง",
+      "codePlaceholder": "กรอกรหัสขนาดทอง",
+      "nameTh": "ชื่อขนาดทอง (ไทย)",
+      "nameThPlaceholder": "กรอกชื่อขนาดทองภาษาไทย",
+      "nameEn": "ชื่อขนาดทอง (อังกฤษ)",
+      "nameEnPlaceholder": "กรอกชื่อขนาดทองภาษาอังกฤษ"
+    },
+    "validation": {
+      "codeRequired": "กรุณากรอกรหัสขนาดทอง",
+      "nameThRequired": "กรุณากรอกชื่อขนาดทอง (ไทย)",
+      "nameEnRequired": "กรุณากรอกชื่อขนาดทอง (อังกฤษ)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "รหัสขนาดทอง",
+      "nameTh": "ชื่อขนาดทอง (ไทย)",
+      "nameEn": "ชื่อขนาดทอง (อังกฤษ)",
+      "status": "สถานะ",
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน"
+    }
+  },
   "gemShape": {
     "title": "จัดการข้อมูลรูปร่างพลอย",
     "subtitle": "จัดการและดูรายละเอียดรูปร่างพลอยในระบบ",
@@ -800,6 +836,65 @@
       "branchProductType": "สาขาและประเภทสินค้า",
       "confirmSave": "ยืนยันบันทึกสินค้า",
       "backToEdit": "กลับไปแก้ไข"
+    }
+  },
+  "stockInventory": {
+    "title": "รายการสินค้าคงคลัง",
+    "subtitle": "จัดการและค้นหารายการสินค้าคงคลัง",
+    "searchPlaceholder": "ค้นหา Stock Number, Product Code...",
+    "noData": "ไม่พบข้อมูล",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "table": {
+      "stockNumber": "Stock Number",
+      "productCode": "Product Code",
+      "productName": "ชื่อสินค้า",
+      "receiptDate": "วันที่รับสินค้า",
+      "qty": "จำนวน",
+      "price": "ราคา",
+      "branch": "สาขา",
+      "status": "สถานะ"
+    },
+    "materials": {
+      "title": "ส่วนประกอบวัตถุดิบ",
+      "type": "ประเภท",
+      "typeName": "ชื่อประเภท",
+      "sizeShape": "ขนาด/รูปร่าง",
+      "weight": "น้ำหนัก",
+      "qty": "จำนวน",
+      "price": "ราคา",
+      "noMaterials": "ไม่มีข้อมูลวัตถุดิบ"
+    },
+    "filters": {
+      "stockNumber": "Stock Number",
+      "stockNumberPlaceholder": "กด Enter เพื่อเพิ่ม Stock Number",
+      "productCode": "Product Code",
+      "productCodePlaceholder": "กด Enter เพื่อเพิ่ม Product Code",
+      "receiptDateRange": "วันที่รับสินค้า",
+      "dateFrom": "จาก",
+      "dateTo": "ถึง",
+      "advancedFilters": "ตัวกรองขั้นสูง",
+      "advancedTitle": "ตัวกรองขั้นสูง",
+      "clearAll": "ล้างทั้งหมด",
+      "clearFilters": "ล้างตัวกรอง",
+      "applyFilters": "ใช้ตัวกรอง",
+      "activeFilters": "ตัวกรองที่ใช้งาน",
+      "productType": "ประเภทสินค้า",
+      "productTypePlaceholder": "เลือกประเภทสินค้า",
+      "priceRange": "ช่วงราคา",
+      "priceMin": "ราคาต่ำสุด",
+      "priceMax": "ราคาสูงสุด",
+      "branch": "สาขา",
+      "branchPlaceholder": "เลือกสาขา",
+      "goldFilter": "ตัวกรองทอง",
+      "goldType": "ประเภททอง",
+      "goldTypePlaceholder": "เลือกประเภททอง",
+      "goldSize": "ขนาดทอง",
+      "goldSizePlaceholder": "เลือกขนาดทอง",
+      "gemFilter": "ตัวกรองพลอย",
+      "gemType": "ประเภทพลอย",
+      "gemTypePlaceholder": "เลือกประเภทพลอย",
+      "gemShape": "รูปร่างพลอย",
+      "gemShapePlaceholder": "เลือกรูปร่างพลอย"
     }
   }
 }

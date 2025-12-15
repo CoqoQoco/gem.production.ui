@@ -493,6 +493,42 @@
       "inactive": "Inactive"
     }
   },
+  "goldSize": {
+    "title": "Gold Size Management",
+    "subtitle": "Manage and view gold size details in the system",
+    "searchPlaceholder": "Search code, name (Thai), name (English)...",
+    "noData": "No gold sizes found",
+    "addGoldSize": "Add Gold Size",
+    "editGoldSize": "Edit Gold Size",
+    "createSuccess": "Gold size created successfully",
+    "updateSuccess": "Gold size updated successfully",
+    "createError": "Failed to create gold size",
+    "updateError": "Failed to update gold size",
+    "loadError": "Failed to load data",
+    "form": {
+      "goldSizeInfo": "Gold Size Information",
+      "code": "Gold Size Code",
+      "codePlaceholder": "Enter gold size code",
+      "nameTh": "Gold Size Name (Thai)",
+      "nameThPlaceholder": "Enter gold size name in Thai",
+      "nameEn": "Gold Size Name (English)",
+      "nameEnPlaceholder": "Enter gold size name in English"
+    },
+    "validation": {
+      "codeRequired": "Please enter gold size code",
+      "nameThRequired": "Please enter gold size name (Thai)",
+      "nameEnRequired": "Please enter gold size name (English)"
+    },
+    "columns": {
+      "id": "ID",
+      "code": "Gold Size Code",
+      "nameTh": "Gold Size Name (Thai)",
+      "nameEn": "Gold Size Name (English)",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "gemShape": {
     "title": "Gem Shape Management",
     "subtitle": "Manage and view gem shape details in the system",
@@ -650,6 +686,65 @@
       "branchProductType": "Branch and Product Type",
       "confirmSave": "Confirm Save",
       "backToEdit": "Back to Edit"
+    }
+  },
+  "stockInventory": {
+    "title": "Stock Inventory List",
+    "subtitle": "Manage and search stock inventory",
+    "searchPlaceholder": "Search Stock Number, Product Code...",
+    "noData": "No data found",
+    "loadError": "Error loading data",
+    "table": {
+      "stockNumber": "Stock Number",
+      "productCode": "Product Code",
+      "productName": "Product Name",
+      "receiptDate": "Receipt Date",
+      "qty": "Qty",
+      "price": "Price",
+      "branch": "Branch",
+      "status": "Status"
+    },
+    "materials": {
+      "title": "Material Components",
+      "type": "Type",
+      "typeName": "Type Name",
+      "sizeShape": "Size/Shape",
+      "weight": "Weight",
+      "qty": "Qty",
+      "price": "Price",
+      "noMaterials": "No material data"
+    },
+    "filters": {
+      "stockNumber": "Stock Number",
+      "stockNumberPlaceholder": "Press Enter to add Stock Number",
+      "productCode": "Product Code",
+      "productCodePlaceholder": "Press Enter to add Product Code",
+      "receiptDateRange": "Receipt Date",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "advancedFilters": "Advanced Filters",
+      "advancedTitle": "Advanced Filters",
+      "clearAll": "Clear All",
+      "clearFilters": "Clear Filters",
+      "applyFilters": "Apply Filters",
+      "activeFilters": "Active Filters",
+      "productType": "Product Type",
+      "productTypePlaceholder": "Select Product Type",
+      "priceRange": "Price Range",
+      "priceMin": "Min Price",
+      "priceMax": "Max Price",
+      "branch": "Branch",
+      "branchPlaceholder": "Select Branch",
+      "goldFilter": "Gold Filter",
+      "goldType": "Gold Type",
+      "goldTypePlaceholder": "Select Gold Type",
+      "goldSize": "Gold Size",
+      "goldSizePlaceholder": "Select Gold Size",
+      "gemFilter": "Gem Filter",
+      "gemType": "Gem Type",
+      "gemTypePlaceholder": "Select Gem Type",
+      "gemShape": "Gem Shape",
+      "gemShapePlaceholder": "Select Gem Shape"
     }
   }
 }
