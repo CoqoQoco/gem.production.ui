@@ -302,6 +302,8 @@ export default {
     validate() {
       this.errors = {};
 
+      console.log('Validating product data:', this.productData);
+
       // Product Type validation
       if (!this.productData.productTypeCode || !this.productData.productTypeCode.trim()) {
         this.errors.productTypeCode = this.$t('goodsReceipt.validation.productTypeRequired') || 'กรุณาเลือกประเภทสินค้า'
@@ -355,16 +357,18 @@ export default {
       }
 
       // Price validation
-      if (!this.productData.price || this.productData.price <= 0) {
-        this.errors.price = this.$t("goodsReceipt.validation.priceRequired");
-      }
+      // if (!this.productData.price || this.productData.price <= 0) {
+      //   this.errors.price = this.$t("goodsReceipt.validation.priceRequired");
+      // }
 
-      // Unit Price validation
-      if (!this.productData.unitPrice || !this.productData.unitPrice.trim()) {
-        this.errors.unitPrice = this.$t(
-          "goodsReceipt.validation.unitPriceRequired"
-        );
-      }
+      // // Unit Price validation
+      // if (!this.productData.unitPrice || !this.productData.unitPrice.trim()) {
+      //   this.errors.unitPrice = this.$t(
+      //     "goodsReceipt.validation.unitPriceRequired"
+      //   );
+      // }
+
+      console.log('Validation errors:', this.errors);
 
       const isValid = Object.keys(this.errors).length === 0;
       this.$emit("validate", isValid);
