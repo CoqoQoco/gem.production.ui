@@ -19,26 +19,26 @@
   user-select: none;
 
   &:not(:disabled) {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
-    border-color: #ffb6c1 !important;
-    color: white !important;
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%) !important;
+    border-color: #efe9c9 !important;
+    color: #1f2937 !important;
 
     &:hover {
-      background: linear-gradient(135deg, #ff96a1 0%, #ffaab5 100%) !important;
-      border-color: #ff96a1 !important;
+      background: linear-gradient(135deg, #dfd070 0%, #dfd070 100%) !important;
+      border-color: #dfd070 !important;
       transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
 
     &:active {
-      background: linear-gradient(135deg, #ff69b4 0%, #ff7fc4 100%) !important;
-      border-color: #ff69b4 !important;
+      background: linear-gradient(135deg, #d7c247 0%, #d7c247 100%) !important;
+      border-color: #d7c247 !important;
       transform: translateY(0);
     }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3) !important;
+      box-shadow: 0 0 0 3px rgba(239, 233, 201, 0.3) !important;
     }
   }
 
@@ -65,17 +65,18 @@
 // Specific override for auth buttons
 .auth-button.p-button {
   &:not(:disabled) {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
-    border-color: #ffb6c1 !important;
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%) !important;
+    border-color: #efe9c9 !important;
+    color: #1f2937 !important;
 
     &:hover {
-      background: linear-gradient(135deg, #ff96a1 0%, #ffaab5 100%) !important;
-      border-color: #ff96a1 !important;
+      background: linear-gradient(135deg, #dfd070 0%, #dfd070 100%) !important;
+      border-color: #dfd070 !important;
     }
 
     &:active {
-      background: linear-gradient(135deg, #ff69b4 0%, #ff7fc4 100%) !important;
-      border-color: #ff69b4 !important;
+      background: linear-gradient(135deg, #d7c247 0%, #d7c247 100%) !important;
+      border-color: #d7c247 !important;
     }
   }
 }
@@ -99,21 +100,21 @@
     transition: all $transition-fast;
 
     &:hover {
-      border-color: #ffb6c1 !important;
+      border-color: #efe9c9 !important;
     }
 
     &.p-focus {
       outline: none;
-      border-color: #ffb6c1 !important;
-      box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2) !important;
+      border-color: #efe9c9 !important;
+      box-shadow: 0 0 0 3px rgba(239, 233, 201, 0.2) !important;
     }
 
     &.p-highlight {
-      background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
-      border-color: #ffb6c1 !important;
+      background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%) !important;
+      border-color: #efe9c9 !important;
 
       .p-checkbox-icon {
-        color: white !important;
+        color: #1f2937 !important;
         font-size: 0.875rem;
       }
     }
@@ -311,13 +312,13 @@
   width: 100%;
 
   &:not(.p-disabled):hover {
-    border-color: #ffb6c1;
+    border-color: #efe9c9;
   }
 
   &.p-focus {
     outline: none;
-    border-color: #ffb6c1;
-    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2);
+    border-color: #efe9c9;
+    box-shadow: 0 0 0 3px rgba(239, 233, 201, 0.2);
   }
 
   &.p-invalid {
@@ -412,13 +413,13 @@
       color: $gray-900;
 
       &:hover {
-        background-color: rgba(255, 182, 193, 0.1);
-        color: #ff69b4;
+        background-color: rgba(239, 233, 201, 0.1);
+        color: #e7de99;
       }
 
       &.p-highlight {
-        background-color: rgba(255, 182, 193, 0.2);
-        color: #ff69b4;
+        background-color: rgba(239, 233, 201, 0.2);
+        color: #e7de99;
         font-weight: 600;
       }
 
@@ -429,7 +430,7 @@
 
       &:focus {
         outline: none;
-        background-color: rgba(255, 182, 193, 0.1);
+        background-color: rgba(239, 233, 201, 0.1);
       }
     }
 

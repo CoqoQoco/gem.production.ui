@@ -312,8 +312,8 @@ const handleSuccessConfirm = () => {
 
 // Override button color to match pink theme
 :deep(.auth-button) {
-  background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
-  border-color: #ffb6c1 !important;
+  background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%) !important;
+  border-color: #efe9c9 !important;
 
   &:hover:not(:disabled) {
     background: linear-gradient(135deg, #ffa6b1 0%, #ffb0bb 100%) !important;
@@ -321,43 +321,43 @@ const handleSuccessConfirm = () => {
   }
 
   &:focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 182, 193, 0.3) !important;
+    box-shadow: 0 0 0 0.2rem rgba(239, 233, 201, 0.3) !important;
   }
 }
 
 // Override link colors
 :deep(.auth-link),
 :deep(.forgot-link) {
-  color: #ff69b4 !important;
+  color: #e7de99 !important;
 
   &:hover {
-    color: #ff1493 !important;
+    color: #c0ab28 !important;
   }
 }
 
 // Override checkbox focus color
 :deep(.p-checkbox .p-checkbox-box.p-focus) {
-  border-color: #ffb6c1 !important;
-  box-shadow: 0 0 0 0.2rem rgba(255, 182, 193, 0.2) !important;
+  border-color: #efe9c9 !important;
+  box-shadow: 0 0 0 0.2rem rgba(239, 233, 201, 0.2) !important;
 }
 
 :deep(.p-checkbox .p-checkbox-box.p-highlight) {
-  background: #ffb6c1 !important;
-  border-color: #ffb6c1 !important;
+  background: #efe9c9 !important;
+  border-color: #efe9c9 !important;
 }
 
 // Override input focus color
 :deep(.input-wrapper input:focus) {
-  border-color: #ffb6c1 !important;
-  box-shadow: 0 0 0 0.2rem rgba(255, 182, 193, 0.2) !important;
+  border-color: #efe9c9 !important;
+  box-shadow: 0 0 0 0.2rem rgba(239, 233, 201, 0.2) !important;
 }
 
 // Override password toggle button
 :deep(.password-toggle) {
-  color: #ffb6c1 !important;
+  color: #efe9c9 !important;
 
   &:hover {
-    color: #ff69b4 !important;
+    color: #e7de99 !important;
   }
 }
 </style>

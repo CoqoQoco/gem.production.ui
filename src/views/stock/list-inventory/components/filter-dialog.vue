@@ -440,7 +440,7 @@ export default {
 <style lang="scss" scoped>
 .filter-dialog {
   :deep(.p-dialog-header) {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     color: white;
 
     .p-dialog-title {
@@ -480,7 +480,7 @@ export default {
   font-size: 0.95rem;
 
   i {
-    color: #ff69b4;
+    color: #e7de99;
     font-size: 1rem;
   }
 }

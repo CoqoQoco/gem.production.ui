@@ -69,3 +69,24 @@ body {
   opacity: 0;
   transform: translateY(20px);
 }
+
+/* PrimeVue Paginator Override - Gold Theme */
+.p-paginator .p-paginator-page.p-highlight,
+.p-paginator .p-paginator-page.p-highlight:hover {
+  background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%) !important;
+  border-color: #efe9c9 !important;
+  color: #1f2937 !important;
+}
+
+.p-paginator .p-paginator-page:not(.p-highlight):hover {
+  background: rgba(239, 233, 201, 0.1) !important;
+  border-color: #efe9c9 !important;
+}
+
+.p-paginator .p-paginator-first:not(.p-disabled):hover,
+.p-paginator .p-paginator-prev:not(.p-disabled):hover,
+.p-paginator .p-paginator-next:not(.p-disabled):hover,
+.p-paginator .p-paginator-last:not(.p-disabled):hover {
+  background: rgba(239, 233, 201, 0.1) !important;
+  border-color: #efe9c9 !important;
+}

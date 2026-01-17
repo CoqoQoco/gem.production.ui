@@ -61,8 +61,8 @@ const currentDateThai = computed(() => {
 .welcome-section {
   background: linear-gradient(
     135deg,
-    rgba(245, 133, 17, 0.05) 0%,
-    rgba(98, 125, 152, 0.05) 100%
+    rgba(231, 222, 153, 0.05) 0%,
+    rgba(239, 233, 201, 0.05) 100%
   );
   padding: 32px 24px;
   border-radius: 16px;
@@ -94,7 +94,7 @@ const currentDateThai = computed(() => {
   margin: 0;
 
   i {
-    color: #f58511;
+    color: #e7de99;
   }
 
   .separator {

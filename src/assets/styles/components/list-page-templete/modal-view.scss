@@ -22,7 +22,7 @@
 
 .list-detail-dialog {
   :deep(.p-dialog-header) {
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: #ffffff;
     border-radius: 12px 12px 0 0;
     padding: 1.5rem;
@@ -110,7 +110,7 @@
   .list-detail-avatar {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -163,13 +163,13 @@
     gap: 0.75rem;
     margin: 0 0 1rem 0;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #ff69b4;
+    border-bottom: 2px solid #e7de99;
     font-size: 1.125rem;
     font-weight: 600;
     color: #1f2937;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
       font-size: 1.25rem;
     }
   }
@@ -255,14 +255,14 @@
     width: 90%;
 
     .p-dialog-header {
-      background: linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(255, 20, 147, 0.1) 100%);
+      background: linear-gradient(135deg, rgba(231, 222, 153, 0.1) 0%, rgba(255, 20, 147, 0.1) 100%);
       border-bottom: 1px solid #ffd7e1;
       padding: 1.5rem 2rem;
 
       .p-dialog-title {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #ff69b4;
+        color: #e7de99;
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -302,14 +302,14 @@
       color: #111827;
       margin: 0 0 1rem 0;
       padding-bottom: 0.75rem;
-      border-bottom: 2px solid #ff69b4;
+      border-bottom: 2px solid #e7de99;
       display: flex;
       align-items: center;
       gap: 0.5rem;
 
       i {
         font-size: 1.25rem;
-        color: #ff69b4;
+        color: #e7de99;
       }
     }
 
@@ -358,8 +358,8 @@
 
       &:focus {
         outline: none;
-        border-color: #ff69b4;
-        box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        border-color: #e7de99;
+        box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
       }
 
       &.error,
@@ -444,7 +444,7 @@
 
   .btn-submit {
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -457,9 +457,9 @@
     gap: 0.5rem;
 
     &:hover {
-      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
 
     &:active {
@@ -468,7 +468,7 @@
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.3);
     }
 
     &:disabled {

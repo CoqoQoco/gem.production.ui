@@ -125,12 +125,12 @@ onMounted(() => {
         }
 
         &:hover {
-          background: rgba(255, 182, 193, 0.15);
+          background: rgba(239, 233, 201, 0.15);
         }
 
         &.p-highlight {
-          background: rgba(255, 182, 193, 0.25);
-          color: #ff69b4;
+          background: rgba(239, 233, 201, 0.25);
+          color: #e7de99;
         }
       }
     }

@@ -312,7 +312,7 @@ export default {
   margin: 0 0 0.5rem 0;
 
   i {
-    color: #ff69b4;
+    color: #e7de99;
     font-size: 1.75rem;
   }
 
@@ -395,7 +395,7 @@ export default {
   border-bottom: 2px solid #f3f4f6;
 
   i {
-    color: #ff69b4;
+    color: #e7de99;
     font-size: 1.125rem;
   }
 }
@@ -420,12 +420,12 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+  box-shadow: 0 4px 12px rgba(231, 222, 153, 0.3);
 
   i {
     font-size: 3rem;
@@ -485,7 +485,7 @@ export default {
     border-radius: 6px;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
       font-size: 0.875rem;
     }
 

@@ -452,7 +452,7 @@ export default {
 .stock-material-expansion {
   padding: 1.5rem;
   background: #f9fafb;
-  border-top: 2px solid #ff69b4;
+  border-top: 2px solid #e7de99;
 
   .material-section-title {
     display: flex;
@@ -463,10 +463,10 @@ export default {
     color: #111827;
     margin: 0 0 1rem 0;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #ff69b4;
+    border-bottom: 2px solid #e7de99;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
       font-size: 1.125rem;
     }
   }
@@ -555,7 +555,7 @@ export default {
   gap: 0.5rem;
 
   i {
-    color: #ff69b4;
+    color: #e7de99;
   }
 }
 
@@ -632,7 +632,7 @@ export default {
 
       &.final-cost {
         .cost-value {
-          color: #ff69b4;
+          color: #e7de99;
           font-size: 1.25rem;
         }
       }

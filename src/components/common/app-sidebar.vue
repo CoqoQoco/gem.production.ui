@@ -530,8 +530,8 @@ const comingSoon = () => {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid #ffd7e1;
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(255, 192, 203, 0.1) 100%);
+  border-bottom: 1px solid #efe9c9;
+  background: linear-gradient(135deg, rgba(239, 233, 201, 0.1) 0%, rgba(239, 233, 201, 0.1) 100%);
 }
 
 .sidebar-brand {
@@ -548,7 +548,7 @@ const comingSoon = () => {
   .brand-title {
     font-size: 18px;
     font-weight: 700;
-    color: #ff69b4;
+    color: #e7de99;
     margin: 0;
   }
 }
@@ -632,21 +632,21 @@ const comingSoon = () => {
   }
 
   &:hover {
-    background-color: rgba(255, 182, 193, 0.1);
-    color: #ff69b4;
+    background-color: rgba(239, 233, 201, 0.1);
+    color: #e7de99;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 
   &.active {
-    background-color: rgba(255, 182, 193, 0.2);
-    color: #ff69b4;
+    background-color: rgba(239, 233, 201, 0.2);
+    color: #e7de99;
     font-weight: 600;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 }
@@ -706,34 +706,34 @@ const comingSoon = () => {
   }
 
   &:hover {
-    background-color: rgba(255, 182, 193, 0.08);
-    color: #ff69b4;
+    background-color: rgba(239, 233, 201, 0.08);
+    color: #e7de99;
     padding-left: 32px;
 
     &::before {
-      background-color: #ff69b4;
+      background-color: #e7de99;
       width: 6px;
       height: 6px;
     }
 
     i.pi-circle-fill {
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 
   &.active {
-    background-color: rgba(255, 182, 193, 0.15);
-    color: #ff69b4;
+    background-color: rgba(239, 233, 201, 0.15);
+    color: #e7de99;
     font-weight: 500;
 
     &::before {
-      background-color: #ff69b4;
+      background-color: #e7de99;
       width: 6px;
       height: 6px;
     }
 
     i.pi-circle-fill {
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 }
@@ -787,12 +787,12 @@ const comingSoon = () => {
 // Sidebar Footer
 .sidebar-footer {
   padding: 16px 20px;
-  border-top: 1px solid #ffd7e1;
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.05) 0%, rgba(255, 192, 203, 0.05) 100%);
+  border-top: 1px solid #efe9c9;
+  background: linear-gradient(135deg, rgba(239, 233, 201, 0.05) 0%, rgba(239, 233, 201, 0.05) 100%);
 
   .version {
     font-size: 12px;
-    color: #ff69b4;
+    color: #e7de99;
     text-align: center;
     margin: 0;
     font-weight: 500;

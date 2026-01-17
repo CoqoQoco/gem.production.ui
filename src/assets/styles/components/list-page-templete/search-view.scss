@@ -44,7 +44,7 @@
     margin: 0 0 0.5rem 0;
 
     i {
-      color: #f58511;
+      color: #e7de99;
       font-size: 1.75rem;
     }
   }
@@ -93,8 +93,8 @@
       }
 
       &:focus {
-        border-color: #f58511;
-        box-shadow: 0 0 0 3px rgba(245, 133, 17, 0.1);
+        border-color: #e7de99;
+        box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
       }
 
       &::placeholder {
@@ -121,14 +121,14 @@
 
   .list-search-button {
     height: 40px;
-    background: #f58511;
+    background: #e7de99;
     border: none;
     border-radius: 8px;
     font-weight: 500;
     padding: 0 1.5rem;
 
     &:hover {
-      background: #e67710;
+      background: #dfd070;
     }
   }
 
@@ -141,8 +141,8 @@
     color: #6b7280;
 
     &:hover {
-      border-color: #f58511;
-      color: #f58511;
+      border-color: #e7de99;
+      color: #e7de99;
     }
   }
 }
@@ -163,7 +163,7 @@
   }
 
   .filter-chip {
-    background: #f58511;
+    background: #e7de99;
     color: #ffffff;
   }
 }

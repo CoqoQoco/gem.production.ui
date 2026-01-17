@@ -100,8 +100,8 @@
                 :key="lang"
                 style="
                   padding: 2px 8px;
-                  background: rgba(255, 182, 193, 0.2);
-                  color: #ff69b4;
+                  background: rgba(239, 233, 201, 0.2);
+                  color: #e7de99;
                   border-radius: 12px;
                   font-size: 12px;
                   font-weight: 600;

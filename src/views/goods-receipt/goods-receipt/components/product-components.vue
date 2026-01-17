@@ -1460,14 +1460,14 @@ export default {
   color: #111827;
   margin: 0 0 1.5rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #ff69b4;
+  border-bottom: 2px solid #e7de99;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   i {
     font-size: 1.25rem;
-    color: #ff69b4;
+    color: #e7de99;
   }
 }
 
@@ -1492,7 +1492,7 @@ export default {
     color: #374151;
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
       font-size: 1.125rem;
     }
 
@@ -1515,20 +1515,20 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 3rem 2rem;
-  border: 2px solid #ff69b4;
+  border: 2px solid #e7de99;
   border-radius: 8px;
-  background: rgba(255, 105, 180, 0.05);
+  background: rgba(231, 222, 153, 0.05);
 
   i {
     font-size: 3rem;
-    color: #ff69b4;
+    color: #e7de99;
     margin-bottom: 1rem;
   }
 
   p {
     font-size: 1rem;
     font-weight: 600;
-    color: #ff69b4;
+    color: #e7de99;
     margin: 0;
   }
 }
@@ -1546,8 +1546,8 @@ export default {
   transition: all 0.3s;
 
   &:hover {
-    border-color: #ff69b4;
-    background: rgba(255, 105, 180, 0.02);
+    border-color: #e7de99;
+    background: rgba(231, 222, 153, 0.02);
   }
 
   i {
@@ -1655,7 +1655,7 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -1665,9 +1665,9 @@ export default {
   transition: all 0.2s;
 
   &:hover {
-    background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+    box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
   }
 
   i {
@@ -1692,7 +1692,7 @@ export default {
       text-align: left;
       font-weight: 600;
       color: #374151;
-      border-bottom: 2px solid #ff69b4;
+      border-bottom: 2px solid #e7de99;
       white-space: nowrap;
 
       &.action-column {
@@ -1748,7 +1748,7 @@ export default {
   tfoot {
     tr.total-row {
       background: #f9fafb;
-      border-top: 2px solid #ff69b4;
+      border-top: 2px solid #e7de99;
 
       td {
         padding: 1rem 0.875rem;
@@ -1795,8 +1795,8 @@ export default {
 
             &:focus {
               outline: none;
-              border-color: #ff69b4;
-              box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+              border-color: #e7de99;
+              box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
             }
 
             &::-webkit-inner-spin-button,
@@ -1811,7 +1811,7 @@ export default {
 
     tr.final-cost-row {
       background: #fff5f7;
-      border-top: 2px solid #ff69b4;
+      border-top: 2px solid #e7de99;
 
       td {
         padding: 1rem 0.875rem;
@@ -1819,12 +1819,12 @@ export default {
 
         &.summary-label {
           text-align: right;
-          color: #ff69b4;
+          color: #e7de99;
           font-size: 1.0625rem;
         }
 
         &.final-cost {
-          color: #ff69b4;
+          color: #e7de99;
           font-size: 1.25rem;
           text-align: right;
         }
@@ -1848,12 +1848,12 @@ export default {
   }
 
   &.type-gold {
-    background: rgba(255, 105, 180, 0.1);
-    color: #ff69b4;
-    border: 1px solid rgba(255, 105, 180, 0.3);
+    background: rgba(231, 222, 153, 0.1);
+    color: #e7de99;
+    border: 1px solid rgba(231, 222, 153, 0.3);
 
     i {
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 
@@ -1951,7 +1951,7 @@ export default {
 // Dialog Styles
 :deep(.component-dialog) {
   .p-dialog-header {
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: white;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
@@ -2003,14 +2003,14 @@ export default {
   }
 
   &:hover {
-    border-color: #ff69b4;
-    background: rgba(255, 105, 180, 0.05);
+    border-color: #e7de99;
+    background: rgba(231, 222, 153, 0.05);
   }
 
   &.active {
-    border-color: #ff69b4;
-    background: rgba(255, 105, 180, 0.1);
-    color: #ff69b4;
+    border-color: #e7de99;
+    background: rgba(231, 222, 153, 0.1);
+    color: #e7de99;
   }
 }
 
@@ -2087,8 +2087,8 @@ export default {
     &:focus,
     &:focus-within {
       outline: none;
-      border-color: #ff69b4;
-      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+      border-color: #e7de99;
+      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
     }
 
     &.p-invalid,
@@ -2147,14 +2147,14 @@ export default {
   }
 
   .btn-submit {
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: white;
     border: none;
 
     &:hover {
-      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
 
     &:disabled {

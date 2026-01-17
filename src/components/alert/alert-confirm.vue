@@ -142,12 +142,12 @@ const handleCancel = () => {
     animation: bounce 0.6s ease-out;
 
     &.confirm {
-      background: linear-gradient(135deg, rgba(255, 182, 193, 0.2) 0%, rgba(255, 192, 203, 0.3) 100%);
-      border: 3px solid #ff69b4;
+      background: linear-gradient(135deg, rgba(239, 233, 201, 0.2) 0%, rgba(239, 233, 201, 0.3) 100%);
+      border: 3px solid #e7de99;
 
       i {
         font-size: 3rem;
-        color: #ff69b4;
+        color: #e7de99;
       }
     }
   }
@@ -155,7 +155,7 @@ const handleCancel = () => {
   .alert-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #ff69b4;
+    color: #e7de99;
     margin: 0;
   }
 }
@@ -225,14 +225,14 @@ const handleCancel = () => {
     border: none;
     cursor: pointer;
     transition: all 0.2s;
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     color: white;
     min-width: 120px;
 
     &:hover {
       background: linear-gradient(135deg, #ffa6b1 0%, #ffb0bb 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
 
     &:active {
@@ -241,7 +241,7 @@ const handleCancel = () => {
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
+      box-shadow: 0 0 0 3px rgba(239, 233, 201, 0.3);
     }
 
     i {

@@ -303,7 +303,7 @@ export default {
 <style lang="scss" scoped>
 :deep(.confirmation-modal) {
   .p-dialog-header {
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: white;
     padding: 1.5rem;
     border-radius: 12px 12px 0 0;
@@ -354,7 +354,7 @@ export default {
 
   i {
     font-size: 1.5rem;
-    color: #ff69b4;
+    color: #e7de99;
 
     &.gold-icon {
       color: #fbbf24;
@@ -427,7 +427,7 @@ export default {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
@@ -512,13 +512,13 @@ export default {
 
   &.final-cost {
     background: #fff5f7;
-    border: 2px solid #ff69b4;
+    border: 2px solid #e7de99;
     padding: 1rem;
     margin-top: 0.75rem;
 
     .cost-label,
     .cost-value {
-      color: #ff69b4;
+      color: #e7de99;
       font-weight: 700;
       font-size: 1.125rem;
     }
@@ -575,13 +575,13 @@ export default {
 :deep(.btn-confirm) {
   padding: 0.75rem 1.5rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   border: none;
 
   &:hover {
-    background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+    box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
   }
 
   &:disabled {

@@ -372,7 +372,7 @@ export default {
   }
 
   :deep(.p-inputchips-chip) {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 6px;
@@ -420,7 +420,7 @@ export default {
   gap: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #ff69b4;
+  color: #e7de99;
   white-space: nowrap;
 
   i {
@@ -437,7 +437,7 @@ export default {
 
 .active-filter-chip {
   :deep(.p-chip) {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     color: white;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
@@ -454,7 +454,7 @@ export default {
 }
 
 :deep(.p-badge-pink) {
-  background: linear-gradient(135deg, #ff69b4 0%, #ff85c1 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #dfd070 100%);
   color: white;
   min-width: 1.25rem;
   height: 1.25rem;

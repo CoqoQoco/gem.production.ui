@@ -469,7 +469,7 @@ export default {
 
 .header-icon {
   font-size: 2.5rem;
-  color: #ff69b4;
+  color: #e7de99;
   width: 56px;
   height: 56px;
   display: flex;
@@ -477,7 +477,7 @@ export default {
   justify-content: center;
   background: linear-gradient(
     135deg,
-    rgba(255, 105, 180, 0.1) 0%,
+    rgba(231, 222, 153, 0.1) 0%,
     rgba(255, 20, 147, 0.1) 100%
   );
   border-radius: 12px;
@@ -617,16 +617,16 @@ export default {
 }
 
 :deep(.p-button-success) {
-  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   border: none;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   transition: all 0.2s;
 
   &:hover {
-    background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+    box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
   }
 
   &:disabled {

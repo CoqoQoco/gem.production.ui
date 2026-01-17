@@ -254,7 +254,7 @@ export default {
 .brand-title {
   font-size: 18px;
   font-weight: 600;
-  color: #ff69b4;
+  color: #e7de99;
   margin: 0;
 
   @media (max-width: 768px) {
@@ -336,7 +336,7 @@ export default {
     height: 40px;
     font-weight: 700;
     color: white;
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     border-radius: 50%;
   }
 
@@ -377,7 +377,7 @@ export default {
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.15) 0%, rgba(255, 192, 203, 0.15) 100%);
+  background: linear-gradient(135deg, rgba(239, 233, 201, 0.15) 0%, rgba(239, 233, 201, 0.15) 100%);
 }
 
 .user-info-avatar {
@@ -389,7 +389,7 @@ export default {
   font-size: 20px;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+  background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
   border-radius: 50%;
 }
 

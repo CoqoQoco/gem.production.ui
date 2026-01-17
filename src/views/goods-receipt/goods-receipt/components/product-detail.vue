@@ -405,14 +405,14 @@ export default {
   color: #111827;
   margin: 0 0 1.5rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #ff69b4;
+  border-bottom: 2px solid #e7de99;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   i {
     font-size: 1.25rem;
-    color: #ff69b4;
+    color: #e7de99;
   }
 }
 
@@ -474,8 +474,8 @@ export default {
 
     &:focus {
       outline: none;
-      border-color: #ff69b4;
-      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+      border-color: #e7de99;
+      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
     }
 
     &.p-invalid,

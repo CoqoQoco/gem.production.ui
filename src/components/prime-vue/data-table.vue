@@ -481,12 +481,12 @@ const onSingleSelectionChange = (checked, item) => {
   :deep(.p-datatable) {
     font-size: 14px;
 
-    // Header Styles - Pink Theme
+    // Header Styles - Gold Theme
     .p-datatable-thead > tr > th {
-      background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+      background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
       padding: 0.75rem 1rem;
-      border: 1px solid #ffd7e1;
-      color: #ffffff;
+      border: 1px solid #efe9c9;
+      color: #1f2937;
       font-weight: 600;
 
       .p-column-header-content {
@@ -495,20 +495,20 @@ const onSingleSelectionChange = (checked, item) => {
         justify-content: space-between;
 
         .p-column-title {
-          color: #ffffff;
+          color: #1f2937;
           font-weight: 600;
           margin-right: 0.5rem;
         }
 
         .p-sortable-column-icon,
         .pi {
-          color: #ffffff;
+          color: #1f2937;
           font-size: 0.875rem;
         }
 
         .p-sortable-column-badge {
-          background-color: #ffffff;
-          color: #ff69b4;
+          background-color: #1f2937;
+          color: #ffffff;
           font-size: 0.75rem;
           margin-left: 0.25rem;
           min-width: 1.25rem;
@@ -522,20 +522,20 @@ const onSingleSelectionChange = (checked, item) => {
 
       &.p-sortable-column {
         &:hover {
-          background: linear-gradient(135deg, #ffa6b1 0%, #ffb0bb 100%);
+          background: linear-gradient(135deg, #dfd070 0%, #dfd070 100%);
 
           .p-sortable-column-icon,
           .pi {
-            color: #ffffff;
+            color: #1f2937;
           }
         }
 
         &.p-highlight {
-          background: linear-gradient(135deg, #ff96a1 0%, #ffa0ab 100%);
+          background: linear-gradient(135deg, #d7c247 0%, #d7c247 100%);
 
           .p-sortable-column-icon,
           .pi {
-            color: #ffffff;
+            color: #1f2937;
           }
         }
       }
@@ -546,14 +546,14 @@ const onSingleSelectionChange = (checked, item) => {
       transition: all 0.2s;
 
       &.p-highlight {
-        background-color: rgba(255, 182, 193, 0.2);
+        background-color: rgba(239, 233, 201, 0.2);
 
         &:hover {
-          background-color: rgba(255, 182, 193, 0.3);
+          background-color: rgba(239, 233, 201, 0.3);
         }
 
         &:nth-child(even) {
-          background-color: rgba(255, 182, 193, 0.25);
+          background-color: rgba(239, 233, 201, 0.25);
         }
       }
 
@@ -565,11 +565,11 @@ const onSingleSelectionChange = (checked, item) => {
       }
 
       &:nth-child(even) {
-        background-color: #fef8f9;
+        background-color: #faf9f0;
       }
 
       &:hover {
-        background-color: rgba(255, 182, 193, 0.1);
+        background-color: rgba(239, 233, 201, 0.1);
       }
     }
 
@@ -580,12 +580,12 @@ const onSingleSelectionChange = (checked, item) => {
     }
   }
 
-  // Paginator Styles - Pink Theme
+  // Paginator Styles - Gold Theme
   :deep(.p-paginator) {
     font-size: 11px;
     padding: 0.5rem;
     background: #ffffff;
-    border: 1px solid #ffd7e1;
+    border: 1px solid #efe9c9;
     border-radius: 8px;
 
     // Override PrimeVue default grid layout
@@ -646,7 +646,7 @@ const onSingleSelectionChange = (checked, item) => {
       width: 1.75rem !important;
       height: 1.75rem !important;
       margin: 0 0.1rem !important;
-      border: 1px solid #ffd7e1;
+      border: 1px solid #efe9c9;
       border-radius: 6px;
       transition: all 0.2s;
       flex-shrink: 0 !important;
@@ -657,14 +657,14 @@ const onSingleSelectionChange = (checked, item) => {
       justify-content: center !important;
 
       &:not(.p-disabled):not(.p-highlight):hover {
-        background: rgba(255, 182, 193, 0.1);
-        border-color: #ffb6c1;
+        background: rgba(239, 233, 201, 0.1);
+        border-color: #efe9c9;
       }
 
       &.p-highlight {
-        background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
-        color: #ffffff;
-        border-color: #ffb6c1;
+        background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
+        color: #1f2937;
+        border-color: #efe9c9;
       }
     }
 
@@ -684,14 +684,14 @@ const onSingleSelectionChange = (checked, item) => {
       min-width: 90px !important;
       max-width: 90px  !important;
       margin: 0 0.25rem !important;
-      border: 1px solid #ffd7e1 !important;
+      border: 1px solid #efe9c9 !important;
       border-radius: 6px !important;
       flex-shrink: 0 !important;
       flex-grow: 0 !important;
       font-size: 11px !important;
 
       &:hover {
-        border-color: #ffb6c1 !important;
+        border-color: #efe9c9 !important;
       }
 
       .p-dropdown-label {
@@ -764,7 +764,7 @@ const onSingleSelectionChange = (checked, item) => {
     i {
       font-size: 3rem;
       margin-bottom: 1rem;
-      color: #ffb6c1;
+      color: #efe9c9;
     }
 
     p {
@@ -799,7 +799,7 @@ const onSingleSelectionChange = (checked, item) => {
     justify-content: center;
   }
 
-  // Table Scrollbar - Pink Theme
+  // Table Scrollbar - Gold Theme
   :deep(.p-datatable-wrapper) {
     &::-webkit-scrollbar {
       width: 8px;
@@ -807,24 +807,24 @@ const onSingleSelectionChange = (checked, item) => {
     }
 
     &::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+      background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
       border-radius: 4px;
 
       &:hover {
-        background: linear-gradient(135deg, #ffa6b1 0%, #ffb0bb 100%);
+        background: linear-gradient(135deg, #dfd070 0%, #dfd070 100%);
       }
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #fef8f9;
+      background-color: #faf9f0;
       border-radius: 4px;
     }
   }
 
-  // Resize Handle - Pink Theme
+  // Resize Handle - Gold Theme
   :deep(.p-column-resizer) {
     &:hover {
-      background-color: #ffb6c1;
+      background-color: #efe9c9;
     }
   }
 
@@ -836,18 +836,18 @@ const onSingleSelectionChange = (checked, item) => {
     .pi-sort-amount-up-alt,
     .pi-sort-amount-down,
     .p-sortable-column-badge {
-      color: #ffffff;
+      color: #1f2937;
     }
   }
 
-  // Expanded content - Pink Theme
+  // Expanded content - Gold Theme
   :deep(.expanded-row-content) {
-    background-color: #fef8f9;
-    border-bottom: 1px solid #ffd7e1;
+    background-color: #faf9f0;
+    border-bottom: 1px solid #efe9c9;
     padding: 1rem;
   }
 
-  // Expand button - Pink Theme
+  // Expand button - Gold Theme
   :deep(.p-row-toggler) {
     width: 2rem;
     height: 2rem;
@@ -859,37 +859,37 @@ const onSingleSelectionChange = (checked, item) => {
     transition: all 0.2s;
 
     &:hover {
-      background-color: rgba(255, 182, 193, 0.1);
+      background-color: rgba(239, 233, 201, 0.1);
     }
 
     .p-row-toggler-icon {
       font-size: 1rem;
-      color: #ff69b4;
+      color: #e7de99;
     }
   }
 
-  // Checkbox & Radio Button - Pink Theme
+  // Checkbox & Radio Button - Gold Theme
   :deep(.p-checkbox),
   :deep(.p-radiobutton) {
     .p-checkbox-box,
     .p-radiobutton-box {
-      border-color: #ffd7e1;
+      border-color: #efe9c9;
 
       &:hover {
-        border-color: #ffb6c1;
+        border-color: #efe9c9;
       }
 
       &.p-highlight {
-        background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
-        border-color: #ffb6c1;
+        background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
+        border-color: #efe9c9;
       }
     }
 
     &.selected-row {
       .p-checkbox-box,
       .p-radiobutton-box {
-        background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
-        border-color: #ffb6c1;
+        background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
+        border-color: #efe9c9;
       }
     }
   }

@@ -29,21 +29,21 @@ import './assets/styles/main.scss' // Custom styles
 import App from './App.vue'
 import router from './router'
 
-// Custom Pink Theme Preset
-const PinkTheme = definePreset(Aura, {
+// Custom Gold Theme Preset
+const GoldTheme = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '{pink.50}',
-      100: '{pink.100}',
-      200: '{pink.200}',
-      300: '{pink.300}',
-      400: '{pink.400}',
-      500: '{pink.500}',
-      600: '{pink.600}',
-      700: '{pink.700}',
-      800: '{pink.800}',
-      900: '{pink.900}',
-      950: '{pink.950}'
+      50: '#faf9f0',
+      100: '#f5f3e1',
+      200: '#efe9c9',
+      300: '#e7de99',
+      400: '#dfd070',
+      500: '#d7c247',
+      600: '#c0ab28',
+      700: '#91801e',
+      800: '#615514',
+      900: '#302b0a',
+      950: '#1a1705'
     }
   }
 })
@@ -56,7 +56,7 @@ app.use(router)
 app.use(i18n)
 app.use(PrimeVue, {
   theme: {
-    preset: PinkTheme,
+    preset: GoldTheme,
     options: {
       darkModeSelector: false,
       cssLayer: false
