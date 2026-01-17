@@ -6,8 +6,8 @@
         <div class="header-left">
           <i class="pi pi-box header-icon"></i>
           <div class="header-text">
-            <h1 class="header-title">{{ $t('goodsReceipt.title') }}</h1>
-            <p class="header-subtitle">{{ $t('goodsReceipt.subtitle') }}</p>
+            <h1 class="header-title">{{ $t("goodsReceipt.title") }}</h1>
+            <p class="header-subtitle">{{ $t("goodsReceipt.subtitle") }}</p>
           </div>
         </div>
       </div>
@@ -35,10 +35,7 @@
       </div>
 
       <!-- Product Detail Section (Part 1) -->
-      <ProductDetail
-        ref="productDetailRef"
-        v-model="productData"
-      />
+      <ProductDetail ref="productDetailRef" v-model="productData" />
 
       <!-- Branch and Product Type Selection -->
       <BranchProductTypeSelection
@@ -47,10 +44,7 @@
       />
 
       <!-- Part 2: Product Components -->
-      <ProductComponents
-        ref="productComponentsRef"
-        v-model="componentsData"
-      />
+      <ProductComponents ref="productComponentsRef" v-model="componentsData" />
 
       <!-- Action Buttons -->
       <div class="action-buttons">
@@ -81,154 +75,163 @@
       @confirm="handleConfirmSave"
       @back="showConfirmModal = false"
     />
+
+    <Toast />
   </div>
 </template>
 
 <script>
-import ProductDetail from './components/product-detail.vue'
-import BranchProductTypeSelection from './components/branch-product-type-selection.vue'
-import ProductComponents from './components/product-components.vue'
-import ConfirmationModal from './modal/confirmation-modal.vue'
-import { useGoodsReceiptApiStore } from '@/stores/api/goods-receipt-api'
-import { mockDataSets } from './__mocks__/goods-receipt-mock-data'
+import ProductDetail from "./components/product-detail.vue";
+import BranchProductTypeSelection from "./components/branch-product-type-selection.vue";
+import ProductComponents from "./components/product-components.vue";
+import ConfirmationModal from "./modal/confirmation-modal.vue";
+import { useGoodsReceiptApiStore } from "@/stores/api/goods-receipt-api";
+import { mockDataSets } from "./__mocks__/goods-receipt-mock-data";
+
+import { useToast } from "primevue/usetoast";
+import Toast from "primevue/toast";
 
 export default {
-  name: 'GoodsReceiptIndex',
+  name: "GoodsReceiptIndex",
 
   components: {
     ProductDetail,
     BranchProductTypeSelection,
     ProductComponents,
-    ConfirmationModal
+    ConfirmationModal,
   },
 
   setup() {
-    const goodsReceiptApiStore = useGoodsReceiptApiStore()
+    const goodsReceiptApiStore = useGoodsReceiptApiStore();
     return {
       goodsReceiptApiStore,
-      mockDataSets
-    }
+      mockDataSets,
+      Toast,
+    };
   },
 
   data() {
     return {
       productData: {
-        originNumber: '',
-        mold: '',
-        productNameEn: '',
-        productNameTH: '',
+        originNumber: "",
+        mold: "",
+        productNameEn: "",
+        productNameTH: "",
         qty: null,
-        qtyUnit: '',
+        qtyUnit: "",
         price: null,
-        unitPrice: ''
+        unitPrice: "",
       },
       branchProductTypeData: {
         branchId: null,
-        branchNameTh: '',
-        branchNameEn: '',
-        productTypeCode: '',
-        productTypeNameTh: '',
-        productTypeNameEn: ''
+        branchNameTh: "",
+        branchNameEn: "",
+        productTypeCode: "",
+        productTypeNameTh: "",
+        productTypeNameEn: "",
       },
       componentsData: {
         components: [],
-        productImageUrl: '',
-        productImageBlobName: '',
+        productImageUrl: "",
+        productImageBlobName: "",
         costSummary: {
           actualCost: 0,
           usedCost: 0,
           discountPercent: 0,
-          finalCost: 0
-        }
+          finalCost: 0,
+        },
       },
       showConfirmModal: false,
       isSaving: false,
-      isDevelopment: import.meta.env.DEV || import.meta.env.MODE === 'development'
-    }
+      isDevelopment:
+        import.meta.env.DEV || import.meta.env.MODE === "development",
+
+      toast: null,
+    };
   },
 
   methods: {
     fillMockData(dataSetIndex = 0) {
-      const mockSet = mockDataSets[dataSetIndex]
+      const mockSet = mockDataSets[dataSetIndex];
 
       if (!mockSet) {
-        console.error('Mock data set not found:', dataSetIndex)
-        return
+        console.error("Mock data set not found:", dataSetIndex);
+        return;
       }
 
       // Fill Product Data
-      this.productData = { ...mockSet.productData }
+      this.productData = { ...mockSet.productData };
 
       // Fill Branch and Product Type Data
-      this.branchProductTypeData = { ...mockSet.branchProductTypeData }
+      this.branchProductTypeData = { ...mockSet.branchProductTypeData };
 
       // Fill Components Data
-      this.componentsData = JSON.parse(JSON.stringify(mockSet.componentsData))
+      this.componentsData = JSON.parse(JSON.stringify(mockSet.componentsData));
 
-      this.$toast.add({
-        severity: 'success',
-        summary: 'สำเร็จ',
+      this.toast.add({
+        severity: "success",
+        summary: "สำเร็จ",
         detail: `กรอกข้อมูลจำลอง "${mockSet.name}" เรียบร้อยแล้ว`,
-        life: 3000
-      })
+        life: 3000,
+      });
 
-      console.log('Mock Data Loaded:', {
+      console.log("Mock Data Loaded:", {
         productData: this.productData,
         branchProductTypeData: this.branchProductTypeData,
-        componentsData: this.componentsData
-      })
+        componentsData: this.componentsData,
+      });
     },
 
     async handleSave() {
       // Validate all sections
-      const productDetailRef = this.$refs.productDetailRef
-      const branchProductTypeRef = this.$refs.branchProductTypeRef
-      const productComponentsRef = this.$refs.productComponentsRef
+      const productDetailRef = this.$refs.productDetailRef;
+      const branchProductTypeRef = this.$refs.branchProductTypeRef;
+      const productComponentsRef = this.$refs.productComponentsRef;
 
       if (!productDetailRef) {
-        console.error('Product detail ref not found')
-        return
+        console.error("Product detail ref not found");
+        return;
       }
 
       if (!branchProductTypeRef) {
-        console.error('Branch product type ref not found')
-        return
+        console.error("Branch product type ref not found");
+        return;
       }
 
       if (!productComponentsRef) {
-        console.error('Product components ref not found')
-        return
+        console.error("Product components ref not found");
+        return;
       }
 
-      const isProductValid = productDetailRef.validate()
-      const isBranchProductTypeValid = branchProductTypeRef.validate()
-      const isComponentsValid = productComponentsRef.validate()
+      const isProductValid = productDetailRef.validate();
+      const isBranchProductTypeValid = branchProductTypeRef.validate();
+      const isComponentsValid = productComponentsRef.validate();
 
       if (!isProductValid || !isBranchProductTypeValid || !isComponentsValid) {
-        this.$toast.add({
-          severity: 'error',
-          summary: this.$t('common.error'),
-          detail: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-          life: 3000
-        })
-        return
+        this.toast.add({
+          severity: "error",
+          summary: this.$t("common.error"),
+          detail: "กรุณากรอกข้อมูลให้ครบถ้วน",
+          life: 3000,
+        });
+        return;
       }
 
-      console.log('All validations passed. Preparing to save data.')
-      console.log('Product Data:', this.productData)
-      console.log('Branch & Product Type Data:', this.branchProductTypeData)    
+      console.log("All validations passed. Preparing to save data.");
+      console.log("Product Data:", this.productData);
+      console.log("Branch & Product Type Data:", this.branchProductTypeData);
 
       // Show confirmation modal instead of saving directly
-      this.showConfirmModal = true
+      this.showConfirmModal = true;
     },
 
     async handleConfirmSave() {
       // Save logic here
-      this.isSaving = true
+      this.isSaving = true;
 
       try {
         // Components are already in the correct format from product-components.vue
-        const components = this.componentsData.components || []
+        const components = this.componentsData.components || [];
 
         // Prepare API payload with new structure (without image URL first)
         const payload = {
@@ -247,164 +250,186 @@ export default {
           productTypeNameTh: this.branchProductTypeData.productTypeNameTh,
           productTypeNameEn: this.branchProductTypeData.productTypeNameEn,
           // New fields
-          productImageUrl: '', // Will be updated after upload
+          productImageUrl: "", // Will be updated after upload
           components: components,
-          costSummary: this.componentsData.costSummary
-        }
+          costSummary: this.componentsData.costSummary,
+        };
 
-        console.log('Sending payload to API:', payload)
+        console.log("Sending payload to API:", payload);
 
         // Call API to save data first
-        const result = await this.goodsReceiptApiStore.manualReceipt(payload)
+        const result = await this.goodsReceiptApiStore.manualReceipt(payload);
+
+        console.log("API response:", result);
 
         if (!result.success) {
           // Show error alert
-          this.$toast.add({
-            severity: 'error',
-            summary: this.$t('common.error') || 'เกิดข้อผิดพลาด',
-            detail: result.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
-            life: 5000
-          })
-          throw new Error(result.message || 'Failed to save goods receipt')
+          this.toast.add({
+            severity: "error",
+            summary: this.$t("common.error") || "เกิดข้อผิดพลาด",
+            detail: result.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+            life: 5000,
+          });
+          throw new Error(result.message || "Failed to save goods receipt");
         }
 
         // Get stockNumber from API response
-        const stockNumber = result.stockNumber || result.data?.stockNumber
-        console.log('Submit successful. Stock Number:', stockNumber)
-        console.log('Full API response:', result)
+        const stockNumber = result.stockNumber || result.data?.stockNumber;
+        console.log("Submit successful. Stock Number:", stockNumber);
+        console.log("Full API response:", result);
 
         // Upload image after submit success (if any)
-        const productComponentsRef = this.$refs.productComponentsRef
+        const productComponentsRef = this.$refs.productComponentsRef;
 
         // Check if there's a pending image file to upload
-        if (productComponentsRef && productComponentsRef.pendingImageFile && productComponentsRef.uploadPendingImage) {
+        if (
+          productComponentsRef &&
+          productComponentsRef.pendingImageFile &&
+          productComponentsRef.uploadPendingImage
+        ) {
           if (!stockNumber) {
-            console.warn('⚠️ stockNumber is null/undefined. Backend needs to return stockNumber in response.')
-            console.warn('Image will be uploaded with auto-generated name (GUID) instead.')
+            console.warn(
+              "⚠️ stockNumber is null/undefined. Backend needs to return stockNumber in response."
+            );
+            console.warn(
+              "Image will be uploaded with auto-generated name (GUID) instead."
+            );
           }
 
-          console.log('Uploading pending image with stock number:', stockNumber || 'auto-generated')
+          console.log(
+            "Uploading pending image with stock number:",
+            stockNumber || "auto-generated"
+          );
           try {
             // Upload image with stockNumber as filename (or auto-generated if null)
-            const uploadResult = await productComponentsRef.uploadPendingImage(stockNumber)
-            console.log('Image uploaded successfully:', uploadResult)
+            const uploadResult = await productComponentsRef.uploadPendingImage(
+              stockNumber
+            );
+            console.log("Image uploaded successfully:", uploadResult);
 
             // TODO: Update the record with image URL if needed
             // You might need to call another API to update the product with imageUrl
             if (uploadResult && uploadResult.blobUrl) {
-              console.log('Image URL to update:', uploadResult.blobUrl)
+              console.log("Image URL to update:", uploadResult.blobUrl);
               // await this.goodsReceiptApiStore.updateProductImage(stockNumber, uploadResult.blobUrl)
             }
           } catch (uploadError) {
-            console.error('Image upload failed:', uploadError)
+            console.error("Image upload failed:", uploadError);
             // Show warning but don't fail the whole process
-            this.$toast.add({
-              severity: 'warn',
-              summary: 'คำเตือน',
+            this.toast.add({
+              severity: "warn",
+              summary: "คำเตือน",
               detail: `บันทึกข้อมูลสำเร็จ แต่อัพโหลดรูปภาพล้มเหลว: ${uploadError.message}`,
-              life: 5000
-            })
+              life: 5000,
+            });
           }
         } else {
           // No pending image file - use existing productImageUrl (from mock data or already uploaded)
-          console.log('No pending image file to upload. Using existing productImageUrl:', this.componentsData.productImageUrl)
+          console.log(
+            "No pending image file to upload. Using existing productImageUrl:",
+            this.componentsData.productImageUrl
+          );
         }
 
         // Show success message
-        this.$toast.add({
-          severity: 'success',
-          summary: this.$t('common.success') || 'สำเร็จ',
-          detail: result.message || 'บันทึกข้อมูลสำเร็จ',
-          life: 3000
-        })
+        this.toast.add({
+          severity: "success",
+          summary: this.$t("common.success") || "สำเร็จ",
+          detail: result.message || "บันทึกข้อมูลสำเร็จ",
+          life: 3000,
+        });
 
         // Close modal and reset form after successful save
-        this.showConfirmModal = false
-        this.resetForm()
+        this.showConfirmModal = false;
+        this.resetForm();
       } catch (error) {
-        console.error('Error saving product data:', error)
+        console.error("Error saving product data:", error);
 
         // Make sure error alert shows
-        this.$toast.add({
-          severity: 'error',
-          summary: this.$t('common.error') || 'เกิดข้อผิดพลาด',
-          detail: error.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
-          life: 5000
-        })
+        this.toast.add({
+          severity: "error",
+          summary: this.$t("common.error") || "เกิดข้อผิดพลาด",
+          detail: error.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+          life: 5000,
+        });
       } finally {
-        this.isSaving = false
+        this.isSaving = false;
       }
     },
 
     resetForm() {
       this.productData = {
-        originNumber: '',
-        mold: '',
-        productNameEn: '',
-        productNameTH: '',
+        originNumber: "",
+        mold: "",
+        productNameEn: "",
+        productNameTH: "",
         qty: null,
-        qtyUnit: '',
+        qtyUnit: "",
         price: null,
-        unitPrice: ''
-      }
+        unitPrice: "",
+      };
 
       this.branchProductTypeData = {
         branchId: null,
-        branchNameTh: '',
-        branchNameEn: '',
-        productTypeCode: '',
-        productTypeNameTh: '',
-        productTypeNameEn: ''
-      }
+        branchNameTh: "",
+        branchNameEn: "",
+        productTypeCode: "",
+        productTypeNameTh: "",
+        productTypeNameEn: "",
+      };
 
       this.componentsData = {
         components: [],
-        productImageUrl: '',
-        productImageBlobName: '',
+        productImageUrl: "",
+        productImageBlobName: "",
         costSummary: {
           actualCost: 0,
           usedCost: 0,
           discountPercent: 0,
-          finalCost: 0
-        }
-      }
+          finalCost: 0,
+        },
+      };
 
-      const productDetailRef = this.$refs.productDetailRef
+      const productDetailRef = this.$refs.productDetailRef;
       if (productDetailRef && productDetailRef.reset) {
-        productDetailRef.reset()
+        productDetailRef.reset();
       }
 
-      const branchProductTypeRef = this.$refs.branchProductTypeRef
+      const branchProductTypeRef = this.$refs.branchProductTypeRef;
       if (branchProductTypeRef && branchProductTypeRef.reset) {
-        branchProductTypeRef.reset()
+        branchProductTypeRef.reset();
       }
 
-      const productComponentsRef = this.$refs.productComponentsRef
+      const productComponentsRef = this.$refs.productComponentsRef;
       if (productComponentsRef && productComponentsRef.reset) {
-        productComponentsRef.reset()
+        productComponentsRef.reset();
       }
     },
 
     handleClear() {
       this.$confirm.require({
-        message: 'คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?',
-        header: 'ยืนยันการล้างข้อมูล',
-        icon: 'pi pi-exclamation-triangle',
-        acceptLabel: 'ใช่',
-        rejectLabel: 'ไม่',
+        message: "คุณต้องการล้างข้อมูลทั้งหมดหรือไม่?",
+        header: "ยืนยันการล้างข้อมูล",
+        icon: "pi pi-exclamation-triangle",
+        acceptLabel: "ใช่",
+        rejectLabel: "ไม่",
         accept: () => {
-          this.resetForm()
-          this.$toast.add({
-            severity: 'info',
-            summary: 'ล้างข้อมูลสำเร็จ',
-            detail: 'ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว',
-            life: 3000
-          })
-        }
-      })
-    }
-  }
-}
+          this.resetForm();
+          this.toast.add({
+            severity: "info",
+            summary: "ล้างข้อมูลสำเร็จ",
+            detail: "ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว",
+            life: 3000,
+          });
+        },
+      });
+    },
+  },
+
+  mounted() {
+    this.toast = useToast();
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -450,7 +475,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(255, 20, 147, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 105, 180, 0.1) 0%,
+    rgba(255, 20, 147, 0.1) 100%
+  );
   border-radius: 12px;
 }
 

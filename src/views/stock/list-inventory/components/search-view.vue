@@ -21,6 +21,7 @@
             v-model="localFilters.stockNumbers"
             :placeholder="$t('stockInventory.filters.stockNumberPlaceholder') || 'กด Enter เพื่อเพิ่ม'"
             class="filter-chips"
+            @add="trimChipValue($event, 'stockNumbers')"
           />
         </div>
 
@@ -31,6 +32,7 @@
             v-model="localFilters.productCodes"
             :placeholder="$t('stockInventory.filters.productCodePlaceholder') || 'กด Enter เพื่อเพิ่ม'"
             class="filter-chips"
+            @add="trimChipValue($event, 'productCodes')"
           />
         </div>
 
@@ -247,9 +249,18 @@ export default {
 
   methods: {
     handleSearch() {
+      // Helper function to trim and filter array values
+      const trimAndFilterArray = (arr) => {
+        if (!arr || arr.length === 0) return null
+        const trimmed = arr
+          .map(item => typeof item === 'string' ? item.trim() : item)
+          .filter(item => item !== '' && item !== null && item !== undefined)
+        return trimmed.length > 0 ? trimmed : null
+      }
+
       const cleanFilters = {
-        stockNumbers: this.localFilters.stockNumbers?.length > 0 ? this.localFilters.stockNumbers : null,
-        productCodes: this.localFilters.productCodes?.length > 0 ? this.localFilters.productCodes : null,
+        stockNumbers: trimAndFilterArray(this.localFilters.stockNumbers),
+        productCodes: trimAndFilterArray(this.localFilters.productCodes),
         receiptDateMin: this.localFilters.receiptDateMin,
         receiptDateMax: this.localFilters.receiptDateMax
       }
@@ -301,6 +312,21 @@ export default {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
+      })
+    },
+
+    /**
+     * Trim chip value when added to InputChips
+     * @param {Object} event - Add event from InputChips
+     * @param {String} fieldName - Field name (stockNumbers or productCodes)
+     */
+    trimChipValue(event, fieldName) {
+      this.$nextTick(() => {
+        if (this.localFilters[fieldName] && Array.isArray(this.localFilters[fieldName])) {
+          this.localFilters[fieldName] = this.localFilters[fieldName].map(item =>
+            typeof item === 'string' ? item.trim() : item
+          )
+        }
       })
     }
   }

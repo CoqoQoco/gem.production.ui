@@ -874,6 +874,7 @@
     "searchPlaceholder": "ค้นหา Stock Number, Product Code...",
     "noData": "ไม่พบข้อมูล",
     "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "productImage": "รูปภาพสินค้า",
     "table": {
       "stockNumber": "Stock Number",
       "productCode": "Product Code",
@@ -887,12 +888,20 @@
     "materials": {
       "title": "ส่วนประกอบวัตถุดิบ",
       "type": "ประเภท",
-      "typeName": "ชื่อประเภท",
-      "sizeShape": "ขนาด/รูปร่าง",
+      "itemName": "ชื่อรายการ",
+      "shape": "รูปร่าง",
       "weight": "น้ำหนัก",
       "qty": "จำนวน",
-      "price": "ราคา",
+      "price": "ราคา (บาท/กรัม)",
+      "cost": "ต้นทุน (บาท)",
       "noMaterials": "ไม่มีข้อมูลวัตถุดิบ"
+    },
+    "costSummary": {
+      "title": "สรุปต้นทุน",
+      "actualCost": "ต้นทุนจริง",
+      "usedCost": "ต้นทุนที่ใช้",
+      "discount": "ส่วนลด",
+      "finalCost": "ต้นทุนสุดท้าย"
     },
     "filters": {
       "stockNumber": "Stock Number",

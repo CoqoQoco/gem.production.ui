@@ -38,21 +38,51 @@ export const useStockApiStore = defineStore('stockApi', () => {
     error.value = null
 
     try {
+      const pageIndex = params.pageIndex || 0
+      const pageSize = params.pageSize || 10
+      const skip = pageIndex * pageSize // Calculate skip from pageIndex and pageSize
+
+      // Helper function to convert empty arrays to null
+      const normalizeArray = (value) => {
+        if (Array.isArray(value) && value.length > 0) {
+          return value
+        }
+        return null
+      }
+
+      // Normalize goldFilter
+      const goldFilter = params.criteria?.goldFilter
+      const normalizedGoldFilter = (goldFilter?.typeCode1?.length > 0 || goldFilter?.typeCode2?.length > 0)
+        ? {
+            typeCode1: normalizeArray(goldFilter.typeCode1),
+            typeCode2: normalizeArray(goldFilter.typeCode2)
+          }
+        : null
+
+      // Normalize gemFilter
+      const gemFilter = params.criteria?.gemFilter
+      const normalizedGemFilter = (gemFilter?.typeCode1?.length > 0 || gemFilter?.typeCode2?.length > 0)
+        ? {
+            typeCode1: normalizeArray(gemFilter.typeCode1),
+            typeCode2: normalizeArray(gemFilter.typeCode2)
+          }
+        : null
+
       const payload = {
-        skip: params.pageIndex || 0,
-        take: params.pageSize || 10,
+        skip: skip,
+        take: pageSize,
         sort: params.sort || [],
         criteria: {
           receiptDateMin: params.criteria?.receiptDateMin || null,
           receiptDateMax: params.criteria?.receiptDateMax || null,
-          productCodes: params.criteria?.productCodes || null,
-          stockNumbers: params.criteria?.stockNumbers || null,
-          productTypeCodes: params.criteria?.productTypeCodes || null,
+          productCodes: normalizeArray(params.criteria?.productCodes),
+          stockNumbers: normalizeArray(params.criteria?.stockNumbers),
+          productTypeCodes: normalizeArray(params.criteria?.productTypeCodes),
           priceMin: params.criteria?.priceMin || null,
           priceMax: params.criteria?.priceMax || null,
-          branchIds: params.criteria?.branchIds || null,
-          goldFilter: params.criteria?.goldFilter || null,
-          gemFilter: params.criteria?.gemFilter || null
+          branchIds: normalizeArray(params.criteria?.branchIds),
+          goldFilter: normalizedGoldFilter,
+          gemFilter: normalizedGemFilter
         }
       }
 

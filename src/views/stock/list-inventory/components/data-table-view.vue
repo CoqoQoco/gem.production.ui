@@ -74,6 +74,23 @@
       <!-- Expanded Row Template (Materials) -->
       <template #expansion="{ data }">
         <div class="stock-material-expansion">
+          <!-- Product Image Section -->
+          <div v-if="data.stockNumber" class="product-image-section">
+            <h4 class="material-section-title">
+              <i class="pi pi-image"></i>
+              {{ $t("stockInventory.productImage") || "รูปภาพสินค้า" }}
+            </h4>
+            <div class="product-image-container">
+              <img
+                :src="getProductImageUrl(data.stockNumber)"
+                :alt="data.productNameTh || 'Product Image'"
+                @error="handleImageError"
+                class="product-image"
+              />
+            </div>
+          </div>
+
+          <!-- Materials Section -->
           <h4 class="material-section-title">
             <i class="pi pi-th-large"></i>
             {{ $t("stockInventory.materials.title") || "ส่วนประกอบวัตถุดิบ" }}
@@ -95,38 +112,36 @@
               <template #typeTemplate="{ data: material }">
                 <Tag
                   :value="material.type"
-                  :severity="
-                    material.type.toLowerCase() === 'gold' ? 'warning' : 'info'
-                  "
+                  :severity="getMaterialTypeSeverity(material.type)"
                 />
               </template>
 
-              <!-- Type Name Template -->
-              <template #typeNameThTemplate="{ data: material }">
+              <!-- Item Name Template -->
+              <template #itemNameThTemplate="{ data: material }">
                 <div class="type-name-cell">
-                  <div>{{ material.typeNameTh }}</div>
-                  <div class="type-name-en">{{ material.typeNameEn }}</div>
+                  <div>{{ material.itemNameTh || "-" }}</div>
+                  <div class="type-name-en">{{ material.itemNameEn || "-" }}</div>
                 </div>
               </template>
 
-              <!-- Size/Shape Template -->
-              <template #typeNameTh2Template="{ data: material }">
+              <!-- Shape Name Template -->
+              <template #shapeNameThTemplate="{ data: material }">
                 <div class="size-shape-cell">
-                  {{ material.typeNameTh2 || "-" }}
+                  {{ material.shapeNameTh || "-" }}
                 </div>
               </template>
 
               <!-- Weight Template -->
               <template #weightTemplate="{ data: material }">
                 <div class="weight-cell">
-                  {{ material.weight }} {{ material.weightUnit }}
+                  {{ material.weight || "-" }} {{ material.weightUnit || "" }}
                 </div>
               </template>
 
               <!-- Quantity Template -->
               <template #qtyTemplate="{ data: material }">
                 <div class="qty-cell">
-                  {{ material.qty }} {{ material.qtyUnit }}
+                  {{ material.qty || "-" }} {{ material.qtyUnit || "" }}
                 </div>
               </template>
 
@@ -134,6 +149,13 @@
               <template #priceTemplate="{ data: material }">
                 <div class="price-cell">
                   {{ formatCurrency(material.price) }}
+                </div>
+              </template>
+
+              <!-- Cost Template -->
+              <template #costTemplate="{ data: material }">
+                <div class="price-cell">
+                  {{ formatCurrency(material.cost) }}
                 </div>
               </template>
             </BaseDataTable>
@@ -148,6 +170,32 @@
                 "ไม่มีข้อมูลวัตถุดิบ"
               }}
             </p>
+          </div>
+
+          <!-- Cost Summary Section -->
+          <div v-if="data.costSummary" class="cost-summary-section">
+            <h4 class="material-section-title">
+              <i class="pi pi-money-bill"></i>
+              {{ $t("stockInventory.costSummary.title") || "สรุปต้นทุน" }}
+            </h4>
+            <div class="cost-summary-grid">
+              <div class="cost-summary-item">
+                <label>{{ $t("stockInventory.costSummary.actualCost") || "ต้นทุนจริง" }}</label>
+                <span class="cost-value">{{ formatCurrency(data.costSummary.actualCost) }}</span>
+              </div>
+              <div class="cost-summary-item">
+                <label>{{ $t("stockInventory.costSummary.usedCost") || "ต้นทุนที่ใช้" }}</label>
+                <span class="cost-value">{{ formatCurrency(data.costSummary.usedCost) }}</span>
+              </div>
+              <div class="cost-summary-item">
+                <label>{{ $t("stockInventory.costSummary.discount") || "ส่วนลด" }}</label>
+                <span class="cost-value">{{ data.costSummary.discountPercent }}%</span>
+              </div>
+              <div class="cost-summary-item final-cost">
+                <label>{{ $t("stockInventory.costSummary.finalCost") || "ต้นทุนสุดท้าย" }}</label>
+                <span class="cost-value">{{ formatCurrency(data.costSummary.finalCost) }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -250,14 +298,14 @@ export default {
           align: "center",
         },
         {
-          field: "typeNameTh",
-          header: this.$t("stockInventory.materials.typeName") || "Type Name",
+          field: "itemNameTh",
+          header: this.$t("stockInventory.materials.itemName") || "Item Name",
           sortable: false,
           minWidth: "150px",
         },
         {
-          field: "typeNameTh2",
-          header: this.$t("stockInventory.materials.sizeShape") || "Size/Shape",
+          field: "shapeNameTh",
+          header: this.$t("stockInventory.materials.shape") || "Shape",
           sortable: false,
           minWidth: "120px",
         },
@@ -282,7 +330,16 @@ export default {
           minWidth: "100px",
           align: "right",
         },
+        {
+          field: "cost",
+          header: this.$t("stockInventory.materials.cost") || "Cost",
+          sortable: false,
+          minWidth: "100px",
+          align: "right",
+        },
       ],
+      azureBlobBaseUrl: import.meta.env.VITE_AZURE_BLOB_URL || 'https://gemproduction.blob.core.windows.net/image-gem/',
+      placeholderImage: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4='
     };
   },
 
@@ -330,6 +387,52 @@ export default {
         pending: "warning",
       };
       return statusMap[status?.toLowerCase()] || "info";
+    },
+
+    getMaterialTypeSeverity(type) {
+      const typeMap = {
+        gold: "warning",
+        gem: "info",
+        labor: "secondary",
+      };
+      return typeMap[type?.toLowerCase()] || "secondary";
+    },
+
+    /**
+     * Get product image URL from Azure Blob Storage
+     * @param {string} stockNumber - Stock number (e.g., "SN-2601-016")
+     * @returns {string} Full image URL
+     */
+    getProductImageUrl(stockNumber) {
+      if (!stockNumber) return this.placeholderImage;
+
+      // Try .jpg first (most common)
+      return `${this.azureBlobBaseUrl}${stockNumber}.jpg`;
+    },
+
+    /**
+     * Handle image load error - try different extensions
+     * @param {Event} event - Image error event
+     */
+    handleImageError(event) {
+      const img = event.target;
+      const currentSrc = img.src;
+
+      // If already tried all extensions or is placeholder, stop
+      if (currentSrc === this.placeholderImage || !currentSrc.includes(this.azureBlobBaseUrl)) {
+        img.src = this.placeholderImage;
+        return;
+      }
+
+      // Try different extensions
+      if (currentSrc.endsWith('.jpg')) {
+        img.src = currentSrc.replace('.jpg', '.jpeg');
+      } else if (currentSrc.endsWith('.jpeg')) {
+        img.src = currentSrc.replace('.jpeg', '.png');
+      } else {
+        // All extensions failed, use placeholder
+        img.src = this.placeholderImage;
+      }
     },
   },
 };
@@ -466,5 +569,74 @@ export default {
 
 .size-shape-cell {
   color: #6b7280;
+}
+
+// Product Image Section
+.product-image-section {
+  margin-bottom: 1.5rem;
+
+  .product-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .product-image {
+      max-width: 400px;
+      max-height: 400px;
+      width: auto;
+      height: auto;
+      border-radius: 8px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+}
+
+// Cost Summary Section
+.cost-summary-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .cost-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cost-summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .cost-value {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #111827;
+      }
+
+      &.final-cost {
+        .cost-value {
+          color: #ff69b4;
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
 }
 </style>
