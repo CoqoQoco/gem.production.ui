@@ -23,8 +23,18 @@ export default [
       title: 'Register',
       public: false
     }
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('@/views/auth/reset-password/reset-password-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Reset Password',
+      skipPermissionCheck: true // Allow all authenticated users to reset their password
+    }
   }
-  // Add more auth routes here (forgot password, reset password, etc.)
+  // Add more auth routes here (forgot password, etc.)
   // {
   //   path: '/forgot-password',
   //   name: 'ForgotPassword',

@@ -56,6 +56,10 @@
                 <i class="pi pi-user"></i>
                 <span>{{ $t('dashboard.profile') }}</span>
               </button>
+              <button class="dropdown-item" @click="goToResetPassword">
+                <i class="pi pi-lock"></i>
+                <span>{{ $t('auth.resetPassword.title') }}</span>
+              </button>
               <button class="dropdown-item" @click="goToSettings">
                 <i class="pi pi-cog"></i>
                 <span>{{ $t('dashboard.settings') }}</span>
@@ -134,6 +138,11 @@ export default {
     goToProfile() {
       this.showUserMenu = false
       this.router.push('/profile')
+    },
+
+    goToResetPassword() {
+      this.showUserMenu = false
+      this.router.push('/reset-password')
     },
 
     goToSettings() {
