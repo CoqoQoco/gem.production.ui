@@ -1183,8 +1183,6 @@ export default {
       if (weight > 0 && price > 0) {
         const totalWeight = weight + (weight * (wastePercent / 100))
         this.currentComponent.cost = Math.round(totalWeight * price * 100) / 100
-        // Set price to equal cost for API submission
-        this.currentComponent.price = this.currentComponent.cost
       } else {
         this.currentComponent.cost = 0
       }
@@ -1197,8 +1195,6 @@ export default {
 
       if (weight > 0 && price > 0) {
         this.currentComponent.cost = Math.round(weight * price * 100) / 100
-        // Set price to equal cost for API submission
-        this.currentComponent.price = this.currentComponent.cost
       } else {
         this.currentComponent.cost = 0
       }
