@@ -3,7 +3,7 @@
     <!-- Section Title -->
     <div class="section-title">
       <i class="pi pi-building"></i>
-      <span>ข้อมูลสาขาและประเภทสินค้า</span>
+      <span>ข้อมูลสาขา</span>
     </div>
 
     <!-- Selection Form -->
@@ -27,26 +27,6 @@
           {{ errors.branchId }}
         </small>
       </div>
-
-      <!-- Product Type Dropdown -->
-      <div class="form-group">
-        <label>
-          {{ $t('goodsReceipt.form.productType') || 'ประเภทสินค้า' }}
-          <span class="required">*</span>
-        </label>
-        <FormDropdown
-          v-model="selectionData.productTypeCode"
-          :options="productTypes"
-          option-label="nameTh"
-          option-value="code"
-          :placeholder="$t('goodsReceipt.form.productTypePlaceholder') || 'เลือกประเภทสินค้า'"
-          :invalid="!!errors.productTypeCode"
-          @change="handleProductTypeChange"
-        />
-        <small v-if="errors.productTypeCode" class="p-error">
-          {{ errors.productTypeCode }}
-        </small>
-      </div>
     </div>
   </div>
 </template>
@@ -54,10 +34,9 @@
 <script>
 import FormDropdown from '@/components/common/form-dropdown.vue'
 import { useBranchApiStore } from '@/stores/api/branch-api'
-import { useProductTypeApiStore } from '@/stores/api/product-type-api'
 
 export default {
-  name: 'BranchProductTypeSelection',
+  name: 'BranchSelection',
 
   components: {
     FormDropdown
@@ -69,10 +48,7 @@ export default {
       default: () => ({
         branchId: null,
         branchNameTh: '',
-        branchNameEn: '',
-        productTypeCode: '',
-        productTypeNameTh: '',
-        productTypeNameEn: ''
+        branchNameEn: ''
       })
     }
   },
@@ -82,17 +58,12 @@ export default {
   data() {
     return {
       branchApiStore: useBranchApiStore(),
-      productTypeApiStore: useProductTypeApiStore(),
       selectionData: {
         branchId: null,
         branchNameTh: '',
-        branchNameEn: '',
-        productTypeCode: '',
-        productTypeNameTh: '',
-        productTypeNameEn: ''
+        branchNameEn: ''
       },
       branches: [],
-      productTypes: [],
       errors: {},
       isUpdatingFromParent: false
     }
@@ -100,7 +71,6 @@ export default {
 
   async mounted() {
     await this.loadBranches()
-    await this.loadProductTypes()
   },
 
   watch: {
@@ -144,21 +114,6 @@ export default {
       }
     },
 
-    async loadProductTypes() {
-      try {
-        const result = await this.productTypeApiStore.listProductTypes({
-          pageIndex: 0,
-          pageSize: 1000,
-          criteria: { searchText: null }
-        })
-        if (result.success) {
-          this.productTypes = result.data
-        }
-      } catch (error) {
-        console.error('Error loading product types:', error)
-      }
-    },
-
     handleBranchChange(event) {
       const selectedBranch = this.branches.find(b => b.branchId === event.value)
       if (selectedBranch) {
@@ -167,16 +122,6 @@ export default {
         this.selectionData.branchNameEn = selectedBranch.nameEn
       }
       this.clearError('branchId')
-    },
-
-    handleProductTypeChange(event) {
-      const selectedProductType = this.productTypes.find(pt => pt.code === event.value)
-      if (selectedProductType) {
-        this.selectionData.productTypeCode = selectedProductType.code
-        this.selectionData.productTypeNameTh = selectedProductType.nameTh
-        this.selectionData.productTypeNameEn = selectedProductType.nameEn
-      }
-      this.clearError('productTypeCode')
     },
 
     clearError(field) {
@@ -193,11 +138,6 @@ export default {
         this.errors.branchId = this.$t('goodsReceipt.validation.branchRequired') || 'กรุณาเลือกสาขา'
       }
 
-      // Product Type validation
-      if (!this.selectionData.productTypeCode || !this.selectionData.productTypeCode.trim()) {
-        this.errors.productTypeCode = this.$t('goodsReceipt.validation.productTypeRequired') || 'กรุณาเลือกประเภทสินค้า'
-      }
-
       const isValid = Object.keys(this.errors).length === 0
       this.$emit('validate', isValid)
       return isValid
@@ -207,10 +147,7 @@ export default {
       this.selectionData = {
         branchId: null,
         branchNameTh: '',
-        branchNameEn: '',
-        productTypeCode: '',
-        productTypeNameTh: '',
-        productTypeNameEn: ''
+        branchNameEn: ''
       }
       this.errors = {}
     }
@@ -245,12 +182,8 @@ export default {
 
 .selection-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 1.25rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .form-group {

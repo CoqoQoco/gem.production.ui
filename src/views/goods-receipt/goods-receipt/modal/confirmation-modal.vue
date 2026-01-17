@@ -61,68 +61,132 @@
         </div>
       </div>
 
-      <!-- Gold Components Section -->
-      <div v-if="componentsData.goldComponents && componentsData.goldComponents.length > 0" class="summary-section">
+      <!-- Product Image Section -->
+      <div v-if="componentsData.productImageUrl" class="summary-section">
         <div class="section-header">
-          <i class="pi pi-circle-fill gold-icon"></i>
-          <h3>{{ $t('goodsReceipt.components.goldComponents') || 'ส่วนประกอบทอง' }}</h3>
+          <i class="pi pi-image"></i>
+          <h3>{{ $t('goodsReceipt.components.productImage') || 'รูปภาพสินค้า' }}</h3>
         </div>
-        <div class="components-list">
-          <div v-for="(goldComp, index) in componentsData.goldComponents" :key="'gold-' + index" class="component-item">
-            <div class="component-header">
-              <span class="component-number">{{ index + 1 }}</span>
-            </div>
-            <div class="component-details">
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.gold') || 'ทอง' }}:</span>
-                <span class="info-value">{{ goldComp.goldNameTh }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.goldShape') || 'รูปร่างทอง' }}:</span>
-                <span class="info-value">{{ goldComp.shapeNameTh }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.weight') || 'น้ำหนัก' }}:</span>
-                <span class="info-value">{{ formatNumber(goldComp.weight) }} {{ goldComp.weightUnit }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.qty') || 'จำนวน' }}:</span>
-                <span class="info-value">{{ formatNumber(goldComp.qty) }} {{ goldComp.qtyUnit }}</span>
-              </div>
-            </div>
-          </div>
+        <div class="image-preview">
+          <img :src="componentsData.productImageUrl" alt="Product Image" />
         </div>
       </div>
 
-      <!-- Gem Components Section -->
-      <div v-if="componentsData.gemComponents && componentsData.gemComponents.length > 0" class="summary-section">
+      <!-- Components Section -->
+      <div v-if="componentsData.components && componentsData.components.length > 0" class="summary-section">
         <div class="section-header">
-          <i class="pi pi-circle-fill gem-icon"></i>
-          <h3>{{ $t('goodsReceipt.components.gemComponents') || 'ส่วนประกอบพลอย' }}</h3>
+          <i class="pi pi-th-large"></i>
+          <h3>{{ $t('goodsReceipt.components.title') || 'ส่วนประกอบสินค้า' }}</h3>
         </div>
         <div class="components-list">
-          <div v-for="(gemComp, index) in componentsData.gemComponents" :key="'gem-' + index" class="component-item">
+          <div v-for="(component, index) in componentsData.components" :key="'component-' + index" class="component-item">
             <div class="component-header">
               <span class="component-number">{{ index + 1 }}</span>
+              <span :class="['component-type-badge', `type-${component.type}`]">
+                {{ getTypeName(component.type) }}
+              </span>
             </div>
             <div class="component-details">
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.gem') || 'พลอย' }}:</span>
-                <span class="info-value">{{ gemComp.gemNameTh }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.gemShape') || 'รูปร่างพลอย' }}:</span>
-                <span class="info-value">{{ gemComp.shapeNameTh }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.weight') || 'น้ำหนัก' }}:</span>
-                <span class="info-value">{{ formatNumber(gemComp.weight) }} {{ gemComp.weightUnit }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">{{ $t('goodsReceipt.components.qty') || 'จำนวน' }}:</span>
-                <span class="info-value">{{ formatNumber(gemComp.qty) }} {{ gemComp.qtyUnit }}</span>
-              </div>
+              <!-- Gold Details -->
+              <template v-if="component.type === 'gold'">
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.gold') || 'ทอง' }}:</span>
+                  <span class="info-value">{{ component.itemNameTh }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.goldShape') || 'รูปร่างทอง' }}:</span>
+                  <span class="info-value">{{ component.shapeNameTh }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.wastePercent') || '%waste' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.wastePercent) }}%</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.labelWeight') || 'น้ำหนักป้าย' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.labelWeight) }} {{ component.weightUnit }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.weight') || 'น้ำหนัก' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.weight) }} {{ component.weightUnit }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.qty') || 'จำนวน' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.qty) }} {{ component.qtyUnit }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.cost') || 'ต้นทุน' }}:</span>
+                  <span class="info-value cost-value">{{ formatCurrency(component.cost) }}</span>
+                </div>
+              </template>
+
+              <!-- Gem Details -->
+              <template v-if="component.type === 'gem'">
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.gem') || 'พลอย' }}:</span>
+                  <span class="info-value">{{ component.itemNameTh }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.gemShape') || 'รูปร่างพลอย' }}:</span>
+                  <span class="info-value">{{ component.shapeNameTh }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.size') || 'ขนาด' }}:</span>
+                  <span class="info-value">{{ component.size }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.origin') || 'แหล่งที่มา' }}:</span>
+                  <span class="info-value">{{ component.origin }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.weight') || 'น้ำหนัก' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.weight) }} {{ component.weightUnit }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.qty') || 'จำนวน' }}:</span>
+                  <span class="info-value">{{ formatNumber(component.qty) }} {{ component.qtyUnit }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.cost') || 'ต้นทุน' }}:</span>
+                  <span class="info-value cost-value">{{ formatCurrency(component.cost) }}</span>
+                </div>
+              </template>
+
+              <!-- Labor Details -->
+              <template v-if="component.type === 'labor'">
+                <div class="info-item full-width">
+                  <span class="info-label">{{ $t('goodsReceipt.components.laborTitle') || 'หัวข้อ' }}:</span>
+                  <span class="info-value">{{ component.itemNameTh }}</span>
+                </div>
+                <div v-if="component.description" class="info-item full-width">
+                  <span class="info-label">{{ $t('goodsReceipt.components.laborDescription') || 'รายละเอียด' }}:</span>
+                  <span class="info-value">{{ component.description }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">{{ $t('goodsReceipt.components.cost') || 'ต้นทุน' }}:</span>
+                  <span class="info-value cost-value">{{ formatCurrency(component.cost) }}</span>
+                </div>
+              </template>
             </div>
+          </div>
+        </div>
+
+        <!-- Cost Summary -->
+        <div v-if="componentsData.costSummary" class="cost-summary">
+          <div class="cost-row">
+            <span class="cost-label">{{ $t('goodsReceipt.components.actualCost') || 'ราคาต้นทุนจริง' }}:</span>
+            <span class="cost-value">{{ formatCurrency(componentsData.costSummary.actualCost) }}</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label">{{ $t('goodsReceipt.components.usedCost') || 'ราคาต้นทุนที่ใช้' }}:</span>
+            <span class="cost-value">{{ formatCurrency(componentsData.costSummary.usedCost) }}</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label">{{ $t('goodsReceipt.components.discountPercent') || 'ส่วนลด' }}:</span>
+            <span class="cost-value">{{ formatNumber(componentsData.costSummary.discountPercent) }}%</span>
+          </div>
+          <div class="cost-row final-cost">
+            <span class="cost-label">{{ $t('goodsReceipt.components.finalCost') || 'ราคาสุดท้าย' }}:</span>
+            <span class="cost-value">{{ formatCurrency(componentsData.costSummary.finalCost) }}</span>
           </div>
         </div>
       </div>
@@ -177,8 +241,9 @@ export default {
     componentsData: {
       type: Object,
       default: () => ({
-        goldComponents: [],
-        gemComponents: []
+        components: [],
+        productImageUrl: '',
+        costSummary: {}
       })
     },
     isSaving: {
@@ -216,6 +281,20 @@ export default {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       }).format(value)
+    },
+
+    formatCurrency(value) {
+      if (value === null || value === undefined) return '฿0.00'
+      return `฿${parseFloat(value).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    },
+
+    getTypeName(type) {
+      const types = {
+        gold: 'ทอง',
+        gem: 'เพชร/พลอย',
+        labor: 'ค่าแรง/ต้นทุนอื่นๆ'
+      }
+      return types[type] || type
     }
   }
 }
@@ -336,6 +415,9 @@ export default {
 }
 
 .component-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
@@ -350,6 +432,34 @@ export default {
   font-weight: 600;
   font-size: 0.875rem;
   border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.component-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  &.type-gold {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+
+  &.type-gem {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+
+  &.type-labor {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
 }
 
 .component-details {
@@ -359,6 +469,70 @@ export default {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+  }
+
+  .info-item.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+.info-item .cost-value {
+  color: #059669;
+  font-weight: 600;
+}
+
+.image-preview {
+  display: flex;
+  justify-content: center;
+
+  img {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.cost-summary {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: white;
+  border-radius: 6px;
+
+  &.final-cost {
+    background: #fff5f7;
+    border: 2px solid #ff69b4;
+    padding: 1rem;
+    margin-top: 0.75rem;
+
+    .cost-label,
+    .cost-value {
+      color: #ff69b4;
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+  }
+
+  .cost-label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .cost-value {
+    font-weight: 600;
+    color: #059669;
+    font-size: 1rem;
   }
 }
 

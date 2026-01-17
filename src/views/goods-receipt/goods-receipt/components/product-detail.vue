@@ -13,7 +13,7 @@
         <div class="form-group">
           <label>
             {{ $t("goodsReceipt.form.originNumber") }}
-            <span class="required">*</span>
+            <!-- <span class="required">*</span> -->
           </label>
           <InputText
             v-model="productData.originNumber"
@@ -80,8 +80,30 @@
         </div>
       </div>
 
-      <!-- Quantity Row (Qty + Unit in same row) -->
+      <!-- Product Type Row -->
       <div class="form-group-row">
+        <div class="form-group">
+          <label>
+            {{ $t('goodsReceipt.form.productType') || 'ประเภทสินค้า' }}
+            <span class="required">*</span>
+          </label>
+          <FormDropdown
+            v-model="productData.productTypeCode"
+            :options="productTypes"
+            option-label="nameTh"
+            option-value="code"
+            :placeholder="$t('goodsReceipt.form.productTypePlaceholder') || 'เลือกประเภทสินค้า'"
+            :invalid="!!errors.productTypeCode"
+            @change="handleProductTypeChange"
+          />
+          <small v-if="errors.productTypeCode" class="p-error">
+            {{ errors.productTypeCode }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Quantity Row (Qty + Unit in same row) -->
+      <div class="form-group-row-4">
         <div class="form-group">
           <label>
             {{ $t("goodsReceipt.form.qty") }}
@@ -117,10 +139,11 @@
             {{ errors.qtyUnit }}
           </small>
         </div>
+
       </div>
 
       <!-- Price Row (Price + Unit in same row) -->
-      <div class="form-group-row">
+      <!-- <div class="form-group-row">
         <div class="form-group">
           <label>
             {{ $t("goodsReceipt.form.price") }}
@@ -156,19 +179,29 @@
             {{ errors.unitPrice }}
           </small>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import FormDropdown from '@/components/common/form-dropdown.vue'
+import { useProductTypeApiStore } from '@/stores/api/product-type-api'
+
 export default {
   name: "ProductDetail",
+
+  components: {
+    FormDropdown
+  },
 
   props: {
     modelValue: {
       type: Object,
       default: () => ({
+        productTypeCode: "",
+        productTypeNameTh: "",
+        productTypeNameEn: "",
         originNumber: "",
         mold: "",
         productNameEn: "",
@@ -185,7 +218,11 @@ export default {
 
   data() {
     return {
+      productTypeApiStore: useProductTypeApiStore(),
       productData: {
+        productTypeCode: "",
+        productTypeNameTh: "",
+        productTypeNameEn: "",
         originNumber: "",
         mold: "",
         productNameEn: "",
@@ -195,9 +232,14 @@ export default {
         price: null,
         unitPrice: "",
       },
+      productTypes: [],
       errors: {},
       isUpdatingFromParent: false
     };
+  },
+
+  async mounted() {
+    await this.loadProductTypes()
   },
 
   watch: {
@@ -226,6 +268,31 @@ export default {
   },
 
   methods: {
+    async loadProductTypes() {
+      try {
+        const result = await this.productTypeApiStore.listProductTypes({
+          pageIndex: 0,
+          pageSize: 1000,
+          criteria: { searchText: null }
+        })
+        if (result.success) {
+          this.productTypes = result.data
+        }
+      } catch (error) {
+        console.error('Error loading product types:', error)
+      }
+    },
+
+    handleProductTypeChange(event) {
+      const selectedProductType = this.productTypes.find(pt => pt.code === event.value)
+      if (selectedProductType) {
+        this.productData.productTypeCode = selectedProductType.code
+        this.productData.productTypeNameTh = selectedProductType.nameTh
+        this.productData.productTypeNameEn = selectedProductType.nameEn
+      }
+      this.clearError('productTypeCode')
+    },
+
     clearError(field) {
       if (this.errors[field]) {
         delete this.errors[field];
@@ -235,15 +302,20 @@ export default {
     validate() {
       this.errors = {};
 
-      // Origin Number validation
-      if (
-        !this.productData.originNumber ||
-        !this.productData.originNumber.trim()
-      ) {
-        this.errors.originNumber = this.$t(
-          "goodsReceipt.validation.originNumberRequired"
-        );
+      // Product Type validation
+      if (!this.productData.productTypeCode || !this.productData.productTypeCode.trim()) {
+        this.errors.productTypeCode = this.$t('goodsReceipt.validation.productTypeRequired') || 'กรุณาเลือกประเภทสินค้า'
       }
+
+      // Origin Number validation
+      // if (
+      //   !this.productData.originNumber ||
+      //   !this.productData.originNumber.trim()
+      // ) {
+      //   this.errors.originNumber = this.$t(
+      //     "goodsReceipt.validation.originNumberRequired"
+      //   );
+      // }
 
       // Mold validation
       if (!this.productData.mold || !this.productData.mold.trim()) {
@@ -301,6 +373,9 @@ export default {
 
     reset() {
       this.productData = {
+        productTypeCode: "",
+        productTypeNameTh: "",
+        productTypeNameEn: "",
         originNumber: "",
         mold: "",
         productNameEn: "",
@@ -354,6 +429,16 @@ export default {
 .form-group-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group-row-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
 
   @media (max-width: 768px) {

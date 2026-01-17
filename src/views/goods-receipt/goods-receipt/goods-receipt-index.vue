@@ -15,6 +15,25 @@
 
     <!-- Page Content -->
     <div class="page-content">
+      <!-- Development Tools (Show only in dev mode) -->
+      <div v-if="isDevelopment" class="dev-tools">
+        <div class="dev-tools-header">
+          <i class="pi pi-wrench"></i>
+          <span>Development Tools</span>
+        </div>
+        <div class="dev-tools-buttons">
+          <button
+            v-for="(mockSet, index) in mockDataSets"
+            :key="index"
+            @click="fillMockData(index)"
+            class="btn-mock-data"
+          >
+            <i class="pi pi-bolt"></i>
+            <span>{{ mockSet.name }}</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Product Detail Section (Part 1) -->
       <ProductDetail
         ref="productDetailRef"
@@ -71,6 +90,7 @@ import BranchProductTypeSelection from './components/branch-product-type-selecti
 import ProductComponents from './components/product-components.vue'
 import ConfirmationModal from './modal/confirmation-modal.vue'
 import { useGoodsReceiptApiStore } from '@/stores/api/goods-receipt-api'
+import { mockDataSets } from './__mocks__/goods-receipt-mock-data'
 
 export default {
   name: 'GoodsReceiptIndex',
@@ -85,7 +105,8 @@ export default {
   setup() {
     const goodsReceiptApiStore = useGoodsReceiptApiStore()
     return {
-      goodsReceiptApiStore
+      goodsReceiptApiStore,
+      mockDataSets
     }
   },
 
@@ -110,15 +131,54 @@ export default {
         productTypeNameEn: ''
       },
       componentsData: {
-        goldComponents: [],
-        gemComponents: []
+        components: [],
+        productImageUrl: '',
+        productImageBlobName: '',
+        costSummary: {
+          actualCost: 0,
+          usedCost: 0,
+          discountPercent: 0,
+          finalCost: 0
+        }
       },
       showConfirmModal: false,
-      isSaving: false
+      isSaving: false,
+      isDevelopment: import.meta.env.DEV || import.meta.env.MODE === 'development'
     }
   },
 
   methods: {
+    fillMockData(dataSetIndex = 0) {
+      const mockSet = mockDataSets[dataSetIndex]
+
+      if (!mockSet) {
+        console.error('Mock data set not found:', dataSetIndex)
+        return
+      }
+
+      // Fill Product Data
+      this.productData = { ...mockSet.productData }
+
+      // Fill Branch and Product Type Data
+      this.branchProductTypeData = { ...mockSet.branchProductTypeData }
+
+      // Fill Components Data
+      this.componentsData = JSON.parse(JSON.stringify(mockSet.componentsData))
+
+      this.$toast.add({
+        severity: 'success',
+        summary: 'สำเร็จ',
+        detail: `กรอกข้อมูลจำลอง "${mockSet.name}" เรียบร้อยแล้ว`,
+        life: 3000
+      })
+
+      console.log('Mock Data Loaded:', {
+        productData: this.productData,
+        branchProductTypeData: this.branchProductTypeData,
+        componentsData: this.componentsData
+      })
+    },
+
     async handleSave() {
       // Validate all sections
       const productDetailRef = this.$refs.productDetailRef
@@ -167,37 +227,10 @@ export default {
       this.isSaving = true
 
       try {
-        // Map gold components to API format
-        const goldComponents = this.componentsData.goldComponents.map((goldComp) => ({
-          typrCode: goldComp.goldCode,
-          typeNameTh: goldComp.goldNameTh,
-          typeNameEn: goldComp.goldNameEn,
-          typrCode2: goldComp.shapeCode,
-          typeNameTh2: goldComp.shapeNameTh,
-          typeNameEn2: goldComp.shapeNameEn,
-          qty: goldComp.qty,
-          qtyUnit: goldComp.qtyUnit,
-          weight: goldComp.weight,
-          weightUnit: goldComp.weightUnit,
-          size: goldComp.shapeCode
-        }))
+        // Components are already in the correct format from product-components.vue
+        const components = this.componentsData.components || []
 
-        // Map gem components to API format
-        const gemComponents = this.componentsData.gemComponents.map((gemComp) => ({
-          typrCode: gemComp.gemCode,
-          typeNameTh: gemComp.gemNameTh,
-          typeNameEn: gemComp.gemNameEn,
-          typrCode2: gemComp.shapeCode,
-          typeNameTh2: gemComp.shapeNameTh,
-          typeNameEn2: gemComp.shapeNameEn,
-          qty: gemComp.qty,
-          qtyUnit: gemComp.qtyUnit,
-          weight: gemComp.weight,
-          weightUnit: gemComp.weightUnit,
-          size: gemComp.shapeCode
-        }))
-
-        // Prepare API payload
+        // Prepare API payload with new structure (without image URL first)
         const payload = {
           mold: this.productData.mold,
           originNumber: this.productData.originNumber,
@@ -213,36 +246,90 @@ export default {
           productTypeCode: this.branchProductTypeData.productTypeCode,
           productTypeNameTh: this.branchProductTypeData.productTypeNameTh,
           productTypeNameEn: this.branchProductTypeData.productTypeNameEn,
-          gold: goldComponents,
-          gem: gemComponents
+          // New fields
+          productImageUrl: '', // Will be updated after upload
+          components: components,
+          costSummary: this.componentsData.costSummary
         }
 
         console.log('Sending payload to API:', payload)
 
-        // Call API to save data
+        // Call API to save data first
         const result = await this.goodsReceiptApiStore.manualReceipt(payload)
 
-        if (result.success) {
+        if (!result.success) {
+          // Show error alert
           this.$toast.add({
-            severity: 'success',
-            summary: this.$t('common.success'),
-            detail: result.message || 'บันทึกข้อมูลสำเร็จ',
-            life: 3000
+            severity: 'error',
+            summary: this.$t('common.error') || 'เกิดข้อผิดพลาด',
+            detail: result.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+            life: 5000
           })
-
-          // Close modal and reset form after successful save
-          this.showConfirmModal = false
-          this.resetForm()
-        } else {
           throw new Error(result.message || 'Failed to save goods receipt')
         }
+
+        // Get stockNumber from API response
+        const stockNumber = result.stockNumber || result.data?.stockNumber
+        console.log('Submit successful. Stock Number:', stockNumber)
+        console.log('Full API response:', result)
+
+        // Upload image after submit success (if any)
+        const productComponentsRef = this.$refs.productComponentsRef
+
+        // Check if there's a pending image file to upload
+        if (productComponentsRef && productComponentsRef.pendingImageFile && productComponentsRef.uploadPendingImage) {
+          if (!stockNumber) {
+            console.warn('⚠️ stockNumber is null/undefined. Backend needs to return stockNumber in response.')
+            console.warn('Image will be uploaded with auto-generated name (GUID) instead.')
+          }
+
+          console.log('Uploading pending image with stock number:', stockNumber || 'auto-generated')
+          try {
+            // Upload image with stockNumber as filename (or auto-generated if null)
+            const uploadResult = await productComponentsRef.uploadPendingImage(stockNumber)
+            console.log('Image uploaded successfully:', uploadResult)
+
+            // TODO: Update the record with image URL if needed
+            // You might need to call another API to update the product with imageUrl
+            if (uploadResult && uploadResult.blobUrl) {
+              console.log('Image URL to update:', uploadResult.blobUrl)
+              // await this.goodsReceiptApiStore.updateProductImage(stockNumber, uploadResult.blobUrl)
+            }
+          } catch (uploadError) {
+            console.error('Image upload failed:', uploadError)
+            // Show warning but don't fail the whole process
+            this.$toast.add({
+              severity: 'warn',
+              summary: 'คำเตือน',
+              detail: `บันทึกข้อมูลสำเร็จ แต่อัพโหลดรูปภาพล้มเหลว: ${uploadError.message}`,
+              life: 5000
+            })
+          }
+        } else {
+          // No pending image file - use existing productImageUrl (from mock data or already uploaded)
+          console.log('No pending image file to upload. Using existing productImageUrl:', this.componentsData.productImageUrl)
+        }
+
+        // Show success message
+        this.$toast.add({
+          severity: 'success',
+          summary: this.$t('common.success') || 'สำเร็จ',
+          detail: result.message || 'บันทึกข้อมูลสำเร็จ',
+          life: 3000
+        })
+
+        // Close modal and reset form after successful save
+        this.showConfirmModal = false
+        this.resetForm()
       } catch (error) {
         console.error('Error saving product data:', error)
+
+        // Make sure error alert shows
         this.$toast.add({
           severity: 'error',
-          summary: this.$t('common.error'),
+          summary: this.$t('common.error') || 'เกิดข้อผิดพลาด',
           detail: error.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
-          life: 3000
+          life: 5000
         })
       } finally {
         this.isSaving = false
@@ -271,8 +358,15 @@ export default {
       }
 
       this.componentsData = {
-        goldComponents: [],
-        gemComponents: []
+        components: [],
+        productImageUrl: '',
+        productImageBlobName: '',
+        costSummary: {
+          actualCost: 0,
+          usedCost: 0,
+          discountPercent: 0,
+          finalCost: 0
+        }
       }
 
       const productDetailRef = this.$refs.productDetailRef
@@ -387,6 +481,65 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.dev-tools {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .dev-tools-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+    font-weight: 700;
+    font-size: 1.125rem;
+
+    i {
+      font-size: 1.25rem;
+    }
+  }
+
+  .dev-tools-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn-mock-data {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #f59e0b;
+    border: 2px solid white;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background: #fffbeb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
 }
 
 .action-buttons {

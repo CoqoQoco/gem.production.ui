@@ -27,8 +27,11 @@ export const useGoodsReceiptApiStore = defineStore('goodsReceiptApi', () => {
    * @param {string} params.productTypeCode - Product type code
    * @param {string} params.productTypeNameTh - Product type name (Thai)
    * @param {string} params.productTypeNameEn - Product type name (English)
-   * @param {Array} params.gold - Gold components array
-   * @param {Array} params.gem - Gem components array
+   * @param {string} params.productImageUrl - Product image URL from Azure Blob Storage
+   * @param {Array} params.components - Product components array (gold, gem, labor)
+   * @param {Object} params.costSummary - Cost summary object
+   * @param {Array} params.gold - Gold components array (deprecated, use components)
+   * @param {Array} params.gem - Gem components array (deprecated, use components)
    * @returns {Promise<Object>} Create response
    */
   const manualReceipt = async (params) => {
@@ -51,6 +54,16 @@ export const useGoodsReceiptApiStore = defineStore('goodsReceiptApi', () => {
         productTypeCode: params.productTypeCode,
         productTypeNameTh: params.productTypeNameTh,
         productTypeNameEn: params.productTypeNameEn,
+        // New fields
+        productImageUrl: params.productImageUrl || '',
+        components: params.components || [],
+        costSummary: params.costSummary || {
+          actualCost: 0,
+          usedCost: 0,
+          discountPercent: 0,
+          finalCost: 0
+        },
+        // Backward compatibility (deprecated)
         gold: params.gold || [],
         gem: params.gem || []
       }
@@ -63,6 +76,7 @@ export const useGoodsReceiptApiStore = defineStore('goodsReceiptApi', () => {
         return {
           success: true,
           message: response.message || 'Goods receipt created successfully',
+          stockNumber: response.stockNumber, // Add stockNumber from response
           data: response.data
         }
       } else {
