@@ -143,6 +143,26 @@
           </div>
         </div>
 
+        <!-- Force Password Section -->
+        <div class="list-detail-section force-password-section">
+          <h4 class="list-detail-section-title">
+            <i class="pi pi-shield"></i>
+            {{ $t("account.forcePassword.title") || "บังคับเปลี่ยนรหัสผ่าน" }}
+          </h4>
+          <div class="force-password-info">
+            <Message :closable="false" severity="info">
+              {{ $t("account.forcePassword.description") || "ระบบจะสร้างรหัสผ่านใหม่แบบสุ่มให้ผู้ใช้ โดยผู้ใช้จะต้องเปลี่ยนรหัสผ่านเมื่อเข้าสู่ระบบครั้งถัดไป" }}
+            </Message>
+            <Button
+              :label="$t('account.forcePassword.button') || 'บังคับเปลี่ยนรหัสผ่าน'"
+              icon="pi pi-key"
+              class="p-button-warning force-password-button"
+              @click="handleForcePassword"
+              :loading="forcingPassword"
+            />
+          </div>
+        </div>
+
         <!-- Activity Information -->
         <div class="list-detail-section">
           <h4 class="list-detail-section-title">
@@ -200,6 +220,55 @@
       </div>
     </template>
   </Dialog>
+
+  <!-- New Password Dialog -->
+  <Dialog
+    v-model:visible="showNewPasswordDialog"
+    :header="$t('account.forcePassword.newPasswordTitle') || 'รหัสผ่านใหม่'"
+    :style="{ width: '500px' }"
+    :modal="true"
+    :closable="true"
+    class="new-password-dialog"
+  >
+    <div class="new-password-content">
+      <Message :closable="false" severity="success">
+        {{ $t("account.forcePassword.newPasswordMessage") || "รหัสผ่านใหม่ถูกสร้างเรียบร้อยแล้ว กรุณาบันทึกรหัสผ่านนี้และส่งให้ผู้ใช้" }}
+      </Message>
+
+      <div class="password-display-box">
+        <label class="password-label">
+          <i class="pi pi-key"></i>
+          {{ $t("account.forcePassword.generatedPassword") || "รหัสผ่านที่สร้างขึ้น" }}
+        </label>
+        <div class="password-value-wrapper">
+          <div class="password-value">
+            <code>{{ generatedPassword }}</code>
+          </div>
+          <Button
+            icon="pi pi-copy"
+            class="p-button-text p-button-rounded copy-btn"
+            @click="copyPasswordToClipboard"
+            :title="$t('common.copy') || 'คัดลอก'"
+          />
+        </div>
+      </div>
+
+      <Message :closable="false" severity="warn" class="mt-3">
+        {{ $t("account.forcePassword.warningMessage") || "ผู้ใช้จะต้องเปลี่ยนรหัสผ่านนี้เมื่อเข้าสู่ระบบครั้งถัดไป" }}
+      </Message>
+    </div>
+
+    <template #footer>
+      <div class="new-password-footer">
+        <Button
+          :label="$t('common.close') || 'ปิด'"
+          icon="pi pi-times"
+          @click="closeNewPasswordDialog"
+          class="p-button-text"
+        />
+      </div>
+    </template>
+  </Dialog>
 </template>
 
 <script>
@@ -210,6 +279,7 @@ import ProgressSpinner from "primevue/progressspinner";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 import { useRoleApiStore } from "@/stores/api/role-api";
+import { useUserApiStore } from "@/stores/api/user-api";
 import { useToast } from "primevue/usetoast";
 
 export default {
@@ -242,6 +312,7 @@ export default {
   data() {
     return {
       roleApiStore: useRoleApiStore(),
+      userApiStore: useUserApiStore(),
       toast: useToast(),
       isEditingRole: false,
       selectedRoleId: null,
@@ -249,6 +320,9 @@ export default {
       loadingRoles: false,
       savingRole: false,
       allowingUser: false,
+      forcingPassword: false,
+      showNewPasswordDialog: false,
+      generatedPassword: '',
     };
   },
 
@@ -373,6 +447,107 @@ export default {
         this.allowingUser = false;
       }
     },
+
+    async handleForcePassword() {
+      // Confirm before forcing password change
+      if (!confirm(this.$t("account.forcePassword.confirmMessage") || "คุณแน่ใจหรือไม่ว่าต้องการบังคับเปลี่ยนรหัสผ่านผู้ใช้รายนี้?")) {
+        return;
+      }
+
+      this.forcingPassword = true;
+      try {
+        const result = await this.userApiStore.forcePassword({
+          id: this.userDetail.id,
+          username: this.userDetail.username
+        });
+
+        if (result.success) {
+          // Store generated password to show in dialog
+          this.generatedPassword = result.data.newPassword;
+          this.showNewPasswordDialog = true;
+
+          this.toast.add({
+            severity: "success",
+            summary: this.$t("common.success") || "สำเร็จ",
+            detail: result.message || this.$t("account.forcePassword.success") || "บังคับเปลี่ยนรหัสผ่านสำเร็จ",
+            life: 3000,
+          });
+
+          // Emit event to parent to refresh user data
+          this.$emit("password-forced", {
+            userId: this.userDetail.id,
+            username: this.userDetail.username
+          });
+        } else {
+          this.toast.add({
+            severity: "error",
+            summary: this.$t("common.error") || "ผิดพลาด",
+            detail: result.message || this.$t("account.forcePassword.error") || "ไม่สามารถบังคับเปลี่ยนรหัสผ่านได้",
+            life: 3000,
+          });
+        }
+      } catch (error) {
+        this.toast.add({
+          severity: "error",
+          summary: this.$t("common.error") || "ผิดพลาด",
+          detail: error.message || "เกิดข้อผิดพลาด",
+          life: 3000,
+        });
+      } finally {
+        this.forcingPassword = false;
+      }
+    },
+
+    copyPasswordToClipboard() {
+      // Copy generated password to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(this.generatedPassword).then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: this.$t("common.success") || "สำเร็จ",
+            detail: this.$t("account.forcePassword.copiedToClipboard") || "คัดลอกรหัสผ่านไปยังคลิปบอร์ดแล้ว",
+            life: 2000,
+          });
+        }).catch((err) => {
+          console.error("Failed to copy password:", err);
+          this.toast.add({
+            severity: "error",
+            summary: this.$t("common.error") || "ผิดพลาด",
+            detail: this.$t("account.forcePassword.copyFailed") || "ไม่สามารถคัดลอกรหัสผ่านได้",
+            life: 3000,
+          });
+        });
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = this.generatedPassword;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          this.toast.add({
+            severity: "success",
+            summary: this.$t("common.success") || "สำเร็จ",
+            detail: this.$t("account.forcePassword.copiedToClipboard") || "คัดลอกรหัสผ่านไปยังคลิปบอร์ดแล้ว",
+            life: 2000,
+          });
+        } catch (err) {
+          console.error("Fallback: Failed to copy password:", err);
+          this.toast.add({
+            severity: "error",
+            summary: this.$t("common.error") || "ผิดพลาด",
+            detail: this.$t("account.forcePassword.copyFailed") || "ไม่สามารถคัดลอกรหัสผ่านได้",
+            life: 3000,
+          });
+        }
+        document.body.removeChild(textArea);
+      }
+    },
+
+    closeNewPasswordDialog() {
+      this.showNewPasswordDialog = false;
+      this.generatedPassword = '';
+    },
   },
 
   created() {
@@ -437,5 +612,135 @@ export default {
 
 .w-full {
   width: 100%;
+}
+
+.force-password-section {
+  background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+  border: 2px solid #fbbf24;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  .list-detail-section-title {
+    color: #d97706;
+
+    i {
+      color: #fbbf24;
+    }
+  }
+
+  .force-password-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .force-password-button {
+      align-self: flex-start;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+      }
+    }
+  }
+}
+
+// New Password Dialog Styles
+.new-password-dialog {
+  :deep(.p-dialog-header) {
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  :deep(.p-dialog-content) {
+    padding: 1.5rem;
+  }
+
+  :deep(.p-dialog-footer) {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+.new-password-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.password-display-box {
+  background: #f9fafb;
+  border: 2px solid #e7de99;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  .password-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+
+    i {
+      color: #e7de99;
+      font-size: 1.125rem;
+    }
+  }
+
+  .password-value-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .password-value {
+    flex: 1;
+    background: white;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: 0.5px;
+    word-break: break-all;
+    user-select: all;
+
+    code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+  }
+
+  .copy-btn {
+    color: #e7de99;
+    font-size: 1.25rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(231, 222, 153, 0.1);
+      color: #c0ab28;
+    }
+  }
+}
+
+.new-password-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mt-3 {
+  margin-top: 1rem;
 }
 </style>

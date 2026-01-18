@@ -58,6 +58,53 @@ export const useUserApiStore = defineStore('userApi', () => {
   }
 
   /**
+   * Force password change - generates new random password for user
+   * Admin can use this to reset user's password
+   * @param {Object} params - Force password parameters
+   * @param {number} params.id - User ID (optional)
+   * @param {string} params.username - Username (optional)
+   * @returns {Promise<Object>} Force password response with new password
+   */
+  const forcePassword = async (params) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const payload = {
+        id: params.id || 0,
+        username: params.username || null
+      }
+
+      const response = await api.jewelry.put('api/user/force-password', payload)
+
+      isLoading.value = false
+
+      if (response.isSuccess) {
+        return {
+          success: true,
+          message: response.message || 'Password has been reset successfully',
+          data: {
+            userId: response.userId,
+            username: response.username,
+            newPassword: response.newPassword
+          }
+        }
+      } else {
+        throw new Error(response.message || 'Failed to force password change')
+      }
+    } catch (err) {
+      isLoading.value = false
+      error.value = err.response?.data?.message || err.message
+
+      return {
+        success: false,
+        message: error.value,
+        errors: err.response?.data?.errors || null
+      }
+    }
+  }
+
+  /**
    * Clear error state
    */
   const clearError = () => {
@@ -71,6 +118,7 @@ export const useUserApiStore = defineStore('userApi', () => {
 
     // Actions
     resetPassword,
+    forcePassword,
     clearError
   }
 })
