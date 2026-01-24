@@ -15,21 +15,36 @@
 
     <!-- Page Content -->
     <div class="page-content">
-      <!-- Development Tools (Show only in dev mode) -->
-      <div v-if="isDevelopment" class="dev-tools">
-        <div class="dev-tools-header">
-          <i class="pi pi-wrench"></i>
-          <span>Development Tools</span>
-        </div>
-        <div class="dev-tools-buttons">
+      <!-- Product Shortcuts -->
+      <div v-if="recommendedProducts.length > 0" class="product-shortcuts">
+        <div class="shortcuts-header">
+          <i class="pi pi-star"></i>
+          <span>{{ $t('goodsReceipt.productShortcuts.title') }} ({{ $t('goodsReceipt.productShortcuts.subtitle') }})</span>
           <button
-            v-for="(mockSet, index) in mockDataSets"
-            :key="index"
-            @click="fillMockData(index)"
-            class="btn-mock-data"
+            class="btn-refresh"
+            @click="loadRecommendedProducts"
+            :disabled="isLoadingRecommended"
+            :title="$t('goodsReceipt.productShortcuts.refresh')"
           >
-            <i class="pi pi-bolt"></i>
-            <span>{{ mockSet.name }}</span>
+            <i
+              :class="['pi pi-refresh', { 'pi-spin': isLoadingRecommended }]"
+            ></i>
+          </button>
+        </div>
+        <div class="shortcuts-buttons">
+          <button
+            v-for="product in recommendedProducts"
+            :key="product.stockNumber"
+            @click="duplicateProduct(product)"
+            class="btn-product-shortcut"
+            :title="$t('goodsReceipt.productShortcuts.subtitle') + ': ' + (product.productNameTh || product.productNameEn)"
+          >
+            <i class="pi pi-copy"></i>
+            <span>{{
+              product.productNameTh ||
+              product.productNameEn ||
+              product.stockNumber
+            }}</span>
           </button>
         </div>
       </div>
@@ -86,7 +101,7 @@ import BranchProductTypeSelection from "./components/branch-product-type-selecti
 import ProductComponents from "./components/product-components.vue";
 import ConfirmationModal from "./modal/confirmation-modal.vue";
 import { useGoodsReceiptApiStore } from "@/stores/api/goods-receipt-api";
-import { mockDataSets } from "./__mocks__/goods-receipt-mock-data";
+import { useStockApiStore } from "@/stores/api/stock-api";
 
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
@@ -103,9 +118,10 @@ export default {
 
   setup() {
     const goodsReceiptApiStore = useGoodsReceiptApiStore();
+    const stockApiStore = useStockApiStore();
     return {
       goodsReceiptApiStore,
-      mockDataSets,
+      stockApiStore,
       Toast,
     };
   },
@@ -143,43 +159,154 @@ export default {
       },
       showConfirmModal: false,
       isSaving: false,
-      isDevelopment:
-        import.meta.env.DEV || import.meta.env.MODE === "development",
-
+      recommendedProducts: [],
+      isLoadingRecommended: false,
       toast: null,
     };
   },
 
   methods: {
-    fillMockData(dataSetIndex = 0) {
-      const mockSet = mockDataSets[dataSetIndex];
+    async loadRecommendedProducts() {
+      this.isLoadingRecommended = true;
+      try {
+        const response = await this.stockApiStore.listStockInventory({
+          pageIndex: 0,
+          pageSize: 10,
+          sort: [{ field: "receiptDate", dir: "desc" }],
+          criteria: {},
+        });
 
-      if (!mockSet) {
-        console.error("Mock data set not found:", dataSetIndex);
-        return;
+        if (response.success && response.data) {
+          this.recommendedProducts = response.data;
+          console.log("Loaded recommended products:", this.recommendedProducts);
+        } else {
+          console.warn(
+            "Failed to load recommended products:",
+            response.message,
+          );
+          this.recommendedProducts = [];
+        }
+      } catch (error) {
+        console.error("Error loading recommended products:", error);
+        this.recommendedProducts = [];
+      } finally {
+        this.isLoadingRecommended = false;
       }
+    },
 
-      // Fill Product Data
-      this.productData = { ...mockSet.productData };
+    duplicateProduct(product) {
+      // Map stock data to form data for duplication
+      this.productData = {
+        originNumber: product.productNumber || "",
+        mold: product.mold || "",
+        productNameEn: product.productNameEn || "",
+        productNameTH: product.productNameTh || "",
+        qty: product.qty || null,
+        qtyUnit: product.qtyUnit || "",
+        price: product.price || null,
+        unitPrice: product.priceUnit || "",
 
-      // Fill Branch and Product Type Data
-      this.branchProductTypeData = { ...mockSet.branchProductTypeData };
+        productTypeCode: product.productTypeCode || "",
+        productTypeNameTh: product.productTypeNameTh || "",
+        productTypeNameEn: product.productTypeNameEn || "",
+      };
 
-      // Fill Components Data
-      this.componentsData = JSON.parse(JSON.stringify(mockSet.componentsData));
+      this.branchProductTypeData = {
+        branchId: product.branchId || null,
+        branchNameTh: product.branchNameTh || "",
+        branchNameEn: product.branchNameEn || "",
+        productTypeCode: product.productTypeCode || "",
+        productTypeNameTh: product.productTypeNameTh || "",
+        productTypeNameEn: product.productTypeNameEn || "",
+      };
+
+      // Map materials to components format
+      const components = (product.materials || []).map((material) => ({
+        type: material.type?.toLowerCase() || "gold",
+        itemCode: material.typeCode || "",
+        itemNameTh: material.typeNameTh || material.itemNameTh || "",
+        itemNameEn: material.typeNameEn || material.itemNameEn || "",
+        shapeCode: material.typeCode2 || material.shapeCode || "",
+        shapeNameTh: material.typeNameTh2 || material.shapeNameTh || "",
+        shapeNameEn: material.typeNameEn2 || material.shapeNameEn || "",
+        size: material.size || "",
+        weight: material.weight || null,
+        weightUnit: material.weightUnit || "g",
+        wastePercent: material.wastePercent || null,
+        labelWeight: material.labelWeight || null,
+        qty: material.qty || null,
+        qtyUnit: material.qtyUnit || "pc",
+        price: material.price || null,
+        cost: material.cost || null,
+        region: material.region || material.origin || "",
+        description: material.description || "",
+      }));
+
+      this.componentsData = {
+        components: components,
+        productImageUrl: product.productImageUrl || "",
+        productImageBlobName: "",
+        costSummary: {
+          actualCost: product.costSummary?.actualCost || 0,
+          usedCost: product.costSummary?.usedCost || 0,
+          discountPercent: product.costSummary?.discountPercent || 0,
+          finalCost: product.costSummary?.finalCost || 0,
+        },
+      };
 
       this.toast.add({
         severity: "success",
-        summary: "สำเร็จ",
-        detail: `กรอกข้อมูลจำลอง "${mockSet.name}" เรียบร้อยแล้ว`,
+        summary: this.$t("common.success"),
+        detail: this.$t("goodsReceipt.productShortcuts.duplicateSuccess", {
+          productName: product.productNameTh || product.productNameEn,
+        }),
         life: 3000,
       });
 
-      console.log("Mock Data Loaded:", {
+      console.log("Duplicated product data:", {
         productData: this.productData,
         branchProductTypeData: this.branchProductTypeData,
         componentsData: this.componentsData,
       });
+    },
+
+    async loadProductForDuplication(stockNumber) {
+      try {
+        this.toast.add({
+          severity: "info",
+          summary: this.$t("goodsReceipt.productShortcuts.loadingProduct"),
+          detail: this.$t("goodsReceipt.productShortcuts.loadingProductDetail", {
+            stockNumber: stockNumber,
+          }),
+          life: 2000,
+        });
+
+        const response = await this.stockApiStore.getStockInventory({
+          stockNumber: stockNumber,
+        });
+
+        if (response.success && response.data) {
+          // Use the duplicateProduct method to fill the form
+          this.duplicateProduct(response.data);
+        } else {
+          this.toast.add({
+            severity: "warn",
+            summary: this.$t("goodsReceipt.productShortcuts.productNotFound"),
+            detail: this.$t("goodsReceipt.productShortcuts.productNotFoundDetail", {
+              stockNumber: stockNumber,
+            }),
+            life: 3000,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading product for duplication:", error);
+        this.toast.add({
+          severity: "error",
+          summary: this.$t("common.error"),
+          detail: this.$t("stockInventory.loadError"),
+          life: 3000,
+        });
+      }
     },
 
     async handleSave() {
@@ -289,22 +416,21 @@ export default {
         ) {
           if (!stockNumber) {
             console.warn(
-              "⚠️ stockNumber is null/undefined. Backend needs to return stockNumber in response."
+              "⚠️ stockNumber is null/undefined. Backend needs to return stockNumber in response.",
             );
             console.warn(
-              "Image will be uploaded with auto-generated name (GUID) instead."
+              "Image will be uploaded with auto-generated name (GUID) instead.",
             );
           }
 
           console.log(
             "Uploading pending image with stock number:",
-            stockNumber || "auto-generated"
+            stockNumber || "auto-generated",
           );
           try {
             // Upload image with stockNumber as filename (or auto-generated if null)
-            const uploadResult = await productComponentsRef.uploadPendingImage(
-              stockNumber
-            );
+            const uploadResult =
+              await productComponentsRef.uploadPendingImage(stockNumber);
             console.log("Image uploaded successfully:", uploadResult);
 
             // TODO: Update the record with image URL if needed
@@ -327,7 +453,7 @@ export default {
           // No pending image file - use existing productImageUrl (from mock data or already uploaded)
           console.log(
             "No pending image file to upload. Using existing productImageUrl:",
-            this.componentsData.productImageUrl
+            this.componentsData.productImageUrl,
           );
         }
 
@@ -426,8 +552,16 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.toast = useToast();
+    // Load recommended products on page load
+    await this.loadRecommendedProducts();
+
+    // Check if there's a duplicate query parameter
+    const duplicateStockNumber = this.$route.query.duplicate;
+    if (duplicateStockNumber) {
+      await this.loadProductForDuplication(duplicateStockNumber);
+    }
   },
 };
 </script>
@@ -512,16 +646,17 @@ export default {
   gap: 0.75rem;
 }
 
-.dev-tools {
+.product-shortcuts {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  //background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+  box-shadow: 0 2px 8px rgba(231, 222, 153, 0.3);
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  .dev-tools-header {
+  .shortcuts-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -532,21 +667,54 @@ export default {
     i {
       font-size: 1.25rem;
     }
+
+    span {
+      flex: 1;
+    }
+
+    .btn-refresh {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      i {
+        font-size: 1rem;
+      }
+    }
   }
 
-  .dev-tools-buttons {
+  .shortcuts-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 
-  .btn-mock-data {
+  .btn-product-shortcut {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     background: white;
-    color: #f59e0b;
+    color: #c0ab28;
     border: 2px solid white;
     border-radius: 8px;
     font-size: 0.9375rem;
@@ -554,9 +722,16 @@ export default {
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     &:hover {
-      background: #fffbeb;
+      background: #fff5f7;
       transform: translateY(-1px);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     }
@@ -567,6 +742,7 @@ export default {
 
     i {
       font-size: 1rem;
+      flex-shrink: 0;
     }
   }
 }

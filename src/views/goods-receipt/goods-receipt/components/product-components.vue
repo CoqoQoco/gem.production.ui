@@ -1806,7 +1806,9 @@ export default {
     }
 
     tr.final-cost-row {
-      background: #fff5f7;
+      //background: #fff5f7;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: black;
       border-top: 2px solid #e7de99;
 
       td {
@@ -1815,12 +1817,13 @@ export default {
 
         &.summary-label {
           text-align: right;
-          color: #e7de99;
+          //color: #e7de99;
+          color: black;
           font-size: 1.0625rem;
         }
 
         &.final-cost {
-          color: #e7de99;
+          color: #black;
           font-size: 1.25rem;
           text-align: right;
         }

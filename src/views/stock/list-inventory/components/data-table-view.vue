@@ -62,12 +62,27 @@
       </template>
 
       <!-- Status Template -->
+      <!-- Status Template -->
       <template #statusTemplate="{ data }">
         <div class="list-status-cell">
           <Tag
             :value="data.status"
             :severity="getStatusSeverity(data.status)"
           />
+        </div>
+      </template>
+
+      <!-- Actions Template -->
+      <template #actionsTemplate="{ data }">
+        <div class="action-buttons-cell">
+          <button
+            class="btn-action btn-duplicate"
+            @click="handleDuplicate(data)"
+            :title="$t('stockInventory.table.duplicateTooltip', { productName: data.productNameTh || data.productNameEn })"
+          >
+            <i class="pi pi-copy"></i>
+            <span>{{ $t('stockInventory.table.duplicate') }}</span>
+          </button>
         </div>
       </template>
 
@@ -237,6 +252,13 @@ export default {
   data() {
     return {
       tableColumns: [
+        {
+          field: "actions",
+          header: this.$t("stockInventory.table.actions") || "Actions",
+          sortable: false,
+          minWidth: "160px",
+          align: "center",
+        },
         {
           field: "stockNumber",
           header: this.$t("stockInventory.table.stockNumber") || "Stock Number",
@@ -434,6 +456,22 @@ export default {
         img.src = this.placeholderImage;
       }
     },
+
+    /**
+     * Handle duplicate product - redirect to goods-receipt page with product data
+     * @param {Object} product - Product data to duplicate
+     */
+    handleDuplicate(product) {
+      // Navigate to goods-receipt page with stockNumber as query parameter
+      this.$router.push({
+        path: '/inventory/goods-receipt',
+        query: {
+          duplicate: product.stockNumber
+        }
+      });
+
+      console.log('Duplicating product:', product.stockNumber);
+    },
   },
 };
 </script>
@@ -513,6 +551,47 @@ export default {
       font-size: 0.875rem;
       color: #6b7280;
       margin: 0;
+    }
+  }
+}
+
+// Action Buttons Cell
+.action-buttons-cell {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+
+  .btn-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+
+    i {
+      font-size: 0.875rem;
+    }
+
+    &.btn-duplicate {
+      background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
+      color: white;
+
+      &:hover {
+        background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(231, 222, 153, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
     }
   }
 }

@@ -617,6 +617,16 @@
     "subtitle": "System for recording goods into the system",
     "productInfo": "Product Information",
     "componentInfo": "Product Components",
+    "productShortcuts": {
+      "title": "Recommended Products",
+      "subtitle": "Click to duplicate product",
+      "refresh": "Refresh list",
+      "duplicateSuccess": "Successfully copied data from product \"{productName}\"",
+      "loadingProduct": "Loading",
+      "loadingProductDetail": "Loading product data {stockNumber}...",
+      "productNotFound": "Not Found",
+      "productNotFoundDetail": "Product not found: {stockNumber}"
+    },
     "form": {
       "originNumber": "Origin Number",
       "originNumberPlaceholder": "Enter origin number",
@@ -729,6 +739,7 @@
     "noData": "No data found",
     "loadError": "Error loading data",
     "table": {
+      "actions": "Actions",
       "stockNumber": "Stock Number",
       "productCode": "Product Code",
       "productName": "Product Name",
@@ -736,7 +747,9 @@
       "qty": "Qty",
       "price": "Price",
       "branch": "Branch",
-      "status": "Status"
+      "status": "Status",
+      "duplicate": "Duplicate",
+      "duplicateTooltip": "Duplicate product: {productName}"
     },
     "materials": {
       "title": "Material Components",

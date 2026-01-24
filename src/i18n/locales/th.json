@@ -800,6 +800,16 @@
     "subtitle": "ระบบบันทึกข้อมูลสินค้าเข้าระบบ",
     "productInfo": "ข้อมูลสินค้า",
     "componentInfo": "ส่วนประกอบสินค้า",
+    "productShortcuts": {
+      "title": "สินค้าแนะนำ",
+      "subtitle": "คลิกเพื่อทำสินค้าซ้ำ",
+      "refresh": "รีเฟรชรายการ",
+      "duplicateSuccess": "คัดลอกข้อมูลจากสินค้า \"{productName}\" เรียบร้อยแล้ว",
+      "loadingProduct": "กำลังโหลด",
+      "loadingProductDetail": "กำลังโหลดข้อมูลสินค้า {stockNumber}...",
+      "productNotFound": "ไม่พบข้อมูล",
+      "productNotFoundDetail": "ไม่พบสินค้ารหัส: {stockNumber}"
+    },
     "form": {
       "originNumber": "รหัสเก่าสินค้า",
       "originNumberPlaceholder": "กรอกรหัสเก่าสินค้า",
@@ -913,6 +923,7 @@
     "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
     "productImage": "รูปภาพสินค้า",
     "table": {
+      "actions": "จัดการ",
       "stockNumber": "Stock Number",
       "productCode": "Product Code",
       "productName": "ชื่อสินค้า",
@@ -920,7 +931,9 @@
       "qty": "จำนวน",
       "price": "ราคา",
       "branch": "สาขา",
-      "status": "สถานะ"
+      "status": "สถานะ",
+      "duplicate": "ทำสินค้าซ้ำ",
+      "duplicateTooltip": "ทำสินค้าซ้ำ: {productName}"
     },
     "materials": {
       "title": "ส่วนประกอบวัตถุดิบ",
