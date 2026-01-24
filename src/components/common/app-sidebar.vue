@@ -108,6 +108,16 @@
                   <span>{{ t('dashboard.menu.stockSummary') || 'ภาพรวม Stock' }}</span>
                 </router-link>
                 <router-link
+                  v-if="canAccess('StockList')"
+                  to="/inventory/stock-list"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.stockList') }}</span>
+                </router-link>
+                <router-link
                   v-if="canAccess('GoodsReceipt')"
                   to="/inventory/goods-receipt"
                   class="submenu-item"
@@ -136,16 +146,6 @@
                 >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.massUpdateGoldPrice') || 'ปรับราคาทอง' }}</span>
-                </router-link>
-                <router-link
-                  v-if="canAccess('StockList')"
-                  to="/inventory/stock-list"
-                  class="submenu-item"
-                  active-class="active"
-                  @click="closeSidebar"
-                >
-                  <i class="pi pi-circle-fill"></i>
-                  <span>{{ t('dashboard.menu.stockList') }}</span>
                 </router-link>
                 <router-link
                   v-if="canAccess('StockIn')"
