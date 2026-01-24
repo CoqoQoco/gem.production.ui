@@ -246,9 +246,9 @@ export default {
           branchId: this.branchProductTypeData.branchId,
           branchNameTh: this.branchProductTypeData.branchNameTh,
           branchNameEn: this.branchProductTypeData.branchNameEn,
-          productTypeCode: this.branchProductTypeData.productTypeCode,
-          productTypeNameTh: this.branchProductTypeData.productTypeNameTh,
-          productTypeNameEn: this.branchProductTypeData.productTypeNameEn,
+          productTypeCode: this.productData.productTypeCode,
+          productTypeNameTh: this.productData.productTypeNameTh,
+          productTypeNameEn: this.productData.productTypeNameEn,
           // New fields
           productImageUrl: "", // Will be updated after upload
           components: components,

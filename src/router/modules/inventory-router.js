@@ -7,10 +7,19 @@ const inventoryRoutes = [
   {
     path: '/inventory',
     name: 'Inventory',
-    redirect: '/inventory/stock-list',
+    redirect: '/inventory/summary',
     meta: {
       requiresAuth: true,
       title: 'Inventory Management'
+    }
+  },
+  {
+    path: '/inventory/summary',
+    name: 'StockSummary',
+    component: () => import('@/views/stock/summary/stock-summary-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Stock Summary'
     }
   },
   {
@@ -56,6 +65,24 @@ const inventoryRoutes = [
     meta: {
       requiresAuth: true,
       title: 'Manual Goods Receipt'
+    }
+  },
+  {
+    path: '/inventory/mass-update-gold-price',
+    name: 'MassUpdateGoldPrice',
+    component: () => import('@/views/stock/mass-update-gold-price/mass-update-gold-price-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Mass Update Gold Price'
+    }
+  },
+  {
+    path: '/inventory/update-product',
+    name: 'UpdateProduct',
+    component: () => import('@/views/stock/update-product/update-product-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Update Product'
     }
   }
 ]

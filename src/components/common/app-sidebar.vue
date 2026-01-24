@@ -89,7 +89,7 @@
           </div>
 
           <!-- Inventory Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['StockList', 'StockIn', 'StockOut', 'StockTransfer', 'GoodsReceipt'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['StockSummary', 'GoodsReceipt', 'UpdateProduct', 'MassUpdateGoldPrice', 'StockList', 'StockIn', 'StockOut', 'StockTransfer'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('inventory')">
               <i class="pi pi-box"></i>
               <span>{{ t('dashboard.menu.inventory') }}</span>
@@ -97,6 +97,46 @@
             </a>
             <transition name="submenu-slide">
               <div v-if="openSubmenu === 'inventory'" class="submenu">
+                <router-link
+                  v-if="canAccess('StockSummary')"
+                  to="/inventory/summary"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.stockSummary') || 'ภาพรวม Stock' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('GoodsReceipt')"
+                  to="/inventory/goods-receipt"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.goodsReceipt') || 'บันทึกรับสินค้า' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('UpdateProduct')"
+                  to="/inventory/update-product"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.updateProduct') || 'แก้ไขสินค้า' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('MassUpdateGoldPrice')"
+                  to="/inventory/mass-update-gold-price"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.massUpdateGoldPrice') || 'ปรับราคาทอง' }}</span>
+                </router-link>
                 <router-link
                   v-if="canAccess('StockList')"
                   to="/inventory/stock-list"
@@ -139,16 +179,6 @@
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.stockTransfer') }}</span>
                   <span class="badge">Soon</span>
-                </router-link>
-                <router-link
-                  v-if="canAccess('GoodsReceipt')"
-                  to="/inventory/goods-receipt"
-                  class="submenu-item"
-                  active-class="active"
-                  @click="closeSidebar"
-                >
-                  <i class="pi pi-circle-fill"></i>
-                  <span>{{ t('dashboard.menu.goodsReceipt') }}</span>
                 </router-link>
               </div>
             </transition>

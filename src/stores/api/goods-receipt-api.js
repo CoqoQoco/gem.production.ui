@@ -38,6 +38,15 @@ export const useGoodsReceiptApiStore = defineStore('goodsReceiptApi', () => {
     isLoading.value = true
     error.value = null
 
+    //set param components.labor , set price by cost
+    if (params.components && Array.isArray(params.components)) {
+      params.components.forEach(component => {
+        if (component.type === 'labor') {
+          component.price = component.cost
+        }
+      })
+    }
+
     try {
       const payload = {
         mold: params.mold,

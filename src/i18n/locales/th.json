@@ -108,7 +108,8 @@
     "view": "ดู",
     "actions": "จัดการ",
     "no": "ลำดับ",
-    "copy": "คัดลอก"
+    "copy": "คัดลอก",
+    "gram": "กรัม"
   },
   "dashboard": {
     "brandName": "ระบบขายและคลังสินค้าจิวเวลรี่",
@@ -135,11 +136,14 @@
       "quotation": "ใบเสนอราคา",
       "invoice": "ใบแจ้งหนี้",
       "inventory": "คลังสินค้า",
+      "stockSummary": "ภาพรวม Stock",
       "stockList": "รายการสต็อก",
       "stockIn": "รับเข้าคลัง",
       "stockOut": "เบิกออกคลัง",
       "stockTransfer": "โอนย้ายสต็อก",
-      "goodsReceipt": "บันทึกสินค้า",
+      "goodsReceipt": "บันทึกรับสินค้า",
+      "updateProduct": "แก้ไขสินค้า",
+      "massUpdateGoldPrice": "ปรับราคาทอง",
       "reports": "รายงาน",
       "dailyReport": "รายงานประจำวัน",
       "monthlyReport": "รายงานประจำเดือน",
@@ -968,5 +972,29 @@
       "gemShape": "รูปร่างพลอย",
       "gemShapePlaceholder": "เลือกรูปร่างพลอย"
     }
+  },
+  "stockSummary": {
+    "title": "ภาพรวม Stock",
+    "subtitle": "สรุปภาพรวมสินค้าคงคลังแยกตามสาขา ประเภทสินค้า และประเภททอง",
+    "noData": "ไม่พบข้อมูลสาขา",
+    "noProductTypes": "ไม่มีประเภทสินค้า",
+    "noGoldTypes": "ไม่มีประเภททอง",
+    "noKarats": "ไม่มีข้อมูลกะรัต",
+    "total": "รวม",
+    "loadError": "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "branch": "สาขา",
+    "productType": "ประเภทสินค้า",
+    "goldType": "ประเภททอง",
+    "karat": "กะรัต",
+    "weight": "น้ำหนัก",
+    "chartView": "กราฟ",
+    "tableView": "ตาราง",
+    "totalWeight": "น้ำหนักรวม",
+    "weightByBranch": "น้ำหนักตามสาขา",
+    "totalWeightComparison": "เปรียบเทียบน้ำหนักรวมแต่ละสาขา",
+    "branchDistribution": "สัดส่วนตามสาขา",
+    "percentageByBranch": "เปอร์เซ็นต์แยกตามสาขา",
+    "weightByProductType": "น้ำหนักตามประเภทสินค้า",
+    "goldTypeDistribution": "สัดส่วนประเภททอง"
   }
 }

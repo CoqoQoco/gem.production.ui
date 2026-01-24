@@ -113,6 +113,117 @@ export const useStockApiStore = defineStore('stockApi', () => {
   }
 
   /**
+   * Get stock inventory by stock number
+   * @param {Object} params - Request parameters
+   * @param {string} params.stockNumber - Stock number to search for
+   * @returns {Promise<Object>} Stock inventory data
+   */
+  const getStockInventory = async (params = {}) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const payload = {
+        stockNumber: params.stockNumber || ''
+      }
+
+      console.log('Stock API - Get Stock Inventory Payload:', JSON.stringify(payload, null, 2))
+
+      const response = await api.jewelry.post('api/stock/inventory/get', payload)
+
+      isLoading.value = false
+
+      return {
+        success: response.success || false,
+        message: response.message || '',
+        data: response.data || null
+      }
+    } catch (err) {
+      isLoading.value = false
+      error.value = err.response?.data?.message || err.message
+
+      return {
+        success: false,
+        message: error.value,
+        data: null
+      }
+    }
+  }
+
+  /**
+   * Edit stock inventory (supports multiple stock items)
+   * @param {Object} params - Request parameters
+   * @param {Array} params.stocks - Array of stock items to edit
+   * @returns {Promise<Object>} Edit response
+   */
+  const editStockInventory = async (params = {}) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const payload = {
+        stocks: params.stocks || []
+      }
+
+      console.log('Stock API - Edit Stock Inventory Payload:', JSON.stringify(payload, null, 2))
+
+      const response = await api.jewelry.post('api/stock/inventory/edit', payload)
+
+      isLoading.value = false
+
+      return {
+        success: response.success || false,
+        message: response.message || '',
+        data: response.data || null
+      }
+    } catch (err) {
+      isLoading.value = false
+      error.value = err.response?.data?.message || err.message
+
+      return {
+        success: false,
+        message: error.value,
+        data: null
+      }
+    }
+  }
+
+  /**
+   * Get inventory summary grouped by Branch → Product Type → Gold Type → Karat
+   * @param {Object} params - Request parameters (optional filters can be added)
+   * @returns {Promise<Object>} Summary response
+   */
+  const getSummary = async (params = {}) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const payload = params
+
+      console.log('Stock API - Get Summary Payload:', JSON.stringify(payload, null, 2))
+
+      const response = await api.jewelry.post('api/stock/inventory/summary', payload)
+
+      isLoading.value = false
+
+      return {
+        success: response.success || false,
+        message: response.message || '',
+        data: response.branches || []
+      }
+    } catch (err) {
+      isLoading.value = false
+      error.value = err.response?.data?.message || err.message
+
+      return {
+        success: false,
+        message: error.value,
+        data: []
+      }
+    }
+  }
+
+  /**
    * Clear error state
    */
   const clearError = () => {
@@ -126,6 +237,9 @@ export const useStockApiStore = defineStore('stockApi', () => {
 
     // Actions
     listStockInventory,
+    getStockInventory,
+    editStockInventory,
+    getSummary,
     clearError
   }
 })

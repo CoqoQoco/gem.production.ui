@@ -89,7 +89,8 @@
     "add": "Add",
     "view": "View",
     "actions": "Actions",
-    "no": "No."
+    "no": "No.",
+    "gram": "gram"
   },
   "dashboard": {
     "brandName": "Jewelry POS & WMS",
@@ -116,11 +117,14 @@
       "quotation": "Quotation",
       "invoice": "Invoice",
       "inventory": "Inventory",
+      "stockSummary": "Stock Summary",
       "stockList": "Stock List",
       "stockIn": "Stock In",
       "stockOut": "Stock Out",
       "stockTransfer": "Stock Transfer",
       "goodsReceipt": "Goods Receipt",
+      "updateProduct": "Update Product",
+      "massUpdateGoldPrice": "Mass Update Gold Price",
       "reports": "Reports",
       "dailyReport": "Daily Report",
       "monthlyReport": "Monthly Report",
@@ -776,5 +780,29 @@
       "gemShape": "Gem Shape",
       "gemShapePlaceholder": "Select Gem Shape"
     }
+  },
+  "stockSummary": {
+    "title": "Stock Summary",
+    "subtitle": "Overview of inventory grouped by branch, product type, and gold type",
+    "noData": "No branch data found",
+    "noProductTypes": "No product types",
+    "noGoldTypes": "No gold types",
+    "noKarats": "No karat data",
+    "total": "Total",
+    "loadError": "Error loading data",
+    "branch": "Branch",
+    "productType": "Product Type",
+    "goldType": "Gold Type",
+    "karat": "Karat",
+    "weight": "Weight",
+    "chartView": "Chart",
+    "tableView": "Table",
+    "totalWeight": "Total Weight",
+    "weightByBranch": "Weight by Branch",
+    "totalWeightComparison": "Total weight comparison across branches",
+    "branchDistribution": "Branch Distribution",
+    "percentageByBranch": "Percentage by branch",
+    "weightByProductType": "Weight by Product Type",
+    "goldTypeDistribution": "Gold Type Distribution"
   }
 }
