@@ -428,7 +428,7 @@
                 <!-- Type Badge -->
                 <td>
                   <span :class="['type-badge', `type-${material.type}`]">
-                    <i :class="getMaterialTypeIcon(material.type)"></i>
+                    <!-- <i :class="getMaterialTypeIcon(material.type)"></i> -->
                     {{ getMaterialTypeName(material.type) }}
                   </span>
                 </td>
@@ -442,7 +442,7 @@
                 <td>
                   <div class="details-cell">
                     <!-- Gold Details -->
-                    <template v-if="material.type === 'gold'">
+                    <template v-if="material.type === 'GOLD'">
                       <div class="detail-row">
                         <span class="detail-label">รูปร่าง:</span>
                         <span>{{ material.typeNameTh2 || "-" }}</span>
@@ -467,7 +467,7 @@
                     </template>
 
                     <!-- Gem Details -->
-                    <template v-if="material.type === 'gem'">
+                    <template v-if="material.type === 'GEM'">
                       <div class="detail-row">
                         <span class="detail-label">รูปร่าง:</span>
                         <span>{{ material.typeNameTh2 || "-" }}</span>
@@ -483,7 +483,7 @@
                     </template>
 
                     <!-- Labor Details -->
-                    <template v-if="material.type === 'labor'">
+                    <template v-if="material.type === 'LABOR'">
                       <div class="detail-row" v-if="material.description">
                         <span class="detail-label">รายละเอียด:</span>
                         <span>{{ material.description }}</span>
@@ -945,24 +945,26 @@
       </div>
 
       <template #footer>
-        <button
-          class="btn-cancel"
-          @click="showConfirmModal = false"
-          :disabled="isSubmitting"
-        >
-          <i class="pi pi-times"></i>
-          <span>ยกเลิก</span>
-        </button>
-        <button
-          class="btn-submit"
-          @click="handleSubmit"
-          :disabled="isSubmitting"
-        >
-          <i
-            :class="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-          ></i>
-          <span>{{ isSubmitting ? "กำลังบันทึก..." : "ยืนยันการบันทึก" }}</span>
-        </button>
+        <div class="dialog-footer">
+          <button
+            class="btn-cancel"
+            @click="showConfirmModal = false"
+            :disabled="isSubmitting"
+          >
+            <i class="pi pi-times"></i>
+            <span>ยกเลิก</span>
+          </button>
+          <button
+            class="btn-submit"
+            @click="handleSubmit"
+            :disabled="isSubmitting"
+          >
+            <i
+              :class="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+            ></i>
+            <span>{{ isSubmitting ? "กำลังบันทึก..." : "ยืนยันการบันทึก" }}</span>
+          </button>
+        </div>
       </template>
     </Dialog>
 
@@ -1290,8 +1292,35 @@ export default {
             productCostActual: response.data.costSummary?.actualCost || null,
             productCostUesd: response.data.costSummary?.usedCost || null,
             productDiscount: response.data.costSummary?.discountPercent || null,
+
+            // materials: response.data.materials
+            //   ? JSON.parse(JSON.stringify(response.data.materials))
+            //   : [],
+
+            //mapping data 
             materials: response.data.materials
-              ? JSON.parse(JSON.stringify(response.data.materials))
+              ? response.data.materials.map((m) => ({
+                  id: m.id || null,
+                  type: m.type,
+                  typeCode: m.typeCode || null,
+                  typeNameTh: m.itemNameTh || null,
+                  typeNameEn: m.itemNameEn || null,
+                  typeCode2: m.shapeCode || null,
+                  typeNameTh2: m.shapeNameTh || null,
+                  typeNameEn2: m.shapeNameEn || null,
+                  size: m.size || null,
+                  price: m.price || null,
+                  weight: m.weight || null,
+                  weightUnit: m.weightUnit || null,
+                  qty: m.qty || null,
+                  qtyUnit: m.qtyUnit || null,
+                  region: m.region || null,
+                  description: m.description || null,
+                  cost: m.cost || null,
+                  wastePercent: m.wastePercent || null,
+                  labelWeight: m.labelWeight || null,
+                  description: m.description || null,
+                }))
               : [],
           };
 
