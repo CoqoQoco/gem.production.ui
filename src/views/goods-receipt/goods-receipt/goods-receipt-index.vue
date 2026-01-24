@@ -223,7 +223,7 @@ export default {
       // Map materials to components format
       const components = (product.materials || []).map((material) => ({
         type: material.type?.toLowerCase() || "gold",
-        itemCode: material.typeCode || "",
+        itemCode: material.typeCode || material.itemCode || "",
         itemNameTh: material.typeNameTh || material.itemNameTh || "",
         itemNameEn: material.typeNameEn || material.itemNameEn || "",
         shapeCode: material.typeCode2 || material.shapeCode || "",
