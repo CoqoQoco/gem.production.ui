@@ -375,10 +375,12 @@
       </div>
 
       <template #footer>
-        <button class="btn-cancel" @click="showDetailsModal = false">
-          <i class="pi pi-times"></i>
-          <span>ปิด</span>
-        </button>
+        <div class="dialog-footer">
+          <button class="btn-cancel" @click="showDetailsModal = false">
+            <i class="pi pi-times"></i>
+            <span>ปิด</span>
+          </button>
+        </div>
       </template>
     </Dialog>
 
@@ -419,14 +421,16 @@
       </div>
 
       <template #footer>
-        <button class="btn-cancel" @click="showConfirmModal = false" :disabled="isSubmitting">
-          <i class="pi pi-times"></i>
-          <span>ยกเลิก</span>
-        </button>
-        <button class="btn-submit" @click="handleSubmit" :disabled="isSubmitting">
-          <i :class="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>
-          <span>{{ isSubmitting ? 'กำลังบันทึก...' : 'ยืนยันการบันทึก' }}</span>
-        </button>
+        <div class="dialog-footer">
+          <button class="btn-cancel" @click="showConfirmModal = false" :disabled="isSubmitting">
+            <i class="pi pi-times"></i>
+            <span>ยกเลิก</span>
+          </button>
+          <button class="btn-submit" @click="handleSubmit" :disabled="isSubmitting">
+            <i :class="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-check'"></i>
+            <span>{{ isSubmitting ? 'กำลังบันทึก...' : 'ยืนยันการบันทึก' }}</span>
+          </button>
+        </div>
       </template>
     </Dialog>
   </div>
@@ -1547,52 +1551,55 @@ export default {
   .p-dialog-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid #e5e7eb;
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+
+  button {
     display: flex;
-    gap: 0.75rem;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9375rem;
 
-    button {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.9375rem;
-
-      i {
-        font-size: 0.875rem;
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
+    i {
+      font-size: 0.875rem;
     }
 
-    .btn-cancel {
-      background: white;
-      color: #6b7280;
-      border: 2px solid #d1d5db;
-
-      &:hover:not(:disabled) {
-        background: #f3f4f6;
-        border-color: #9ca3af;
-      }
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
+  }
 
-    .btn-submit {
-      background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
-      color: white;
-      border: none;
+  .btn-cancel {
+    background: white;
+    color: #6b7280;
+    border: 2px solid #d1d5db;
 
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
-      }
+    &:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+    }
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
+    color: white;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
   }
 }
@@ -1840,50 +1847,4 @@ export default {
   }
 }
 
-// Confirm Dialog Button Styles (specific)
-:deep(.confirm-dialog .p-dialog-footer) {
-  button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.9375rem;
-
-    i {
-      font-size: 0.875rem;
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    &.btn-cancel {
-      background: white;
-      color: #6b7280;
-      border: 2px solid #d1d5db;
-
-      &:hover:not(:disabled) {
-        background: #f3f4f6;
-        border-color: #9ca3af;
-      }
-    }
-
-    &.btn-submit {
-      background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
-      color: white;
-      border: none;
-
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
-      }
-    }
-  }
-}
 </style>
