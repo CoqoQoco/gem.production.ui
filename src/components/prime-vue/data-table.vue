@@ -479,13 +479,13 @@ const onSingleSelectionChange = (checked, item) => {
 <style lang="scss" scoped>
 .base-datatable {
   :deep(.p-datatable) {
-    font-size: 14px;
+    font-size: 0.75rem; // 12px - Compact sizing
 
     // Header Styles - Gold Theme
     .p-datatable-thead > tr > th {
       background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
-      padding: 0.75rem 1rem;
-      border: 1px solid #efe9c9;
+      padding: 0.375rem 0.5rem; // Reduced from 0.75rem 1rem
+      border: 1px solid #c9b979;
       color: #1f2937;
       font-weight: 600;
 
@@ -497,22 +497,23 @@ const onSingleSelectionChange = (checked, item) => {
         .p-column-title {
           color: #1f2937;
           font-weight: 600;
-          margin-right: 0.5rem;
+          margin-right: 0.25rem; // Reduced from 0.5rem
+          font-size: 0.75rem; // 12px - Compact sizing
         }
 
         .p-sortable-column-icon,
         .pi {
           color: #1f2937;
-          font-size: 0.875rem;
+          font-size: 0.6875rem; // 11px - Compact sizing
         }
 
         .p-sortable-column-badge {
           background-color: #1f2937;
           color: #ffffff;
-          font-size: 0.75rem;
-          margin-left: 0.25rem;
-          min-width: 1.25rem;
-          height: 1.25rem;
+          font-size: 0.625rem; // 10px - Compact sizing
+          margin-left: 0.125rem; // Reduced from 0.25rem
+          min-width: 1rem; // Reduced from 1.25rem
+          height: 1rem; // Reduced from 1.25rem
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -558,10 +559,10 @@ const onSingleSelectionChange = (checked, item) => {
       }
 
       > td {
-        padding: 0.75rem 1rem;
-        font-size: 14px;
+        padding: 0.375rem 0.5rem; // Reduced from 0.75rem 1rem
+        font-size: 0.75rem; // 12px - Compact sizing
         color: #374151;
-        border: 1px solid #f3f4f6;
+        border: 1px solid #d1d5db;
       }
 
       &:nth-child(even) {
@@ -576,14 +577,15 @@ const onSingleSelectionChange = (checked, item) => {
     // Empty Message
     .p-datatable-emptymessage > td {
       text-align: center;
-      padding: 3rem;
+      padding: 1.5rem; // Reduced from 2rem
+      font-size: 0.75rem; // 12px - Compact sizing
     }
   }
 
   // Paginator Styles - Gold Theme
   :deep(.p-paginator) {
-    font-size: 11px;
-    padding: 0.5rem;
+    font-size: 0.6875rem; // 11px - Compact sizing
+    padding: 0.375rem; // Reduced from 0.5rem
     background: #ffffff;
     border: 1px solid #efe9c9;
     border-radius: 8px;
@@ -647,10 +649,10 @@ const onSingleSelectionChange = (checked, item) => {
       height: 1.75rem !important;
       margin: 0 0.1rem !important;
       border: 1px solid #efe9c9;
-      border-radius: 6px;
+      border-radius: 4px; // Reduced from 6px
       transition: all 0.2s;
       flex-shrink: 0 !important;
-      font-size: 11px !important;
+      font-size: 0.6875rem !important; // 11px - Compact sizing
       padding: 0 !important;
       display: inline-flex !important;
       align-items: center !important;
@@ -685,17 +687,17 @@ const onSingleSelectionChange = (checked, item) => {
       max-width: 90px  !important;
       margin: 0 0.25rem !important;
       border: 1px solid #efe9c9 !important;
-      border-radius: 6px !important;
+      border-radius: 4px !important; // Reduced from 6px
       flex-shrink: 0 !important;
       flex-grow: 0 !important;
-      font-size: 11px !important;
+      font-size: 0.6875rem !important; // 11px - Compact sizing
 
       &:hover {
         border-color: #efe9c9 !important;
       }
 
       .p-dropdown-label {
-        font-size: 11px !important;
+        font-size: 0.6875rem !important; // 11px - Compact sizing
         padding: 0.25rem 0.3rem !important;
         text-align: center !important;
         line-height: 1.2 !important;
@@ -724,7 +726,7 @@ const onSingleSelectionChange = (checked, item) => {
       color: #6b7280;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
-      font-size: 11px !important;
+      font-size: 0.6875rem !important; // 11px - Compact sizing
       min-width: max-content !important;
       display: inline-block !important;
     }
@@ -757,19 +759,19 @@ const onSingleSelectionChange = (checked, item) => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem; // Reduced from 2rem
     text-align: center;
     color: #9ca3af;
 
     i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+      font-size: 2rem; // Reduced from 3rem
+      margin-bottom: 0.5rem; // Reduced from 1rem
       color: #efe9c9;
     }
 
     p {
       margin: 0;
-      font-size: 14px;
+      font-size: 0.75rem; // 12px - Compact sizing (was 14px)
       color: #6b7280;
     }
   }
@@ -777,16 +779,17 @@ const onSingleSelectionChange = (checked, item) => {
   // Action Buttons
   .btn-action-container {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem; // Reduced from 0.5rem
     justify-content: center;
 
     .btn {
-      padding: 0.375rem 0.75rem;
-      border-radius: 6px;
+      padding: 0.25rem 0.5rem; // Reduced from 0.375rem 0.75rem
+      border-radius: 4px; // Reduced from 6px
       transition: all 0.2s;
+      font-size: 0.75rem; // 12px - Compact sizing
 
       i {
-        font-size: 1rem;
+        font-size: 0.75rem; // 12px - Compact sizing (was 1rem)
       }
     }
   }
@@ -849,13 +852,13 @@ const onSingleSelectionChange = (checked, item) => {
 
   // Expand button - Gold Theme
   :deep(.p-row-toggler) {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem; // Reduced from 2rem
+    height: 1.5rem; // Reduced from 2rem
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 4px; // Reduced from 6px
     transition: all 0.2s;
 
     &:hover {
@@ -863,7 +866,7 @@ const onSingleSelectionChange = (checked, item) => {
     }
 
     .p-row-toggler-icon {
-      font-size: 1rem;
+      font-size: 0.75rem; // 12px - Compact sizing (was 1rem)
       color: #e7de99;
     }
   }
@@ -926,7 +929,7 @@ const onSingleSelectionChange = (checked, item) => {
 
 .base-datatable .p-paginator .p-dropdown .p-dropdown-label,
 .p-paginator .p-dropdown .p-dropdown-label {
-  font-size: 11px !important;
+  font-size: 0.6875rem !important; // 11px - Compact sizing
   padding: 0.25rem 0.3rem !important;
   width: 100% !important;
   line-height: 1.2 !important;

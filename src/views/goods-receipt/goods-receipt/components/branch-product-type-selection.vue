@@ -8,20 +8,22 @@
 
     <!-- Selection Form -->
     <div class="selection-form">
-      <!-- Branch Dropdown -->
+      <!-- Branch AutoComplete -->
       <div class="form-group">
         <label>
           {{ $t('goodsReceipt.form.branch') || 'สาขา' }}
           <span class="required">*</span>
         </label>
-        <FormDropdown
-          v-model="selectionData.branchId"
-          :options="branches"
-          option-label="nameTh"
-          option-value="branchId"
+        <AutoComplete
+          v-model="selectedBranch"
+          :suggestions="filteredBranches"
+          field="nameTh"
+          :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+          :dropdown="true"
           :placeholder="$t('goodsReceipt.form.branchPlaceholder') || 'เลือกสาขา'"
           :invalid="!!errors.branchId"
-          @change="handleBranchChange"
+          @complete="searchBranches"
+          @item-select="handleBranchChange"
         />
         <small v-if="errors.branchId" class="p-error">
           {{ errors.branchId }}
@@ -32,14 +34,14 @@
 </template>
 
 <script>
-import FormDropdown from '@/components/common/form-dropdown.vue'
+import AutoComplete from '@/components/prime-vue/auto-complete.vue'
 import { useBranchApiStore } from '@/stores/api/branch-api'
 
 export default {
   name: 'BranchSelection',
 
   components: {
-    FormDropdown
+    AutoComplete
   },
 
   props: {
@@ -64,6 +66,8 @@ export default {
         branchNameEn: ''
       },
       branches: [],
+      filteredBranches: [],
+      selectedBranch: null,
       errors: {},
       isUpdatingFromParent: false
     }
@@ -108,14 +112,31 @@ export default {
         })
         if (result.success) {
           this.branches = result.data
+          // Set selected branch if branchId exists
+          if (this.selectionData.branchId) {
+            this.selectedBranch = this.branches.find(
+              b => b.branchId === this.selectionData.branchId
+            )
+          }
         }
       } catch (error) {
         console.error('Error loading branches:', error)
       }
     },
 
+    searchBranches(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredBranches = query
+        ? this.branches.filter(branch =>
+            branch.nameTh.toLowerCase().includes(query) ||
+            branch.nameEn.toLowerCase().includes(query) ||
+            (branch.code && branch.code.toLowerCase().includes(query))
+          )
+        : [...this.branches]
+    },
+
     handleBranchChange(event) {
-      const selectedBranch = this.branches.find(b => b.branchId === event.value)
+      const selectedBranch = event.value
       if (selectedBranch) {
         this.selectionData.branchId = selectedBranch.branchId
         this.selectionData.branchNameTh = selectedBranch.nameTh
@@ -159,23 +180,23 @@ export default {
 .selection-card {
   background: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: #111827;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 0.75rem;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
   border-bottom: 2px solid #e7de99;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   i {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: #e7de99;
   }
 }
@@ -183,16 +204,16 @@ export default {
 .selection-form {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 0.625rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 
   label {
-    font-size: 0.9375rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #374151;
 
@@ -202,33 +223,10 @@ export default {
     }
   }
 
-  :deep(.p-select) {
-    width: 100%;
-    height: 40px;
-    border: 2px solid #d1d5db;
-    border-radius: 8px;
-    transition: all 0.2s;
-
-    &:focus,
-    &:focus-within {
-      border-color: #e7de99;
-      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
-    }
-
-    &.p-invalid {
-      border-color: #ef4444;
-
-      &:focus,
-      &:focus-within {
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-      }
-    }
-  }
-
   small.p-error {
     color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: -0.25rem;
+    font-size: 0.6875rem;
+    margin-top: -0.125rem;
   }
 }
 </style>

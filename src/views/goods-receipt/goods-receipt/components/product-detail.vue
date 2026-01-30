@@ -84,62 +84,66 @@
       <div class="form-group-row">
         <div class="form-group">
           <label>
-            {{ $t('goodsReceipt.form.productType') || 'ประเภทสินค้า' }}
+            {{ $t("goodsReceipt.form.productType") || "ประเภทสินค้า" }}
             <span class="required">*</span>
           </label>
-          <FormDropdown
-            v-model="productData.productTypeCode"
-            :options="productTypes"
-            option-label="nameTh"
-            option-value="code"
-            :placeholder="$t('goodsReceipt.form.productTypePlaceholder') || 'เลือกประเภทสินค้า'"
+          <AutoComplete
+            v-model="selectedProductType"
+            :suggestions="filteredProductTypes"
+            field="nameTh"
+            :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+            :dropdown="true"
+            :placeholder="
+              $t('goodsReceipt.form.productTypePlaceholder') ||
+              'เลือกประเภทสินค้า'
+            "
             :invalid="!!errors.productTypeCode"
-            @change="handleProductTypeChange"
+            @complete="searchProductTypes"
+            @item-select="handleProductTypeChange"
           />
           <small v-if="errors.productTypeCode" class="p-error">
             {{ errors.productTypeCode }}
           </small>
         </div>
-      </div>
 
-      <!-- Quantity Row (Qty + Unit in same row) -->
-      <div class="form-group-row-4">
-        <div class="form-group">
-          <label>
-            {{ $t("goodsReceipt.form.qty") }}
-            <span class="required">*</span>
-          </label>
-          <input
-            type="number"
-            v-model.number="productData.qty"
-            :placeholder="$t('goodsReceipt.form.qtyPlaceholder')"
-            :class="{ 'is-invalid': errors.qty }"
-            class="custom-input"
-            step="0.01"
-            min="0"
-            @input="clearError('qty')"
-          />
-          <small v-if="errors.qty" class="p-error">
-            {{ errors.qty }}
-          </small>
+        <!-- Quantity Row (Qty + Unit in same row) -->
+        <div class="form-group-row">
+          <div class="form-group">
+            <label>
+              {{ $t("goodsReceipt.form.qty") }}
+              <span class="required">*</span>
+            </label>
+            <input
+              type="number"
+              v-model.number="productData.qty"
+              :placeholder="$t('goodsReceipt.form.qtyPlaceholder')"
+              :class="{ 'is-invalid': errors.qty }"
+              class="custom-input"
+              step="0.01"
+              min="0"
+              @input="clearError('qty')"
+            />
+            <small v-if="errors.qty" class="p-error">
+              {{ errors.qty }}
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>
+              {{ $t("goodsReceipt.form.qtyUnit") }}
+              <span class="required">*</span>
+            </label>
+            <InputText
+              v-model="productData.qtyUnit"
+              :placeholder="$t('goodsReceipt.form.qtyUnitPlaceholder')"
+              :class="{ 'p-invalid': errors.qtyUnit }"
+              @input="clearError('qtyUnit')"
+            />
+            <small v-if="errors.qtyUnit" class="p-error">
+              {{ errors.qtyUnit }}
+            </small>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label>
-            {{ $t("goodsReceipt.form.qtyUnit") }}
-            <span class="required">*</span>
-          </label>
-          <InputText
-            v-model="productData.qtyUnit"
-            :placeholder="$t('goodsReceipt.form.qtyUnitPlaceholder')"
-            :class="{ 'p-invalid': errors.qtyUnit }"
-            @input="clearError('qtyUnit')"
-          />
-          <small v-if="errors.qtyUnit" class="p-error">
-            {{ errors.qtyUnit }}
-          </small>
-        </div>
-
       </div>
 
       <!-- Price Row (Price + Unit in same row) -->
@@ -185,14 +189,14 @@
 </template>
 
 <script>
-import FormDropdown from '@/components/common/form-dropdown.vue'
-import { useProductTypeApiStore } from '@/stores/api/product-type-api'
+import AutoComplete from "@/components/prime-vue/auto-complete.vue";
+import { useProductTypeApiStore } from "@/stores/api/product-type-api";
 
 export default {
   name: "ProductDetail",
 
   components: {
-    FormDropdown
+    AutoComplete,
   },
 
   props: {
@@ -233,24 +237,26 @@ export default {
         unitPrice: "",
       },
       productTypes: [],
+      filteredProductTypes: [],
+      selectedProductType: null,
       errors: {},
-      isUpdatingFromParent: false
+      isUpdatingFromParent: false,
     };
   },
 
   async mounted() {
-    await this.loadProductTypes()
+    await this.loadProductTypes();
   },
 
   watch: {
     modelValue: {
       handler(newValue) {
         if (newValue && !this.isUpdatingFromParent) {
-          this.isUpdatingFromParent = true
-          this.productData = JSON.parse(JSON.stringify(newValue))
+          this.isUpdatingFromParent = true;
+          this.productData = JSON.parse(JSON.stringify(newValue));
           this.$nextTick(() => {
-            this.isUpdatingFromParent = false
-          })
+            this.isUpdatingFromParent = false;
+          });
         }
       },
       deep: true,
@@ -273,24 +279,42 @@ export default {
         const result = await this.productTypeApiStore.listProductTypes({
           pageIndex: 0,
           pageSize: 1000,
-          criteria: { searchText: null }
-        })
+          criteria: { searchText: null },
+        });
         if (result.success) {
-          this.productTypes = result.data
+          this.productTypes = result.data;
+          // Set selected product type if code exists
+          if (this.productData.productTypeCode) {
+            this.selectedProductType = this.productTypes.find(
+              (pt) => pt.code === this.productData.productTypeCode,
+            );
+          }
         }
       } catch (error) {
-        console.error('Error loading product types:', error)
+        console.error("Error loading product types:", error);
       }
     },
 
+    searchProductTypes(event) {
+      const query = event.query.toLowerCase().trim();
+      this.filteredProductTypes = query
+        ? this.productTypes.filter(
+            (type) =>
+              type.nameTh.toLowerCase().includes(query) ||
+              type.nameEn.toLowerCase().includes(query) ||
+              type.code.toLowerCase().includes(query),
+          )
+        : [...this.productTypes];
+    },
+
     handleProductTypeChange(event) {
-      const selectedProductType = this.productTypes.find(pt => pt.code === event.value)
+      const selectedProductType = event.value;
       if (selectedProductType) {
-        this.productData.productTypeCode = selectedProductType.code
-        this.productData.productTypeNameTh = selectedProductType.nameTh
-        this.productData.productTypeNameEn = selectedProductType.nameEn
+        this.productData.productTypeCode = selectedProductType.code;
+        this.productData.productTypeNameTh = selectedProductType.nameTh;
+        this.productData.productTypeNameEn = selectedProductType.nameEn;
       }
-      this.clearError('productTypeCode')
+      this.clearError("productTypeCode");
     },
 
     clearError(field) {
@@ -302,11 +326,16 @@ export default {
     validate() {
       this.errors = {};
 
-      console.log('Validating product data:', this.productData);
+      console.log("Validating product data:", this.productData);
 
       // Product Type validation
-      if (!this.productData.productTypeCode || !this.productData.productTypeCode.trim()) {
-        this.errors.productTypeCode = this.$t('goodsReceipt.validation.productTypeRequired') || 'กรุณาเลือกประเภทสินค้า'
+      if (
+        !this.productData.productTypeCode ||
+        !this.productData.productTypeCode.trim()
+      ) {
+        this.errors.productTypeCode =
+          this.$t("goodsReceipt.validation.productTypeRequired") ||
+          "กรุณาเลือกประเภทสินค้า";
       }
 
       // Origin Number validation
@@ -330,7 +359,7 @@ export default {
         !this.productData.productNameEn.trim()
       ) {
         this.errors.productNameEn = this.$t(
-          "goodsReceipt.validation.productNameEnRequired"
+          "goodsReceipt.validation.productNameEnRequired",
         );
       }
 
@@ -340,7 +369,7 @@ export default {
         !this.productData.productNameTH.trim()
       ) {
         this.errors.productNameTH = this.$t(
-          "goodsReceipt.validation.productNameTHRequired"
+          "goodsReceipt.validation.productNameTHRequired",
         );
       }
 
@@ -352,7 +381,7 @@ export default {
       // Quantity Unit validation
       if (!this.productData.qtyUnit || !this.productData.qtyUnit.trim()) {
         this.errors.qtyUnit = this.$t(
-          "goodsReceipt.validation.qtyUnitRequired"
+          "goodsReceipt.validation.qtyUnitRequired",
         );
       }
 
@@ -368,7 +397,7 @@ export default {
       //   );
       // }
 
-      console.log('Validation errors:', this.errors);
+      console.log("Validation errors:", this.errors);
 
       const isValid = Object.keys(this.errors).length === 0;
       this.$emit("validate", isValid);
@@ -399,23 +428,23 @@ export default {
 .product-detail-card {
   background: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: #111827;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 0.75rem;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
   border-bottom: 2px solid #e7de99;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   i {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: #e7de99;
   }
 }
@@ -423,7 +452,7 @@ export default {
 .product-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.625rem;
 }
 
 .form-group-full {
@@ -433,7 +462,7 @@ export default {
 .form-group-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+  gap: 0.625rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -443,7 +472,7 @@ export default {
 .form-group-row-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  gap: 0.625rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -453,10 +482,10 @@ export default {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 
   label {
-    font-size: 0.9375rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #374151;
 
@@ -469,17 +498,18 @@ export default {
   :deep(.p-inputtext),
   .custom-input {
     width: 100%;
-    height: 40px;
-    padding: 0.625rem 0.875rem;
-    border: 2px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.9375rem;
+    min-height: 30px;
+    height: 30px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.75rem;
     transition: all 0.2s;
 
     &:focus {
       outline: none;
       border-color: #e7de99;
-      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
+      box-shadow: 0 0 0 2px rgba(231, 222, 153, 0.1);
     }
 
     &.p-invalid,
@@ -487,15 +517,15 @@ export default {
       border-color: #ef4444;
 
       &:focus {
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
       }
     }
   }
 
   small.p-error {
     color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: -0.25rem;
+    font-size: 0.6875rem;
+    margin-top: -0.125rem;
   }
 }
 </style>
