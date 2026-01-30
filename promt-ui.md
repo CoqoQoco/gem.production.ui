@@ -1,19 +1,11 @@
 ## สำคัญ ## เขียนเเละเเก้ไข code ตาม E:\coqo_gem_production\code\gem-ui\SKILL.md เเละ E:\coqo_gem_production\code\gem-ui\SKILL-STYLE.md
 
-เขียน ปรับปรุงส่วน add components ใหม่ ที่ E:\coqo_gem_production\code\gem-ui\src\views\goods-receipt\goods-receipt\components\product-components-new.vue
+ที่ E:\coqo_gem_production\code\gem-ui\src\views\goods-receipt\goods-receipt\goods-receipt-index.vue
 
 
+  อยากให้ช่วยออกกเบบเพิ่มเติม ให้มี  btn หรืออะไรสักอย่างที่กดเเล้ว focus เฉพาะส่วนได้เช่น
 
+    - กดเเล้วหน้าจอจะเด้งไปที่ product-detatil
+    - กดเเล้ว focus ราคาต้นทุนเเละส่วนประกอบ
 
-
-   + gold ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า gold table
-        -- gold table - 
-   + gem/ diamond  ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า gem/diamond table
-     -- gem/diamond table - 
-
-   + ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า lobar table
-     -- labor table --
-
-   ในส่วนของ การadd components ผมอยากให้มันสามารถ เปิด-ปิด expand-  ได้โดยเราจะ expand ไว้เสมอ (default) โดยที่งหมด expand ร่วมกันครับ
-   
-     
+    ช่วยออกเเบบให้ด้วยครับ

@@ -13,6 +13,90 @@
       </div>
     </div>
 
+    <!-- Quick Navigation Panel -->
+    <div class="quick-nav-panel" :class="{ 'collapsed': isNavCollapsed }">
+      <button class="nav-toggle" @click="isNavCollapsed = !isNavCollapsed" :title="isNavCollapsed ? 'เปิดเมนู' : 'ซ่อนเมนู'">
+        <i :class="isNavCollapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'"></i>
+      </button>
+
+      <div class="nav-content" v-if="!isNavCollapsed">
+        <div class="nav-title">
+          <i class="pi pi-compass"></i>
+          <span>นำทางด่วน</span>
+        </div>
+
+        <div class="nav-items">
+          <button
+            class="nav-item"
+            @click="scrollToSection('productDetail')"
+            :title="$t('goodsReceipt.productInfo') || 'ข้อมูลสินค้า'"
+          >
+            <i class="pi pi-tag"></i>
+            <span>ข้อมูลสินค้า</span>
+          </button>
+
+          <button
+            class="nav-item"
+            @click="scrollToSection('branchProductType')"
+            :title="$t('goodsReceipt.form.branch') || 'สาขา'"
+          >
+            <i class="pi pi-building"></i>
+            <span>สาขา</span>
+          </button>
+
+          <!-- Subsection divider -->
+          <div class="nav-subsection-title">
+            <span>ราคาต้นทุนและส่วนประกอบ</span>
+          </div>
+
+          <button
+            class="nav-item nav-item-sub"
+            @click="scrollToComponentSection('gold')"
+            :title="'ทอง'"
+          >
+            <i class="pi pi-hammer"></i>
+            <span>ทอง</span>
+          </button>
+
+          <button
+            class="nav-item nav-item-sub"
+            @click="scrollToComponentSection('gem')"
+            :title="'เพชร/พลอย'"
+          >
+            <i class="pi pi-gem"></i>
+            <span>เพชร/พลอย</span>
+          </button>
+
+          <button
+            class="nav-item nav-item-sub"
+            @click="scrollToComponentSection('labor')"
+            :title="'ค่าแรง/ต้นทุนอื่นๆ'"
+          >
+            <i class="pi pi-wrench"></i>
+            <span>ค่าแรง</span>
+          </button>
+
+          <button
+            class="nav-item nav-item-sub"
+            @click="scrollToComponentSection('summary')"
+            :title="'สรุปส่วนประกอบ'"
+          >
+            <i class="pi pi-calculator"></i>
+            <span>สรุป</span>
+          </button>
+
+          <button
+            class="nav-item"
+            @click="scrollToSection('actions')"
+            :title="'ปุ่มดำเนินการ'"
+          >
+            <i class="pi pi-save"></i>
+            <span>บันทึก</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Page Content -->
     <div class="page-content">
       <!-- Product Shortcuts -->
@@ -50,19 +134,25 @@
       </div>
 
       <!-- Product Detail Section (Part 1) -->
-      <ProductDetail ref="productDetailRef" v-model="productData" />
+      <div ref="productDetailSection" class="scroll-section">
+        <ProductDetail ref="productDetailRef" v-model="productData" />
+      </div>
 
       <!-- Branch and Product Type Selection -->
-      <BranchProductTypeSelection
-        ref="branchProductTypeRef"
-        v-model="branchProductTypeData"
-      />
+      <div ref="branchProductTypeSection" class="scroll-section">
+        <BranchProductTypeSelection
+          ref="branchProductTypeRef"
+          v-model="branchProductTypeData"
+        />
+      </div>
 
       <!-- Part 2: Product Components -->
-      <ProductComponents ref="productComponentsRef" v-model="componentsData" />
+      <div ref="productComponentsSection" class="scroll-section">
+        <ProductComponents ref="productComponentsRef" v-model="componentsData" />
+      </div>
 
       <!-- Action Buttons -->
-      <div class="action-buttons">
+      <div ref="actionsSection" class="action-buttons scroll-section">
         <Button
           :label="$t('common.cancel') || 'ยกเลิก'"
           icon="pi pi-times"
@@ -162,10 +252,113 @@ export default {
       recommendedProducts: [],
       isLoadingRecommended: false,
       toast: null,
+      isNavCollapsed: false,
     };
   },
 
   methods: {
+    scrollToSection(sectionName) {
+      let targetRef = null;
+
+      // Map section names to refs
+      switch(sectionName) {
+        case 'productDetail':
+          targetRef = this.$refs.productDetailSection;
+          break;
+        case 'branchProductType':
+          targetRef = this.$refs.branchProductTypeSection;
+          break;
+        case 'productComponents':
+          targetRef = this.$refs.productComponentsSection;
+          break;
+        case 'actions':
+          targetRef = this.$refs.actionsSection;
+          break;
+      }
+
+      if (targetRef) {
+        // Scroll to section with smooth behavior
+        targetRef.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+
+        // Add highlight effect
+        targetRef.classList.add('highlight-section');
+
+        // Remove highlight after animation
+        setTimeout(() => {
+          targetRef.classList.remove('highlight-section');
+        }, 2000);
+      }
+    },
+
+    scrollToComponentSection(componentType) {
+      const productComponentsRef = this.$refs.productComponentsRef;
+
+      if (!productComponentsRef) {
+        console.error('Product components ref not found');
+        return;
+      }
+
+      // Get the DOM element reference from the child component
+      let targetElement = null;
+
+      switch(componentType) {
+        case 'gold':
+          targetElement = productComponentsRef.$refs.goldSection;
+          break;
+        case 'gem':
+          targetElement = productComponentsRef.$refs.gemSection;
+          break;
+        case 'labor':
+          targetElement = productComponentsRef.$refs.laborSection;
+          break;
+        case 'summary':
+          targetElement = productComponentsRef.$refs.summarySection;
+          break;
+      }
+
+      if (targetElement) {
+        // First, expand the section if it's collapsed
+        switch(componentType) {
+          case 'gold':
+            if (!productComponentsRef.isGoldExpanded) {
+              productComponentsRef.toggleGoldExpand();
+            }
+            break;
+          case 'gem':
+            if (!productComponentsRef.isGemExpanded) {
+              productComponentsRef.toggleGemExpand();
+            }
+            break;
+          case 'labor':
+            if (!productComponentsRef.isLaborExpanded) {
+              productComponentsRef.toggleLaborExpand();
+            }
+            break;
+        }
+
+        // Wait a bit for expansion animation, then scroll
+        setTimeout(() => {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+
+          // Add highlight effect
+          targetElement.classList.add('highlight-section');
+
+          // Remove highlight after animation
+          setTimeout(() => {
+            targetElement.classList.remove('highlight-section');
+          }, 2000);
+        }, 350); // Wait for expand animation
+      }
+    },
+
     async loadRecommendedProducts() {
       this.isLoadingRecommended = true;
       try {
@@ -809,6 +1002,215 @@ export default {
     background: #d1d5db;
     opacity: 0.6;
     cursor: not-allowed;
+  }
+}
+
+// Quick Navigation Panel
+.quick-nav-panel {
+  position: fixed;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  width: 200px;
+
+  &.collapsed {
+    width: 48px;
+  }
+
+  @media (max-width: 768px) {
+    right: 0.5rem;
+    width: 160px;
+
+    &.collapsed {
+      width: 40px;
+    }
+  }
+
+  .nav-toggle {
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 48px;
+    background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
+    border: none;
+    border-radius: 6px 0 0 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.1);
+
+    i {
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
+      left: -14px;
+    }
+  }
+
+  .nav-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .nav-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e7de99;
+
+    i {
+      font-size: 0.875rem;
+      color: #e7de99;
+    }
+  }
+
+  .nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav-subsection-title {
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-left: 3px solid #e7de99;
+    background: rgba(231, 222, 153, 0.05);
+
+    span {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.75rem;
+    color: #374151;
+    text-align: left;
+
+    i {
+      font-size: 0.75rem;
+      color: #e7de99;
+      flex-shrink: 0;
+    }
+
+    span {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(231, 222, 153, 0.1) 0%, rgba(231, 222, 153, 0.2) 100%);
+      border-color: #e7de99;
+      transform: translateX(-2px);
+
+      i {
+        color: #c0ab28;
+      }
+    }
+
+    &:active {
+      transform: translateX(0);
+    }
+
+    // Sub-item styling
+    &.nav-item-sub {
+      margin-left: 0.75rem;
+      padding: 0.375rem 0.625rem;
+      font-size: 0.6875rem;
+      border-left: 2px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fafafa;
+
+      i {
+        font-size: 0.6875rem;
+      }
+
+      &:hover {
+        margin-left: 0.5rem;
+        border-left-color: #e7de99;
+      }
+    }
+  }
+}
+
+// Scroll Section Styling
+.scroll-section {
+  transition: all 0.3s ease;
+  position: relative;
+  scroll-margin-top: 80px;
+}
+
+// Highlight Effect
+@keyframes highlight-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(231, 222, 153, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(231, 222, 153, 0);
+  }
+}
+
+.scroll-section.highlight-section {
+  animation: highlight-pulse 1s ease-in-out 2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 3px solid #e7de99;
+    border-radius: 14px;
+    pointer-events: none;
+    animation: fade-in-out 2s ease-in-out;
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 </style>

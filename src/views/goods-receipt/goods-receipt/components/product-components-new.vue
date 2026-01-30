@@ -61,7 +61,7 @@
     </div>
 
     <!-- Gold Section -->
-    <div class="component-section">
+    <div ref="goldSection" class="component-section scroll-section">
       <div class="component-section-header">
         <div class="section-title-inline">
           <i class="pi pi-hammer gold-icon"></i>
@@ -241,7 +241,7 @@
     </div>
 
     <!-- Gem/Diamond Section -->
-    <div class="component-section">
+    <div ref="gemSection" class="component-section scroll-section">
       <div class="component-section-header">
         <div class="section-title-inline">
           <i class="pi pi-hammer gold-icon"></i>
@@ -454,7 +454,7 @@
     </div>
 
     <!-- Labor Section -->
-    <div class="component-section">
+    <div ref="laborSection" class="component-section scroll-section">
       <div class="component-section-header">
         <div class="section-title-inline">
           <i class="pi pi-wrench labor-icon"></i>
@@ -558,7 +558,7 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="summary-section">
+    <div ref="summarySection" class="summary-section scroll-section">
       <div class="summary-title">
         <i class="pi pi-calculator"></i>
         <span>สรุปส่วนประกอบทั้งหมด</span>
@@ -1918,6 +1918,56 @@ export default {
       color: white;
       font-size: 0.6875rem;
     }
+  }
+}
+
+// Scroll Section Styling (for navigation)
+.scroll-section {
+  transition: all 0.3s ease;
+  position: relative;
+  scroll-margin-top: 80px;
+}
+
+// Highlight Effect (for navigation)
+@keyframes highlight-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(231, 222, 153, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(231, 222, 153, 0);
+  }
+}
+
+.scroll-section.highlight-section {
+  animation: highlight-pulse 1s ease-in-out 2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 3px solid #e7de99;
+    border-radius: 14px;
+    pointer-events: none;
+    animation: fade-in-out 2s ease-in-out;
+    z-index: 1;
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
