@@ -98,7 +98,7 @@
 <script>
 import ProductDetail from "./components/product-detail.vue";
 import BranchProductTypeSelection from "./components/branch-product-type-selection.vue";
-import ProductComponents from "./components/product-components.vue";
+import ProductComponents from "./components/product-components-new.vue";
 import ConfirmationModal from "./modal/confirmation-modal.vue";
 import { useGoodsReceiptApiStore } from "@/stores/api/goods-receipt-api";
 import { useStockApiStore } from "@/stores/api/stock-api";

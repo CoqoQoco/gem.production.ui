@@ -1,7 +1,19 @@
 ## สำคัญ ## เขียนเเละเเก้ไข code ตาม E:\coqo_gem_production\code\gem-ui\SKILL.md เเละ E:\coqo_gem_production\code\gem-ui\SKILL-STYLE.md
 
-ที่ ปรับปรุง ที่ E:\coqo_gem_production\code\gem-ui\src\views\stock\list-inventory\components\data-table-view.vue
+เขียน ปรับปรุงส่วน add components ใหม่ ที่ E:\coqo_gem_production\code\gem-ui\src\views\goods-receipt\goods-receipt\components\product-components-new.vue
 
-ให้เพิ่ม column action btn ดา้านหน้า
-  เพิ่ม btn กduplcate สินค้าครับเเล้ว redirect ไปหน้าบันทึกสินค้า
-  
+
+
+
+
+   + gold ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า gold table
+        -- gold table - 
+   + gem/ diamond  ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า gem/diamond table
+     -- gem/diamond table - 
+
+   + ---กรอกรายละเอียดตรงนีเสร็จเเล้วค่อยกด + เข้า lobar table
+     -- labor table --
+
+   ในส่วนของ การadd components ผมอยากให้มันสามารถ เปิด-ปิด expand-  ได้โดยเราจะ expand ไว้เสมอ (default) โดยที่งหมด expand ร่วมกันครับ
+   
+     

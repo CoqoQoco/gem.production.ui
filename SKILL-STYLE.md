@@ -218,6 +218,256 @@
 
 ---
 
+## 📊 Table & DataTable Standards
+
+### 1. **Using PrimeVue DataTable**
+
+**สำคัญ:** ใช้ DataTable component จาก `@/components/prime-vue/data-table.vue` แทน HTML table ธรรมดา
+
+**Structure:**
+```vue
+<DataTable
+  :items="items"
+  :columns="columns"
+  data-key="id"
+  :paginator="false"
+  :show-gridlines="true"
+  scroll-height="300px"
+  empty-message="ไม่พบข้อมูล"
+>
+  <!-- Custom Templates -->
+  <template #fieldNameTemplate="{ data }">
+    <!-- Custom content -->
+  </template>
+</DataTable>
+```
+
+### 2. **Compact Table Sizing for Page Focus**
+
+**หลักการ:** ทำให้ element ต่างๆ มีขนาดเล็กเพื่อให้สามารถเห็นข้อมูลทั้งหมดใน 1 page focus โดยไม่ต้อง scroll มาก
+
+**Font Sizes (Compact):**
+```scss
+// Table content
+.data-table-container {
+  :deep(.base-datatable) {
+    .p-datatable {
+      font-size: 0.75rem; // 12px - ขนาดหลักของตาราง
+    }
+  }
+}
+
+// Form labels
+label {
+  font-size: 0.75rem; // 12px
+  font-weight: 600;
+}
+
+// Input fields
+input, select, textarea {
+  font-size: 0.75rem; // 12px
+  padding: 0.25rem 0.5rem; // ลด padding
+}
+
+// Buttons
+button {
+  font-size: 0.75rem; // 12px
+  padding: 0.375rem 0.875rem;
+}
+
+// Section titles
+.section-title {
+  font-size: 0.875rem; // 14px
+  margin-bottom: 0.625rem; // ลดระยะห่าง
+}
+```
+
+**Element Heights (Compact):**
+```scss
+// Input fields
+input, select {
+  min-height: 30px;
+  height: 30px;
+}
+
+// Buttons
+button {
+  height: 30px;
+}
+
+// Table rows
+.p-datatable-tbody > tr > td {
+  padding: 0.5rem 0.625rem; // ลด padding
+}
+```
+
+**Spacing (Compact):**
+```scss
+// ระยะห่างระหว่าง sections
+.component-section {
+  margin-bottom: 0.75rem; // 12px แทน 1.5rem
+  padding: 0.75rem; // 12px แทน 1.5rem
+}
+
+// Form grid gaps
+.form-grid-compact {
+  gap: 0.625rem; // 10px แทน 1.25rem
+}
+
+// Section card padding
+.section-card {
+  padding: 0.75rem; // 12px แทน 2rem
+}
+```
+
+### 3. **DataTable Scroll Heights**
+
+**แนะนำความสูงตาม context:**
+```scss
+// สำหรับ table ย่อย (gold, gem, labor)
+scroll-height="300px"
+
+// สำหรับ summary table หลัก
+scroll-height="400px"
+
+// สำหรับ main data table ในหน้า list
+scroll-height="calc(100vh - 340px)"
+```
+
+### 4. **Form Grid Pattern (Compact)**
+
+```scss
+.form-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); // 5 columns สำหรับข้อมูลเยอะ
+  gap: 0.625rem; // 10px
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+```
+
+### 5. **Column Configuration**
+
+**ตัวอย่าง columns config สำหรับ DataTable:**
+```javascript
+computed: {
+  columns() {
+    return [
+      {
+        field: 'name',
+        header: 'ชื่อ',
+        width: '150px', // กำหนดความกว้างเพื่อควบคุม layout
+        align: 'left'
+      },
+      {
+        field: 'price',
+        header: 'ราคา',
+        width: '100px',
+        align: 'right',
+        format: 'currency' // Auto format
+      },
+      {
+        field: 'weight',
+        header: 'น้ำหนัก',
+        width: '90px',
+        align: 'right',
+        format: 'decimal2'
+      },
+      {
+        field: 'actions',
+        header: 'จัดการ',
+        width: '70px',
+        align: 'center'
+      }
+    ]
+  }
+}
+```
+
+### 6. **Badge & Status Indicators (Compact)**
+
+```scss
+// Type badges
+.type-badge {
+  display: inline-block;
+  padding: 0.125rem 0.375rem; // เล็กลง
+  border-radius: 4px;
+  font-size: 0.6875rem; // 11px
+  font-weight: 600;
+}
+
+// Formula badges
+.formula-badge {
+  padding: 0.125rem 0.375rem;
+  font-size: 0.6875rem; // 11px
+}
+
+// Icon buttons
+.btn-delete {
+  padding: 0.25rem 0.375rem; // เล็กลง
+
+  i {
+    font-size: 0.6875rem; // 11px
+  }
+}
+```
+
+### 7. **Summary Footer Pattern**
+
+```scss
+.summary-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+
+  .footer-label {
+    font-size: 0.875rem; // 14px
+    font-weight: 700;
+    color: black;
+  }
+
+  .footer-total {
+    font-size: 1rem; // 16px - เน้นเล็กน้อย
+    font-weight: 700;
+    color: black;
+  }
+}
+```
+
+### ✅ Page Focus Checklist
+
+เมื่อออกแบบหน้าที่ต้องแสดงข้อมูลเยอะ:
+
+- [ ] ใช้ DataTable แทน HTML table
+- [ ] Font size หลักที่ `0.75rem` (12px)
+- [ ] Input/Button height ที่ `30px`
+- [ ] Section padding ที่ `0.75rem` (12px)
+- [ ] Form grid gap ที่ `0.625rem` (10px)
+- [ ] กำหนด scroll-height สำหรับ tables
+- [ ] กำหนด width สำหรับทุก column
+- [ ] ใช้ format auto สำหรับตัวเลขและสกุลเงิน
+- [ ] Badge และ icon มีขนาดเล็ก (`0.6875rem`)
+- [ ] ทดสอบใน 1 page focus view (ไม่ควรต้อง scroll เยอะ)
+
+---
+
 ## 🎨 Colors
 
 ### Primary Colors (Pink Theme)
