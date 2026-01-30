@@ -70,25 +70,29 @@
         <div class="form-grid-compact">
           <div class="form-group-compact">
             <label>ทอง <span class="required">*</span></label>
-            <FormDropdown
-              v-model="goldForm.itemCode"
-              :options="golds"
-              option-label="nameTh"
-              option-value="code"
-              placeholder="เลือกทอง"
-              @change="handleGoldFormChange"
+            <AutoComplete
+              v-model="goldForm.selectedGold"
+              :suggestions="filteredGolds"
+              field="nameTh"
+              :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+              :dropdown="true"
+              placeholder="ค้นหาทอง..."
+              @complete="searchGolds"
+              @item-select="handleGoldFormChange"
             />
           </div>
 
           <div class="form-group-compact">
             <label>รูปร่าง <span class="required">*</span></label>
-            <FormDropdown
-              v-model="goldForm.shapeCode"
-              :options="goldSizes"
-              option-label="nameTh"
-              option-value="code"
-              placeholder="เลือกรูปร่าง"
-              @change="handleGoldFormShapeChange"
+            <AutoComplete
+              v-model="goldForm.selectedShape"
+              :suggestions="filteredGoldSizes"
+              field="nameTh"
+              :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+              :dropdown="true"
+              placeholder="ค้นหารูปร่าง..."
+              @complete="searchGoldSizes"
+              @item-select="handleGoldFormShapeChange"
             />
           </div>
 
@@ -224,36 +228,42 @@
         <div class="form-grid-compact">
           <div class="form-group-compact">
             <label>เพชร/พลอย <span class="required">*</span></label>
-            <FormDropdown
-              v-model="gemForm.itemCode"
-              :options="gems"
-              option-label="nameTh"
-              option-value="code"
-              placeholder="เลือกเพชร/พลอย"
-              @change="handleGemFormChange"
+            <AutoComplete
+              v-model="gemForm.selectedGem"
+              :suggestions="filteredGems"
+              field="nameTh"
+              :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+              :dropdown="true"
+              placeholder="ค้นหาเพชร/พลอย..."
+              @complete="searchGems"
+              @item-select="handleGemFormChange"
             />
           </div>
 
           <div class="form-group-compact">
             <label>รูปร่าง <span class="required">*</span></label>
-            <FormDropdown
-              v-model="gemForm.shapeCode"
-              :options="gemShapes"
-              option-label="nameTh"
-              option-value="code"
-              placeholder="เลือกรูปร่าง"
-              @change="handleGemFormShapeChange"
+            <AutoComplete
+              v-model="gemForm.selectedGemShape"
+              :suggestions="filteredGemShapes"
+              field="nameTh"
+              :option-label="(item) => `${item.nameEn} - ${item.nameTh}`"
+              :dropdown="true"
+              placeholder="ค้นหารูปร่าง..."
+              @complete="searchGemShapes"
+              @item-select="handleGemFormShapeChange"
             />
           </div>
 
           <div class="form-group-compact">
             <label>สูตรคำนวณ <span class="required">*</span></label>
-            <FormDropdown
-              v-model="gemForm.calculationFormula"
-              :options="gemCalculationFormulas"
-              option-label="label"
-              option-value="value"
-              placeholder="เลือกสูตร"
+            <AutoComplete
+              v-model="gemForm.selectedFormula"
+              :suggestions="filteredGemFormulas"
+              field="label"
+              :dropdown="true"
+              placeholder="เลือกสูตร..."
+              @complete="searchGemFormulas"
+              @item-select="handleGemFormulaChange"
             />
           </div>
 
@@ -548,7 +558,7 @@
 </template>
 
 <script>
-import FormDropdown from '@/components/common/form-dropdown.vue'
+import AutoComplete from '@/components/prime-vue/auto-complete.vue'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import DataTable from '@/components/prime-vue/data-table.vue'
@@ -562,7 +572,7 @@ export default {
   name: 'ProductComponentsNew',
 
   components: {
-    FormDropdown,
+    AutoComplete,
     InputText,
     Textarea,
     DataTable
@@ -611,6 +621,13 @@ export default {
       gems: [],
       gemShapes: [],
       goldSizes: [],
+
+      // Filtered suggestions for autocomplete
+      filteredGolds: [],
+      filteredGoldSizes: [],
+      filteredGems: [],
+      filteredGemShapes: [],
+      filteredGemFormulas: [],
 
       errors: {},
       isUpdatingFromParent: false,
@@ -863,6 +880,8 @@ export default {
     getEmptyGoldItem() {
       return {
         type: 'gold',
+        selectedGold: null,
+        selectedShape: null,
         itemCode: '',
         itemNameTh: '',
         itemNameEn: '',
@@ -880,8 +899,30 @@ export default {
       }
     },
 
+    searchGolds(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredGolds = query
+        ? this.golds.filter(gold =>
+            gold.nameTh.toLowerCase().includes(query) ||
+            gold.nameEn.toLowerCase().includes(query) ||
+            gold.code.toLowerCase().includes(query)
+          )
+        : [...this.golds]
+    },
+
+    searchGoldSizes(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredGoldSizes = query
+        ? this.goldSizes.filter(size =>
+            size.nameTh.toLowerCase().includes(query) ||
+            size.nameEn.toLowerCase().includes(query) ||
+            size.code.toLowerCase().includes(query)
+          )
+        : [...this.goldSizes]
+    },
+
     handleGoldFormChange(event) {
-      const selectedGold = this.golds.find(g => g.code === event.value)
+      const selectedGold = event.value
       if (selectedGold) {
         this.goldForm.itemCode = selectedGold.code
         this.goldForm.itemNameTh = selectedGold.nameTh
@@ -890,7 +931,7 @@ export default {
     },
 
     handleGoldFormShapeChange(event) {
-      const selectedShape = this.goldSizes.find(s => s.code === event.value)
+      const selectedShape = event.value
       if (selectedShape) {
         this.goldForm.shapeCode = selectedShape.code
         this.goldForm.shapeNameTh = selectedShape.nameTh
@@ -911,7 +952,20 @@ export default {
       const cost = Math.round(totalWeight * price * 100) / 100
 
       const newItem = {
-        ...this.goldForm,
+        type: 'gold',
+        itemCode: this.goldForm.itemCode,
+        itemNameTh: this.goldForm.itemNameTh,
+        itemNameEn: this.goldForm.itemNameEn,
+        shapeCode: this.goldForm.shapeCode,
+        shapeNameTh: this.goldForm.shapeNameTh,
+        shapeNameEn: this.goldForm.shapeNameEn,
+        weight: this.goldForm.weight,
+        weightUnit: this.goldForm.weightUnit,
+        wastePercent: this.goldForm.wastePercent,
+        labelWeight: this.goldForm.labelWeight,
+        qty: this.goldForm.qty,
+        qtyUnit: this.goldForm.qtyUnit,
+        price: this.goldForm.price,
         cost
       }
 
@@ -927,6 +981,9 @@ export default {
     getEmptyGemItem() {
       return {
         type: 'gem',
+        selectedGem: null,
+        selectedGemShape: null,
+        selectedFormula: null,
         itemCode: '',
         itemNameTh: '',
         itemNameEn: '',
@@ -947,8 +1004,39 @@ export default {
       }
     },
 
+    searchGems(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredGems = query
+        ? this.gems.filter(gem =>
+            gem.nameTh.toLowerCase().includes(query) ||
+            gem.nameEn.toLowerCase().includes(query) ||
+            gem.code.toLowerCase().includes(query)
+          )
+        : [...this.gems]
+    },
+
+    searchGemShapes(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredGemShapes = query
+        ? this.gemShapes.filter(shape =>
+            shape.nameTh.toLowerCase().includes(query) ||
+            shape.nameEn.toLowerCase().includes(query) ||
+            shape.code.toLowerCase().includes(query)
+          )
+        : [...this.gemShapes]
+    },
+
+    searchGemFormulas(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredGemFormulas = query
+        ? this.gemCalculationFormulas.filter(formula =>
+            formula.label.toLowerCase().includes(query)
+          )
+        : [...this.gemCalculationFormulas]
+    },
+
     handleGemFormChange(event) {
-      const selectedGem = this.gems.find(g => g.code === event.value)
+      const selectedGem = event.value
       if (selectedGem) {
         this.gemForm.itemCode = selectedGem.code
         this.gemForm.itemNameTh = selectedGem.nameTh
@@ -957,11 +1045,18 @@ export default {
     },
 
     handleGemFormShapeChange(event) {
-      const selectedShape = this.gemShapes.find(s => s.code === event.value)
+      const selectedShape = event.value
       if (selectedShape) {
         this.gemForm.shapeCode = selectedShape.code
         this.gemForm.shapeNameTh = selectedShape.nameTh
         this.gemForm.shapeNameEn = selectedShape.nameEn
+      }
+    },
+
+    handleGemFormulaChange(event) {
+      const selectedFormula = event.value
+      if (selectedFormula) {
+        this.gemForm.calculationFormula = selectedFormula.value
       }
     },
 
@@ -984,7 +1079,23 @@ export default {
       }
 
       const newItem = {
-        ...this.gemForm,
+        type: 'gem',
+        itemCode: this.gemForm.itemCode,
+        itemNameTh: this.gemForm.itemNameTh,
+        itemNameEn: this.gemForm.itemNameEn,
+        shapeCode: this.gemForm.shapeCode,
+        shapeNameTh: this.gemForm.shapeNameTh,
+        shapeNameEn: this.gemForm.shapeNameEn,
+        calculationFormula: this.gemForm.calculationFormula,
+        size: this.gemForm.size,
+        source: this.gemForm.source,
+        colorClarity: this.gemForm.colorClarity,
+        origin: this.gemForm.origin,
+        weight: this.gemForm.weight,
+        weightUnit: this.gemForm.weightUnit,
+        qty: this.gemForm.qty,
+        qtyUnit: this.gemForm.qtyUnit,
+        price: this.gemForm.price,
         cost
       }
 

@@ -4,6 +4,7 @@
       v-model="model"
       :suggestions="filteredSuggestions"
       :field="field"
+      :optionLabel="computedOptionLabel"
       :placeholder="placeholder"
       :disabled="disabled"
       :dropdown="dropdown"
@@ -26,6 +27,13 @@
       @focus="handleFocus"
       @blur="handleBlur"
     >
+      <!-- Custom option template if optionLabel is provided -->
+      <template v-if="optionLabel && !$slots.option" #option="slotProps">
+        <div class="autocomplete-option-content">
+          {{ getOptionLabel(slotProps.option) }}
+        </div>
+      </template>
+
       <!-- Pass through all slots for customization -->
       <template v-for="(_, name) in $slots" #[name]="slotData">
         <slot :name="name" v-bind="slotData" />
@@ -60,6 +68,13 @@ export default {
     // Field name for suggestion object display (e.g., 'name', 'label')
     field: {
       type: String,
+      default: null
+    },
+
+    // Option label - can be string (field name) or function for custom format
+    // Example: optionLabel="nameTh" or :optionLabel="(item) => `${item.nameEn} - ${item.nameTh}`"
+    optionLabel: {
+      type: [String, Function],
       default: null
     },
 
@@ -173,6 +188,28 @@ export default {
       return {
         'p-invalid': this.invalid
       }
+    },
+
+    // Computed field to use - optionLabel takes priority over field
+    displayField() {
+      return this.optionLabel || this.field
+    },
+
+    // Computed optionLabel for PrimeVue AutoComplete
+    // PrimeVue only accepts string or function, but we need to handle both cases
+    computedOptionLabel() {
+      // If optionLabel is a function, we can pass it directly
+      if (typeof this.optionLabel === 'function') {
+        return this.optionLabel
+      }
+
+      // If optionLabel is a string, use it
+      if (typeof this.optionLabel === 'string') {
+        return this.optionLabel
+      }
+
+      // Fall back to field prop
+      return this.field
     }
   },
 
@@ -187,6 +224,33 @@ export default {
   },
 
   methods: {
+    // Get option label - supports function or string field name
+    getOptionLabel(option) {
+      if (!option) return ''
+
+      // If optionLabel is a function, use it
+      if (typeof this.optionLabel === 'function') {
+        return this.optionLabel(option)
+      }
+
+      // If optionLabel is a string, use it as field name
+      if (typeof this.optionLabel === 'string') {
+        return option[this.optionLabel] || ''
+      }
+
+      // Fall back to field prop
+      if (this.field) {
+        return option[this.field] || ''
+      }
+
+      // If option is a string, return it
+      if (typeof option === 'string') {
+        return option
+      }
+
+      return ''
+    },
+
     handleComplete(event) {
       const query = event.query
 
@@ -280,7 +344,7 @@ export default {
       min-height: 30px;
       height: 30px;
       border: 1px solid #d1d5db;
-      border-radius: 6px;
+      //border-radius: 6px;
       padding: 0.25rem 0.5rem;
       font-size: 0.75rem; // 12px for compact sizing
       transition: all 0.2s;
