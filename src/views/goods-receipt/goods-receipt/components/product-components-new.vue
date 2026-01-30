@@ -57,10 +57,16 @@
           <i class="pi pi-circle-fill gold-icon"></i>
           <span>ทอง</span>
         </div>
+        <button class="btn-toggle-expand" @click="toggleExpandCollapse" type="button">
+          <i :class="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+          <span>{{ isExpanded ? 'ซ่อน' : 'แสดง' }}</span>
+        </button>
       </div>
 
       <!-- Gold Input Form -->
-      <div class="input-form-card">
+      <transition name="expand-collapse">
+        <div v-show="isExpanded" class="expandable-content">
+          <div class="input-form-card">
         <div class="form-grid-compact">
           <div class="form-group-compact">
             <label>ทอง <span class="required">*</span></label>
@@ -194,6 +200,8 @@
         <i class="pi pi-inbox"></i>
         <p>ยังไม่มีทอง กรุณากรอกข้อมูลและกดปุ่มเพิ่มเข้าตาราง</p>
       </div>
+        </div>
+      </transition>
     </div>
 
     <!-- Gem/Diamond Section -->
@@ -203,10 +211,16 @@
           <i class="pi pi-circle-fill gem-icon"></i>
           <span>เพชร/พลอย</span>
         </div>
+        <button class="btn-toggle-expand" @click="toggleExpandCollapse" type="button">
+          <i :class="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+          <span>{{ isExpanded ? 'ซ่อน' : 'แสดง' }}</span>
+        </button>
       </div>
 
       <!-- Gem Input Form -->
-      <div class="input-form-card">
+      <transition name="expand-collapse">
+        <div v-show="isExpanded" class="expandable-content">
+          <div class="input-form-card">
         <div class="form-grid-compact">
           <div class="form-group-compact">
             <label>เพชร/พลอย <span class="required">*</span></label>
@@ -347,6 +361,8 @@
         <i class="pi pi-inbox"></i>
         <p>ยังไม่มีเพชร/พลอย กรุณากรอกข้อมูลและกดปุ่มเพิ่มเข้าตาราง</p>
       </div>
+        </div>
+      </transition>
     </div>
 
     <!-- Labor Section -->
@@ -356,10 +372,16 @@
           <i class="pi pi-wrench labor-icon"></i>
           <span>ค่าแรง/ต้นทุนอื่นๆ</span>
         </div>
+        <button class="btn-toggle-expand" @click="toggleExpandCollapse" type="button">
+          <i :class="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+          <span>{{ isExpanded ? 'ซ่อน' : 'แสดง' }}</span>
+        </button>
       </div>
 
       <!-- Labor Input Form -->
-      <div class="input-form-card">
+      <transition name="expand-collapse">
+        <div v-show="isExpanded" class="expandable-content">
+          <div class="input-form-card">
         <div class="form-grid-compact labor-grid">
           <div class="form-group-compact">
             <label>หัวข้อ <span class="required">*</span></label>
@@ -429,6 +451,8 @@
         <i class="pi pi-inbox"></i>
         <p>ยังไม่มีค่าแรง กรุณากรอกข้อมูลและกดปุ่มเพิ่มเข้าตาราง</p>
       </div>
+        </div>
+      </transition>
     </div>
 
     <!-- Summary Section -->
@@ -598,7 +622,10 @@ export default {
       imageFileName: '',
       imageFileSize: 0,
       isUploadingImage: false,
-      pendingImageFile: null
+      pendingImageFile: null,
+
+      // Expand/Collapse state - all sections controlled together
+      isExpanded: true
     }
   },
 
@@ -813,6 +840,10 @@ export default {
   },
 
   methods: {
+    toggleExpandCollapse() {
+      this.isExpanded = !this.isExpanded
+    },
+
     emitAllData() {
       const completeData = {
         components: this.allComponents,
@@ -1823,5 +1854,51 @@ export default {
       box-shadow: 0 0 0 2px rgba(231, 222, 153, 0.1);
     }
   }
+}
+
+// Expand/Collapse Toggle Button
+.btn-toggle-expand {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
+  }
+
+  i {
+    font-size: 0.625rem;
+    transition: transform 0.3s;
+  }
+}
+
+// Expandable Content Wrapper
+.expandable-content {
+  overflow: hidden;
+}
+
+// Expand/Collapse Transition
+.expand-collapse-enter-active,
+.expand-collapse-leave-active {
+  transition: all 0.3s ease-in-out;
+  max-height: 2000px;
+  opacity: 1;
+}
+
+.expand-collapse-enter-from,
+.expand-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
 }
 </style>
