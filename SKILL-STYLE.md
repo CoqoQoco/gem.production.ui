@@ -799,6 +799,47 @@ import AutoComplete from '@/components/prime-vue/auto-complete.vue'
 // ไม่ต้องเขียน style ซ้ำ! Component มี style อยู่แล้ว
 ```
 
+### ❌ ห้าม Override Style ของ Generic Components ใน View File
+
+Generic components เช่น Calendar, InputChips, MultiSelect, Button มี style ครบถ้วนอยู่แล้วใน `/src/components/prime-vue/`
+ห้าม override หรือเพิ่ม style ของ generic components ใน view file เนื่องจาก:
+- Style ใน generic component จะถูกทำ override โดย specificity ของ view ทำให้เกิด conflict
+- ยากต่อการบำรุงรักษา เมื่อ generic component ถูก update ใน view file เก่า style จะ conflict
+- ทำให้ component แต่ละ view มี style ต่างกันทั้งที่ใช้ component เดียวกัน
+
+```vue
+<!-- ❌ WRONG - Override style ของ generic component ใน view -->
+<script>
+import Calendar from '@/components/prime-vue/calendar.vue'
+</script>
+
+<style scoped>
+// ห้าม! Calendar มี style อยู่แล้วใน generic component
+:deep(.p-datepicker) {
+  border: 1px solid red;
+}
+:deep(.p-datepicker-input) {
+  height: 40px; // ห้าม override compact height
+}
+</style>
+
+<!-- ✅ CORRECT - ใช้ generic component ตามที่มี ไม่เพิ่ม style -->
+<script>
+import Calendar from '@/components/prime-vue/calendar.vue'
+</script>
+
+<template>
+  <Calendar v-model="date" />
+  <!-- ถ้า generic component ขาด feature เกินจริง ให้แก้ที่ generic component เอง -->
+</template>
+
+// ไม่มี style เพิ่มเติม!
+```
+
+**ถ้าต้องเปลี่ยน style จริงๆ:** แก้ที่ generic component ใน `/src/components/prime-vue/` เท่านั้น เพื่อให้ style สม่ำเสมอทั้งระบบ
+
+---
+
 ### ❌ ห้ามใช้สีเก่า
 ```scss
 // ❌ WRONG - สีเก่า (ส้ม)
@@ -877,6 +918,11 @@ background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
 
 ## 📝 Version History
 
+**Version 3.2** - 2026-01-31
+- ✨ เพิ่มข้อห้าม: ห้าม override style ของ generic components ใน view file
+- 📋 เพิ่มตัวอย่าง WRONG vs CORRECT สำหรับการ override style ใน view
+- 📝 แนวทาง: ถ้าต้องเปลี่ยน style ให้แก้ที่ generic component เท่านั้น
+
 **Version 3.1** - 2025-01-30
 - ✨ เพิ่มหัวข้อ "ตรวจสอบ Generic Components ก่อนเสมอ"
 - ✨ เพิ่มแนวทางการใช้งาน generic components จาก `/src/components/prime-vue/`
@@ -891,8 +937,8 @@ background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
 
 ---
 
-**Last Updated:** 2025-01-30
-**Version:** 3.1 (Generic Components Guidelines)
+**Last Updated:** 2026-01-31
+**Version:** 3.2 (No Override Generic Components Style)
 **Breaking Changes:**
 - ต้องใช้ generic components จาก `/src/components/prime-vue/` แทนการ import จาก PrimeVue โดยตรง
 - สีหลักเปลี่ยนเป็นสีทอง Light Gold (#e7de99) สำหรับ Jewelry theme ตาม variables.css

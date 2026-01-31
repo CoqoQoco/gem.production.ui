@@ -245,6 +245,8 @@ export default {
           usedCost: 0,
           discountPercent: 0,
           finalCost: 0,
+          priceFront: 0,
+          priceBack: 0,
         },
       },
       showConfirmModal: false,
@@ -444,6 +446,8 @@ export default {
           usedCost: product.costSummary?.usedCost || 0,
           discountPercent: product.costSummary?.discountPercent || 0,
           finalCost: product.costSummary?.finalCost || 0,
+          priceFront: product.costSummary?.priceFront || 0,
+          priceBack: product.costSummary?.priceBack || 0,
         },
       };
 
@@ -706,6 +710,8 @@ export default {
           usedCost: 0,
           discountPercent: 0,
           finalCost: 0,
+          priceFront: 0,
+          priceBack: 0,
         },
       };
 
@@ -959,47 +965,21 @@ export default {
   }
 }
 
-.btn-clear {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
-  background: white;
-  color: #6b7280;
-  border: 2px solid #d1d5db;
-
-  &:hover {
-    background: #f3f4f6;
-    border-color: #9ca3af;
-    color: #374151;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-
-.btn-submit {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
-}
+// .btn-clear and .btn-submit sizing handled by generic Button component (compact 30px)
 
 :deep(.p-button-success) {
-  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%) !important;
+  border: none !important;
+  color: #1f2937 !important;
 
-  &:hover {
-    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%) !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
   }
 
   &:disabled {
-    background: #d1d5db;
+    background: #d1d5db !important;
     opacity: 0.6;
     cursor: not-allowed;
   }

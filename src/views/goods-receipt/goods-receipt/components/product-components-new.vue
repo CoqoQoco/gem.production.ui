@@ -676,6 +676,28 @@
           {{ formatCurrency(finalCost) }}
         </div>
       </div>
+
+      <div class="summary-row editable">
+        <label class="summary-label">ราคาป้ายหน้า:</label>
+        <input
+          type="number"
+          v-model.number="costSummary.priceFront"
+          class="summary-input"
+          step="0.01"
+          min="0"
+        />
+      </div>
+
+      <div class="summary-row editable">
+        <label class="summary-label">ราคาป้ายหลัง:</label>
+        <input
+          type="number"
+          v-model.number="costSummary.priceBack"
+          class="summary-input"
+          step="0.01"
+          min="0"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -738,7 +760,13 @@ export default {
       costSummary: {
         usedCost: 0,
         discountPercent: 0,
+        priceFront: 0,
+        priceBack: 0,
       },
+
+      // Flags to track if user has manually edited label prices
+      isPriceFrontEdited: false,
+      isPriceBackEdited: false,
 
       golds: [],
       gems: [],
@@ -1108,7 +1136,11 @@ export default {
             this.costSummary = {
               usedCost: newValue.costSummary.usedCost || 0,
               discountPercent: newValue.costSummary.discountPercent || 0,
+              priceFront: newValue.costSummary.priceFront || 0,
+              priceBack: newValue.costSummary.priceBack || 0,
             };
+            if (newValue.costSummary.priceFront) this.isPriceFrontEdited = true;
+            if (newValue.costSummary.priceBack) this.isPriceBackEdited = true;
           }
 
           this.$nextTick(() => {
@@ -1167,8 +1199,43 @@ export default {
     totalCost: {
       handler(newValue) {
         this.costSummary.usedCost = newValue;
+        // Reset label prices to finalCost if user hasn't manually edited them
+        if (!this.isPriceFrontEdited) {
+          this.costSummary.priceFront = this.finalCost;
+        }
+        if (!this.isPriceBackEdited) {
+          this.costSummary.priceBack = this.finalCost;
+        }
       },
       immediate: true,
+    },
+
+    finalCost: {
+      handler(newValue) {
+        // Sync label prices to finalCost if user hasn't manually edited them
+        if (!this.isPriceFrontEdited) {
+          this.costSummary.priceFront = newValue;
+        }
+        if (!this.isPriceBackEdited) {
+          this.costSummary.priceBack = newValue;
+        }
+      },
+    },
+
+    'costSummary.priceFront': {
+      handler(newVal, oldVal) {
+        if (!this.isUpdatingFromParent && newVal !== oldVal && oldVal !== undefined) {
+          this.isPriceFrontEdited = true;
+        }
+      },
+    },
+
+    'costSummary.priceBack': {
+      handler(newVal, oldVal) {
+        if (!this.isUpdatingFromParent && newVal !== oldVal && oldVal !== undefined) {
+          this.isPriceBackEdited = true;
+        }
+      },
     },
   },
 
@@ -1195,6 +1262,8 @@ export default {
           usedCost: this.costSummary.usedCost || 0,
           discountPercent: this.costSummary.discountPercent || 0,
           finalCost: this.finalCost,
+          priceFront: this.costSummary.priceFront || 0,
+          priceBack: this.costSummary.priceBack || 0,
         },
       };
       this.$emit("update:modelValue", completeData);
@@ -1733,7 +1802,11 @@ export default {
       this.costSummary = {
         usedCost: 0,
         discountPercent: 0,
+        priceFront: 0,
+        priceBack: 0,
       };
+      this.isPriceFrontEdited = false;
+      this.isPriceBackEdited = false;
       this.errors = {};
       this.removeImage();
     },

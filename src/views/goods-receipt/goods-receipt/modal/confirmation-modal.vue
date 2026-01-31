@@ -188,6 +188,14 @@
             <span class="cost-label">{{ $t('goodsReceipt.components.finalCost') || 'ราคาสุดท้าย' }}:</span>
             <span class="cost-value">{{ formatCurrency(componentsData.costSummary.finalCost) }}</span>
           </div>
+          <div class="cost-row">
+            <span class="cost-label">{{ $t('goodsReceipt.components.priceFront') || 'ราคาป้ายหน้า' }}:</span>
+            <span class="cost-value">{{ formatCurrency(componentsData.costSummary.priceFront) }}</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label">{{ $t('goodsReceipt.components.priceBack') || 'ราคาป้ายหลัง' }}:</span>
+            <span class="cost-value">{{ formatCurrency(componentsData.costSummary.priceBack) }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -215,7 +223,7 @@
 
 <script>
 import Dialog from 'primevue/dialog'
-import Button from 'primevue/button'
+import Button from '@/components/prime-vue/button.vue'
 
 export default {
   name: 'ConfirmationModal',
@@ -305,11 +313,11 @@ export default {
   .p-dialog-header {
     background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
     color: white;
-    padding: 1.5rem;
+    padding: 0.75rem 1rem;
     border-radius: 12px 12px 0 0;
 
     .p-dialog-title {
-      font-size: 1.25rem;
+      font-size: 0.9375rem;
       font-weight: 700;
     }
 
@@ -330,14 +338,15 @@ export default {
 .modal-content {
   max-height: 70vh;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .summary-section {
   background: #f9fafb;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #e5e7eb;
 
   &:last-child {
     margin-bottom: 0;
@@ -347,26 +356,18 @@ export default {
 .section-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e5e7eb;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e7de99;
 
   i {
-    font-size: 1.5rem;
+    font-size: 0.9375rem;
     color: #e7de99;
-
-    &.gold-icon {
-      color: #fbbf24;
-    }
-
-    &.gem-icon {
-      color: #a855f7;
-    }
   }
 
   h3 {
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: #111827;
     margin: 0;
@@ -376,7 +377,7 @@ export default {
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 0.5rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -386,17 +387,17 @@ export default {
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.125rem;
 }
 
 .info-label {
-  font-size: 0.875rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: #6b7280;
 }
 
 .info-value {
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: #111827;
 }
@@ -404,33 +405,33 @@ export default {
 .components-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .component-item {
   background: white;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 6px;
+  padding: 0.625rem;
   border: 1px solid #e5e7eb;
 }
 
 .component-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .component-number {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
   color: white;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.6875rem;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -438,26 +439,26 @@ export default {
 .component-type-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
   font-weight: 600;
 
   &.type-gold {
     background: rgba(251, 191, 36, 0.1);
-    color: #fbbf24;
+    color: #92400e;
     border: 1px solid rgba(251, 191, 36, 0.3);
   }
 
   &.type-gem {
     background: rgba(168, 85, 247, 0.1);
-    color: #a855f7;
+    color: #6b21a8;
     border: 1px solid rgba(168, 85, 247, 0.3);
   }
 
   &.type-labor {
     background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    color: #1e40af;
     border: 1px solid rgba(59, 130, 246, 0.3);
   }
 }
@@ -465,7 +466,7 @@ export default {
 .component-details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 0.375rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -486,18 +487,18 @@ export default {
   justify-content: center;
 
   img {
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 300px;
+    max-height: 300px;
     width: auto;
     height: auto;
-    border-radius: 8px;
+    border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
 .cost-summary {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 2px solid #e5e7eb;
 }
 
@@ -505,42 +506,44 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  margin-bottom: 0.25rem;
   background: white;
-  border-radius: 6px;
+  border-radius: 4px;
 
   &.final-cost {
-    background: #fff5f7;
-    border: 2px solid #e7de99;
-    padding: 1rem;
-    margin-top: 0.75rem;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border: none;
+    padding: 0.5rem 0.625rem;
+    margin-top: 0.375rem;
+    border-radius: 6px;
 
     .cost-label,
     .cost-value {
-      color: #e7de99;
+      color: black;
       font-weight: 700;
-      font-size: 1.125rem;
+      font-size: 0.875rem;
     }
   }
 
   .cost-label {
+    font-size: 0.75rem;
     font-weight: 600;
     color: #374151;
   }
 
   .cost-value {
+    font-size: 0.75rem;
     font-weight: 600;
     color: #059669;
-    font-size: 1rem;
   }
 }
 
 .modal-footer {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 1.5rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
   border-top: 1px solid #e5e7eb;
 
   @media (max-width: 768px) {
@@ -553,41 +556,17 @@ export default {
   }
 }
 
-.btn-back {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  background: white;
-  color: #6b7280;
-  border: 2px solid #d1d5db;
-
-  &:hover {
-    background: #f3f4f6;
-    border-color: #9ca3af;
-    color: #374151;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
+// .btn-back and .btn-confirm sizing handled by generic Button component (compact 30px)
 
 :deep(.btn-confirm) {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%);
-  border: none;
+  background: linear-gradient(135deg, #e7de99 0%, #c0ab28 100%) !important;
+  border: none !important;
+  color: #1f2937 !important;
 
-  &:hover {
-    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%);
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0ab28 0%, #91801e 100%) !important;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
-  }
-
-  &:disabled {
-    background: #d1d5db;
-    opacity: 0.6;
-    cursor: not-allowed;
   }
 }
 </style>
