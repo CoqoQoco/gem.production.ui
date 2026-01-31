@@ -182,7 +182,7 @@
 <script>
 import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
-import MultiSelect from 'primevue/multiselect'
+import MultiSelect from '@/components/prime-vue/multi-select.vue'
 import InputNumber from 'primevue/inputnumber'
 import { useProductTypeApiStore } from '@/stores/api/product-type-api'
 import { useBranchApiStore } from '@/stores/api/branch-api'
@@ -441,29 +441,37 @@ export default {
 .filter-dialog {
   :deep(.p-dialog-header) {
     background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
-    color: white;
+    color: #1f2937;
+    padding: 0.75rem 1rem; // Compact header
 
     .p-dialog-title {
-      color: white;
+      color: #1f2937;
       font-weight: 600;
+      font-size: 0.875rem; // 14px - compact
     }
 
     .p-dialog-header-icon {
-      color: white;
+      color: #1f2937;
+      width: 30px; // Compact
+      height: 30px; // Compact
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(31, 41, 55, 0.1);
+      }
+
+      .p-icon {
+        font-size: 0.875rem; // Compact
       }
     }
   }
 }
 
 .filter-content {
-  padding: 1rem 0;
+  padding: 0.75rem 0; // Compact padding
 }
 
 .filter-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; // Reduced from 1.5rem
 
   &:last-child {
     margin-bottom: 0;
@@ -473,22 +481,22 @@ export default {
 .filter-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.375rem; // Compact gap
   font-weight: 600;
   color: #374151;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.375rem; // Compact margin
+  font-size: 0.75rem; // 12px - compact
 
   i {
     color: #e7de99;
-    font-size: 1rem;
+    font-size: 0.875rem; // Compact icon
   }
 }
 
 .price-range-inputs {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem; // Compact gap
 
   .price-input {
     flex: 1;
@@ -497,25 +505,26 @@ export default {
   .range-separator {
     color: #6b7280;
     font-weight: 500;
+    font-size: 0.75rem; // 12px
   }
 }
 
 .nested-filters {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-left: 1.5rem;
-  border-left: 3px solid #ffd7e1;
+  gap: 0.75rem; // Compact gap
+  padding-left: 1rem; // Compact padding
+  border-left: 2px solid #ffd7e1; // Thinner border
 }
 
 .nested-filter {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem; // Compact gap
 }
 
 .nested-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem; // 12px - compact
   font-weight: 500;
   color: #6b7280;
 }
@@ -530,20 +539,62 @@ export default {
   width: 100%;
 }
 
-:deep(.p-multiselect) {
-  width: 100%;
-
-  .p-multiselect-label {
-    padding: 0.5rem 0.75rem;
-  }
-}
-
+// Compact InputNumber styling
 :deep(.p-inputnumber) {
   width: 100%;
 
   input {
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem 0.5rem; // Compact padding
+    font-size: 0.75rem; // 12px
+    min-height: 30px; // Compact height
+    height: 30px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s;
+
+    &:focus {
+      border-color: #e7de99; // Gold theme
+      box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
+      outline: none;
+    }
+
+    &::placeholder {
+      font-size: 0.75rem; // 12px
+      color: #9ca3af;
+    }
+  }
+
+  .p-inputnumber-button {
+    width: 30px; // Compact
+    height: 15px; // Half of input height
+
+    .p-icon {
+      font-size: 0.625rem; // 10px - small
+    }
+  }
+}
+
+// Compact button styling
+:deep(.dialog-footer) {
+  .p-button {
+    padding: 0.375rem 0.75rem; // Compact
+    font-size: 0.75rem; // 12px
+    height: 30px; // Compact height
+    gap: 0.375rem; // Gap between icon and text
+
+    .p-button-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .p-button-icon {
+      font-size: 0.75rem;
+    }
+
+    &.p-button-outlined {
+      border-width: 1px;
+    }
   }
 }
 </style>

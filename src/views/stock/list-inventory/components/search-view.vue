@@ -8,7 +8,9 @@
           {{ $t("stockInventory.title") || "รายการสินค้าคงคลัง" }}
         </h2>
         <p class="list-page-subtitle">
-          {{ $t("stockInventory.subtitle") || "จัดการและค้นหารายการสินค้าคงคลัง" }}
+          {{
+            $t("stockInventory.subtitle") || "จัดการและค้นหารายการสินค้าคงคลัง"
+          }}
         </p>
       </div>
 
@@ -16,29 +18,37 @@
       <div class="main-filters-row">
         <!-- Stock Number -->
         <div class="filter-field">
-          <label class="filter-label">{{ $t('stockInventory.filters.stockNumber') || 'Stock Number' }}</label>
+          <label class="filter-label">{{
+            $t("stockInventory.filters.stockNumber") || "Stock Number"
+          }}</label>
           <InputChips
             v-model="localFilters.stockNumbers"
-            :placeholder="$t('stockInventory.filters.stockNumberPlaceholder') || 'กด Enter เพื่อเพิ่ม'"
-            class="filter-chips"
-            @add="trimChipValue($event, 'stockNumbers')"
+            :placeholder="
+              $t('stockInventory.filters.stockNumberPlaceholder') ||
+              'กด Enter เพื่อเพิ่ม'
+            "
           />
         </div>
 
         <!-- Product Code -->
         <div class="filter-field">
-          <label class="filter-label">{{ $t('stockInventory.filters.productCode') || 'Product Code' }}</label>
+          <label class="filter-label">{{
+            $t("stockInventory.filters.productCode") || "Product Code"
+          }}</label>
           <InputChips
             v-model="localFilters.productCodes"
-            :placeholder="$t('stockInventory.filters.productCodePlaceholder') || 'กด Enter เพื่อเพิ่ม'"
-            class="filter-chips"
-            @add="trimChipValue($event, 'productCodes')"
+            :placeholder="
+              $t('stockInventory.filters.productCodePlaceholder') ||
+              'กด Enter เพื่อเพิ่ม'
+            "
           />
         </div>
 
         <!-- Receipt Date Range -->
-        <div class="filter-field date-range-field">
-          <label class="filter-label">{{ $t('stockInventory.filters.receiptDateRange') || 'วันที่รับสินค้า' }}</label>
+        <div class="date-range-field">
+          <label class="filter-label">{{
+            $t("stockInventory.filters.receiptDateRange") || "วันที่รับสินค้า"
+          }}</label>
           <div class="date-range-inputs">
             <Calendar
               v-model="localFilters.receiptDateMin"
@@ -46,7 +56,6 @@
               dateFormat="dd/mm/yy"
               :showIcon="true"
               :maxDate="localFilters.receiptDateMax || maxSelectableDate"
-              class="date-input"
             />
             <span class="date-separator">-</span>
             <Calendar
@@ -56,8 +65,8 @@
               :showIcon="true"
               :minDate="localFilters.receiptDateMin"
               :maxDate="maxSelectableDate"
-              class="date-input"
-            />
+
+              />
           </div>
         </div>
       </div>
@@ -66,11 +75,15 @@
       <div class="list-search-bar">
         <!-- Advanced Filter Button -->
         <Button
-          :label="$t('stockInventory.filters.advancedFilters') || 'ตัวกรองขั้นสูง'"
+          :label="
+            $t('stockInventory.filters.advancedFilters') || 'ตัวกรองขั้นสูง'
+          "
           icon="pi pi-filter"
           @click="handleAdvancedFilter"
           class="p-button-outlined"
-          :badge="advancedFilterCount > 0 ? advancedFilterCount.toString() : null"
+          :badge="
+            advancedFilterCount > 0 ? advancedFilterCount.toString() : null
+          "
           badgeClass="p-badge-pink"
         />
 
@@ -81,7 +94,6 @@
           @click="handleSearch"
           class="list-search-button"
           :loading="loading"
-
         />
 
         <!-- Clear Filters Button -->
@@ -106,7 +118,9 @@
       <div v-if="hasActiveFilters" class="active-filters-display">
         <span class="active-filters-label">
           <i class="pi pi-filter"></i>
-          {{ $t('stockInventory.filters.activeFilters') || 'ตัวกรองที่ใช้งาน' }}:
+          {{
+            $t("stockInventory.filters.activeFilters") || "ตัวกรองที่ใช้งาน"
+          }}:
         </span>
         <div class="active-filters-chips">
           <Chip
@@ -124,11 +138,11 @@
 </template>
 
 <script>
-import InputText from "primevue/inputtext"
-import Button from "primevue/button"
-import InputChips from "primevue/inputchips"
-import Calendar from "primevue/calendar"
-import Chip from "primevue/chip"
+import InputText from "primevue/inputtext";
+import Button from "@/components/prime-vue/button.vue";
+import InputChips from "@/components/prime-vue/input-chips.vue";
+import Calendar from "@/components/prime-vue/calendar.vue";
+import Chip from "primevue/chip";
 
 export default {
   name: "SearchView",
@@ -138,7 +152,7 @@ export default {
     Button,
     InputChips,
     Calendar,
-    Chip
+    Chip,
   },
 
   props: {
@@ -148,20 +162,20 @@ export default {
         stockNumbers: null,
         productCodes: null,
         receiptDateMin: null,
-        receiptDateMax: null
-      })
+        receiptDateMax: null,
+      }),
     },
     advancedFilters: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
-  emits: ['search', 'refresh', 'advanced-filter', 'clear-all', 'remove-filter'],
+  emits: ["search", "refresh", "advanced-filter", "clear-all", "remove-filter"],
 
   data() {
     return {
@@ -169,104 +183,124 @@ export default {
         stockNumbers: [],
         productCodes: [],
         receiptDateMin: null,
-        receiptDateMax: null
-      }
-    }
+        receiptDateMax: null,
+      },
+    };
   },
 
   computed: {
     hasActiveFilters() {
-      return this.localFilters.stockNumbers?.length > 0 ||
-             this.localFilters.productCodes?.length > 0 ||
-             this.localFilters.receiptDateMin ||
-             this.localFilters.receiptDateMax ||
-             this.advancedFilterCount > 0
+      return (
+        this.localFilters.stockNumbers?.length > 0 ||
+        this.localFilters.productCodes?.length > 0 ||
+        this.localFilters.receiptDateMin ||
+        this.localFilters.receiptDateMax ||
+        this.advancedFilterCount > 0
+      );
     },
 
     advancedFilterCount() {
-      let count = 0
-      if (this.advancedFilters.productTypeCodes?.length > 0) count++
-      if (this.advancedFilters.priceMin || this.advancedFilters.priceMax) count++
-      if (this.advancedFilters.branchIds?.length > 0) count++
-      if (this.advancedFilters.goldFilter?.typeCode1?.length > 0 ||
-          this.advancedFilters.goldFilter?.typeCode2?.length > 0) count++
-      if (this.advancedFilters.gemFilter?.typeCode1?.length > 0 ||
-          this.advancedFilters.gemFilter?.typeCode2?.length > 0) count++
-      return count
+      let count = 0;
+      if (this.advancedFilters.productTypeCodes?.length > 0) count++;
+      if (this.advancedFilters.priceMin || this.advancedFilters.priceMax)
+        count++;
+      if (this.advancedFilters.branchIds?.length > 0) count++;
+      if (
+        this.advancedFilters.goldFilter?.typeCode1?.length > 0 ||
+        this.advancedFilters.goldFilter?.typeCode2?.length > 0
+      )
+        count++;
+      if (
+        this.advancedFilters.gemFilter?.typeCode1?.length > 0 ||
+        this.advancedFilters.gemFilter?.typeCode2?.length > 0
+      )
+        count++;
+      return count;
     },
 
     maxSelectableDate() {
       // ไม่ให้เลือกวันที่เกินวันปัจจุบัน
-      return new Date()
+      return new Date();
     },
 
     activeFiltersList() {
-      const filters = []
+      const filters = [];
 
       if (this.localFilters.stockNumbers?.length > 0) {
         filters.push({
-          key: 'stockNumbers',
-          label: `Stock Number: ${this.localFilters.stockNumbers.join(', ')}`
-        })
+          key: "stockNumbers",
+          label: `Stock Number: ${this.localFilters.stockNumbers.join(", ")}`,
+        });
       }
 
       if (this.localFilters.productCodes?.length > 0) {
         filters.push({
-          key: 'productCodes',
-          label: `Product Code: ${this.localFilters.productCodes.join(', ')}`
-        })
+          key: "productCodes",
+          label: `Product Code: ${this.localFilters.productCodes.join(", ")}`,
+        });
       }
 
-      if (this.localFilters.receiptDateMin || this.localFilters.receiptDateMax) {
-        const dateFrom = this.localFilters.receiptDateMin ?
-          this.formatDateDisplay(this.localFilters.receiptDateMin) : '...'
-        const dateTo = this.localFilters.receiptDateMax ?
-          this.formatDateDisplay(this.localFilters.receiptDateMax) : '...'
+      if (
+        this.localFilters.receiptDateMin ||
+        this.localFilters.receiptDateMax
+      ) {
+        const dateFrom = this.localFilters.receiptDateMin
+          ? this.formatDateDisplay(this.localFilters.receiptDateMin)
+          : "...";
+        const dateTo = this.localFilters.receiptDateMax
+          ? this.formatDateDisplay(this.localFilters.receiptDateMax)
+          : "...";
         filters.push({
-          key: 'receiptDate',
-          label: `วันที่: ${dateFrom} - ${dateTo}`
-        })
+          key: "receiptDate",
+          label: `วันที่: ${dateFrom} - ${dateTo}`,
+        });
       }
 
-      return filters
-    }
+      return filters;
+    },
   },
 
   watch: {
     filters: {
       handler(newVal) {
         this.localFilters = {
-          stockNumbers: newVal.stockNumbers && newVal.stockNumbers.length > 0 ? [...newVal.stockNumbers] : [],
-          productCodes: newVal.productCodes && newVal.productCodes.length > 0 ? [...newVal.productCodes] : [],
+          stockNumbers:
+            newVal.stockNumbers && newVal.stockNumbers.length > 0
+              ? [...newVal.stockNumbers]
+              : [],
+          productCodes:
+            newVal.productCodes && newVal.productCodes.length > 0
+              ? [...newVal.productCodes]
+              : [],
           receiptDateMin: newVal.receiptDateMin,
-          receiptDateMax: newVal.receiptDateMax
-        }
+          receiptDateMax: newVal.receiptDateMax,
+        };
       },
       deep: true,
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 
   methods: {
     handleSearch() {
       // Helper function to trim and filter array values
       const trimAndFilterArray = (arr) => {
-        if (!arr || arr.length === 0) return null
+        if (!arr || arr.length === 0) return null;
         const trimmed = arr
-          .map(item => typeof item === 'string' ? item.trim() : item)
-          .filter(item => item !== '' && item !== null && item !== undefined)
-        return trimmed.length > 0 ? trimmed : null
-      }
+          .map((item) => (typeof item === "string" ? item.trim() : item))
+          .filter((item) => item !== "" && item !== null && item !== undefined);
+        return trimmed.length > 0 ? trimmed : null;
+      };
 
       const cleanFilters = {
         stockNumbers: trimAndFilterArray(this.localFilters.stockNumbers),
         productCodes: trimAndFilterArray(this.localFilters.productCodes),
         receiptDateMin: this.localFilters.receiptDateMin,
-        receiptDateMax: this.localFilters.receiptDateMax
-      }
-      console.log('SearchView - localFilters:', this.localFilters)
-      console.log('SearchView - cleanFilters emitted:', cleanFilters)
-      this.$emit('search', cleanFilters)
+        receiptDateMax: this.localFilters.receiptDateMax,
+      };
+      console.log("SearchView - localFilters:", this.localFilters);
+      console.log("SearchView - cleanFilters emitted:", cleanFilters);
+      this.$emit("search", cleanFilters);
     },
 
     handleRefresh() {
@@ -274,13 +308,13 @@ export default {
         stockNumbers: [],
         productCodes: [],
         receiptDateMin: null,
-        receiptDateMax: null
-      }
-      this.$emit('refresh')
+        receiptDateMax: null,
+      };
+      this.$emit("refresh");
     },
 
     handleAdvancedFilter() {
-      this.$emit('advanced-filter')
+      this.$emit("advanced-filter");
     },
 
     handleClearAll() {
@@ -288,60 +322,45 @@ export default {
         stockNumbers: [],
         productCodes: [],
         receiptDateMin: null,
-        receiptDateMax: null
-      }
-      this.$emit('clear-all')
+        receiptDateMax: null,
+      };
+      this.$emit("clear-all");
     },
 
     removeFilter(key) {
-      if (key === 'stockNumbers') {
-        this.localFilters.stockNumbers = []
-      } else if (key === 'productCodes') {
-        this.localFilters.productCodes = []
-      } else if (key === 'receiptDate') {
-        this.localFilters.receiptDateMin = null
-        this.localFilters.receiptDateMax = null
+      if (key === "stockNumbers") {
+        this.localFilters.stockNumbers = [];
+      } else if (key === "productCodes") {
+        this.localFilters.productCodes = [];
+      } else if (key === "receiptDate") {
+        this.localFilters.receiptDateMin = null;
+        this.localFilters.receiptDateMax = null;
       }
-      this.$emit('remove-filter', key)
-      this.handleSearch()
+      this.$emit("remove-filter", key);
+      this.handleSearch();
     },
 
     formatDateDisplay(date) {
-      if (!date) return ''
-      return new Date(date).toLocaleDateString('th-TH', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      })
+      if (!date) return "";
+      return new Date(date).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
     },
-
-    /**
-     * Trim chip value when added to InputChips
-     * @param {Object} event - Add event from InputChips
-     * @param {String} fieldName - Field name (stockNumbers or productCodes)
-     */
-    trimChipValue(event, fieldName) {
-      this.$nextTick(() => {
-        if (this.localFilters[fieldName] && Array.isArray(this.localFilters[fieldName])) {
-          this.localFilters[fieldName] = this.localFilters[fieldName].map(item =>
-            typeof item === 'string' ? item.trim() : item
-          )
-        }
-      })
-    }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/components/list-page-templete/search-view.scss';
+@import "@/assets/styles/components/list-page-templete/search-view.scss";
 
 .main-filters-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
-  gap: 1rem;
+  grid-template-columns: 1fr 1fr 1fr; // เท่ากันหมด
+  gap: 0.75rem; // Reduced from 1rem
   margin-bottom: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.75rem; // Increased from 0.5rem for better spacing
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -350,33 +369,13 @@ export default {
 .filter-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem; // Reduced from 0.5rem
 }
 
 .filter-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem; // Reduced from 0.875rem (12px)
   font-weight: 600;
   color: #374151;
-}
-
-.filter-chips {
-  width: 100%;
-
-  :deep(.p-inputchips) {
-    width: 100%;
-  }
-
-  :deep(.p-inputtext) {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  :deep(.p-inputchips-chip) {
-    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-  }
 }
 
 .date-range-field {
@@ -386,52 +385,46 @@ export default {
 .date-range-inputs {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.375rem; // Reduced from 0.5rem
 }
 
-.date-input {
-  //flex: 1;
-
-  :deep(.p-inputtext) {
-    padding: 0.5rem 0.75rem;
-    //font-size: 0.875rem;
-  }
-}
+// Calendar styling handled by generic component
 
 .date-separator {
   color: #6b7280;
   font-weight: 500;
+  font-size: 0.75rem; // 12px
 }
 
 .active-filters-display {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1.25rem;
+  gap: 0.75rem; // Reduced from 1rem
+  padding: 0.5rem 0.75rem; // Reduced from 0.75rem 1.25rem
   background: #fef8f9;
   border-radius: 8px;
   border: 1px solid #ffd7e1;
-  margin-top: 1rem;
+  margin-top: 0.75rem; // Reduced from 1rem
 }
 
 .active-filters-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 0.375rem; // Reduced from 0.5rem
+  font-size: 0.75rem; // Reduced from 0.875rem (12px)
   font-weight: 600;
   color: #e7de99;
   white-space: nowrap;
 
   i {
-    font-size: 1rem;
+    font-size: 0.875rem; // Reduced from 1rem
   }
 }
 
 .active-filters-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.375rem; // Reduced from 0.5rem
   flex: 1;
 }
 
@@ -439,12 +432,13 @@ export default {
   :deep(.p-chip) {
     background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
     color: white;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem; // Reduced from 0.375rem 0.75rem
+    font-size: 0.75rem; // Reduced from 0.875rem (12px)
 
     .p-chip-remove-icon {
       color: white;
-      margin-left: 0.5rem;
+      margin-left: 0.375rem; // Reduced from 0.5rem
+      font-size: 0.75rem; // 12px
 
       &:hover {
         color: #ffffff;
@@ -456,9 +450,31 @@ export default {
 :deep(.p-badge-pink) {
   background: linear-gradient(135deg, #e7de99 0%, #dfd070 100%);
   color: white;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  line-height: 1.25rem;
+  min-width: 1rem; // Reduced from 1.25rem
+  height: 1rem; // Reduced from 1.25rem
+  line-height: 1rem; // Reduced from 1.25rem
+  font-size: 0.6875rem; // 11px
+}
+
+// Compact page title section
+:deep(.list-page-title-section) {
+  .list-page-title {
+    font-size: 1.25rem !important; // Reduced for compact
+    gap: 0.5rem !important;
+
+    i {
+      font-size: 1.25rem !important;
+    }
+  }
+
+  .list-page-subtitle {
+    font-size: 0.75rem !important; // 12px
+  }
+}
+
+// Button styling handled by generic component
+:deep(.list-search-bar) {
+  gap: 0.5rem !important; // Compact gap between buttons
 }
 
 @media (max-width: 1024px) {

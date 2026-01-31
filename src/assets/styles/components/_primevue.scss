@@ -461,6 +461,91 @@
   opacity: 0;
 }
 
+// InputChips Component - Compact styling for list-inventory and similar views
+.p-inputchips {
+  .p-inputchips-multiple-container {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid $gray-300;
+    border-radius: $radius-md;
+    background: white;
+    transition: all $transition-fast;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    min-height: 42px; // Default size
+
+    &:hover {
+      border-color: #efe9c9;
+    }
+
+    &.p-focus {
+      outline: none;
+      border-color: #efe9c9;
+      box-shadow: 0 0 0 3px rgba(239, 233, 201, 0.2);
+    }
+
+    &.p-disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: $gray-100;
+    }
+
+    .p-inputchips-token {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
+      color: #1f2937;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin: 0;
+
+      .p-inputchips-token-icon {
+        margin-left: 0.375rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+
+        &:hover {
+          color: #e7de99;
+        }
+      }
+    }
+
+    .p-inputchips-input-token {
+      flex: 1;
+      display: inline-flex;
+      padding: 0;
+      margin: 0;
+
+      input {
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0.25rem;
+        font-size: 0.875rem;
+        color: $gray-900;
+        width: 100%;
+        min-width: 50px;
+
+        &::placeholder {
+          color: $gray-500;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  &.p-invalid .p-inputchips-multiple-container {
+    border-color: $error;
+  }
+}
+
 // Animations
 @keyframes spin {
   from {

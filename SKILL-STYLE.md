@@ -470,12 +470,24 @@ computed: {
 
 ## 🎨 Colors
 
-### Primary Colors (Pink Theme)
+### Primary Colors (Light Gold/Jewelry Theme)
 ```scss
-$primary: #ff69b4;           // Hot Pink (Main brand color)
-$primary-dark: #ff1493;      // Deep Pink
-$primary-darker: #c71585;    // Medium Violet Red (for hover)
-$primary-light: rgba(255, 105, 180, 0.1);
+// ตามไฟล์ variables.css
+$primary-50: #faf9f0;
+$primary-100: #f5f3e1;
+$primary-200: #efe9c9;      // Lighter Gold
+$primary-300: #e7de99;      // Base Gold (Main brand color)
+$primary-400: #dfd070;      // Medium Gold
+$primary-500: #d7c247;      // Deeper Gold
+$primary-600: #c0ab28;      // Dark Gold (for hover)
+$primary-700: #91801e;      // Darker Gold
+$primary-800: #615514;
+$primary-900: #302b0a;
+
+// Primary color for use
+$primary: #e7de99;          // Base Gold
+$primary-hover: #c0ab28;    // Dark Gold for hover states
+$primary-light: rgba(231, 222, 153, 0.1); // Light gold with transparency
 ```
 
 ### Neutral Colors
@@ -486,29 +498,33 @@ $gray-200: #e5e7eb;
 $gray-300: #d1d5db;
 $gray-400: #9ca3af;
 $gray-500: #6b7280;
+$gray-600: #4b5563;
 $gray-700: #374151;
-$gray-900: #1f2937;
+$gray-800: #1f2937;
+$gray-900: #111827;
 ```
 
 ### Status Colors
 ```scss
 $success: #10b981;
 $warning: #f59e0b;
-$danger: #ef4444;
+$error: #ef4444;  // Changed from $danger
 $info: #3b82f6;
 ```
 
 ### Color Usage Guidelines
 
 **DO:**
-- ใช้ `#ff69b4` (Hot Pink) สำหรับ primary elements: buttons, icons, borders, gradients
-- ใช้ `#ff1493` (Deep Pink) สำหรับ gradient และ hover states
-- ใช้ `#c71585` (Medium Violet Red) สำหรับ active/pressed states
+- ใช้ `#e7de99` (Base Gold) สำหรับ primary elements: buttons, icons, borders, chips
+- ใช้ `#efe9c9` (Lighter Gold) สำหรับ gradients และ backgrounds
+- ใช้ `#c0ab28` (Dark Gold) สำหรับ hover states
+- ใช้ `#91801e` (Darker Gold) สำหรับ active/pressed states
 
 **DON'T:**
+- ❌ ห้ามใช้สีชมพู (#ff69b4) - ไม่ใช่สีของ Jewelry theme
 - ❌ ห้ามใช้สีส้ม (#f58511) - เป็นสีเก่าที่เปลี่ยนไปแล้ว
 - ❌ ห้ามใช้สีอื่นที่ไม่ใช่สีใน palette ที่กำหนด
-- ❌ ห้ามใช้สี custom ที่ไม่ได้มีใน style guide
+- ❌ ห้ามใช้สี custom ที่ไม่ได้มีใน variables.css
 
 ---
 
@@ -543,9 +559,82 @@ $info: #3b82f6;
 
 ## 🎯 Component Patterns
 
+### ⚠️ IMPORTANT: ตรวจสอบ Generic Components ก่อนเสมอ
+
+**หลักการสำคัญ:** ก่อนสร้าง component หรือเขียน style ใหม่ใน view file **ต้องตรวจสอบ generic components ก่อนเสมอ**
+
+**ขั้นตอน:**
+1. **ตรวจสอบว่ามี Generic Component อยู่แล้วหรือไม่** ที่ `/src/components/prime-vue/`
+   - InputChips
+   - MultiSelect
+   - AutoComplete
+   - Calendar
+   - DataTable
+   - InputText
+   - Textarea
+   - และอื่นๆ
+
+2. **ถ้ามี Generic Component อยู่แล้ว:**
+   - ✅ **ใช้ component ที่มีอยู่** โดยการ import จาก `@/components/prime-vue/`
+   - ❌ **ห้าม** import จาก `primevue/` โดยตรง
+   - ❌ **ห้าม** เขียน style ซ้ำใน view file
+
+3. **ถ้าไม่มี Generic Component:**
+   - สร้าง generic component ใหม่ที่ `/src/components/prime-vue/`
+   - ใช้ Options API (ตาม SKILL.md)
+   - ใส่ style แบบ compact (30px height, 12px font)
+   - ใช้สีทอง Gold theme (#e7de99, #efe9c9)
+   - จากนั้นเรียกใช้ใน view file
+
+**ตัวอย่าง:**
+
+```vue
+<!-- ❌ WRONG - Import จาก PrimeVue โดยตรง -->
+<script>
+import MultiSelect from 'primevue/multiselect'
+</script>
+
+<template>
+  <MultiSelect v-model="value" :options="options" />
+</template>
+
+<style scoped>
+:deep(.p-multiselect) {
+  // เขียน style ซ้ำทุกไฟล์
+}
+</style>
+
+<!-- ✅ CORRECT - ใช้ Generic Component -->
+<script>
+import MultiSelect from '@/components/prime-vue/multi-select.vue'
+</script>
+
+<template>
+  <MultiSelect v-model="value" :options="options" />
+</template>
+```
+
+**ประโยชน์:**
+- ✅ Style สม่ำเสมอทั้งโปรเจค
+- ✅ ไม่ต้องเขียน style ซ้ำ
+- ✅ แก้ไขที่เดียว ใช้ได้ทั้งระบบ
+- ✅ ลด code duplication
+- ✅ บำรุงรักษาง่าย
+
+**Generic Components ที่มีอยู่:**
+```
+/src/components/prime-vue/
+├── input-chips.vue       ✅ มีแล้ว
+├── multi-select.vue      ✅ มีแล้ว
+├── data-table.vue        ✅ มีแล้ว
+└── ... (ตรวจสอบโฟลเดอร์ก่อนสร้างใหม่)
+```
+
+---
+
 ### Section Title with Underline
 
-**สำคัญ:** ทุก section title ต้องมี border-bottom สีชมพู
+**สำคัญ:** ทุก section title ต้องมี border-bottom สีทอง
 
 ```scss
 .section-title {
@@ -554,14 +643,14 @@ $info: #3b82f6;
   color: #111827;
   margin: 0 0 1rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #ff69b4; // ⭐ สีชมพู
+  border-bottom: 2px solid #e7de99; // ⭐ สีทอง (Gold)
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
   i {
     font-size: 1.25rem;
-    color: #ff69b4; // ⭐ icon สีชมพู
+    color: #e7de99; // ⭐ icon สีทอง (Gold)
   }
 }
 ```
@@ -592,8 +681,8 @@ $info: #3b82f6;
 
   .btn-submit {
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%); // ⭐ สีชมพู
-    color: white;
+    background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%); // ⭐ สีทอง (Gold)
+    color: #1f2937; // Text color dark
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -601,9 +690,9 @@ $info: #3b82f6;
     transition: all 0.2s;
 
     &:hover {
-      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      background: linear-gradient(135deg, #dfd070 0%, #dfd070 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+      box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
     }
 
     &:disabled {
@@ -620,8 +709,8 @@ $info: #3b82f6;
 input, textarea, select {
   &:focus {
     outline: none;
-    border-color: #ff69b4; // ⭐ สีชมพู
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+    border-color: #e7de99; // ⭐ สีทอง (Gold)
+    box-shadow: 0 0 0 3px rgba(231, 222, 153, 0.1);
   }
 }
 ```
@@ -641,8 +730,8 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 // Strong shadow for modals
 box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 
-// Pink shadow for buttons
-box-shadow: 0 4px 6px rgba(255, 105, 180, 0.3);
+// Gold shadow for buttons
+box-shadow: 0 4px 6px rgba(231, 222, 153, 0.3);
 ```
 
 ### Border Radius
@@ -663,15 +752,18 @@ border-radius: 6px;
 
 เมื่อสร้าง styles ใหม่ ต้องตรวจสอบ:
 
+- [ ] **ตรวจสอบ Generic Components ก่อน** ที่ `/src/components/prime-vue/`
+- [ ] ถ้ามี generic component แล้ว ต้องใช้แทน (ห้าม import จาก primevue โดยตรง)
+- [ ] ถ้าไม่มี generic component ต้องสร้างใหม่ที่ `/src/components/prime-vue/` ก่อน
 - [ ] Import list-page-template ถ้าเป็นหน้า list
 - [ ] ใช้ระยะห่างระหว่าง sections ให้สม่ำเสมอ (0.75rem)
-- [ ] ใช้สีชมพู (#ff69b4) เป็น primary color
-- [ ] Section title มี border-bottom สีชมพู
-- [ ] Icon ใช้สีชมพู
+- [ ] ใช้สีทอง (#e7de99) เป็น primary color
+- [ ] Section title มี border-bottom สีทอง
+- [ ] Icon ใช้สีทอง
 - [ ] Form modals ใช้ `.list-form-modal` และ structure ที่กำหนด
 - [ ] Detail modals ใช้ `.list-detail-dialog` และ structure ที่กำหนด
-- [ ] Buttons ใช้ gradient สีชมพู
-- [ ] Input focus states ใช้สีชมพู
+- [ ] Buttons ใช้ gradient สีทอง
+- [ ] Input focus states ใช้สีทอง
 - [ ] Responsive design สำหรับ mobile/tablet
 - [ ] Shadow และ border-radius ตามมาตรฐาน
 - [ ] Class names ชัดเจนและสื่อความหมาย
@@ -680,17 +772,49 @@ border-radius: 6px;
 
 ## 🚫 ข้อห้าม (DON'Ts)
 
-### ❌ ห้ามใช้สีส้ม
+### ❌ ห้าม Import PrimeVue Components โดยตรง
+```vue
+// ❌ WRONG - Import จาก PrimeVue โดยตรง
+<script>
+import MultiSelect from 'primevue/multiselect'
+import InputChips from 'primevue/inputchips'
+import AutoComplete from 'primevue/autocomplete'
+</script>
+
+<style scoped>
+// แล้วเขียน style ซ้ำทุกไฟล์
+:deep(.p-multiselect) {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+</style>
+
+// ✅ CORRECT - ใช้ Generic Component
+<script>
+import MultiSelect from '@/components/prime-vue/multi-select.vue'
+import InputChips from '@/components/prime-vue/input-chips.vue'
+import AutoComplete from '@/components/prime-vue/auto-complete.vue'
+</script>
+
+// ไม่ต้องเขียน style ซ้ำ! Component มี style อยู่แล้ว
+```
+
+### ❌ ห้ามใช้สีเก่า
 ```scss
-// ❌ WRONG - สีเก่า
+// ❌ WRONG - สีเก่า (ส้ม)
 $primary: #f58511;
 border-bottom: 2px solid #f58511;
 background: linear-gradient(135deg, #f58511 0%, #ff9a3c 100%);
 
-// ✅ CORRECT - สีใหม่
+// ❌ WRONG - สีชมพู (ไม่ใช่สีของ Jewelry theme)
 $primary: #ff69b4;
 border-bottom: 2px solid #ff69b4;
 background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+
+// ✅ CORRECT - สีทอง (Gold/Jewelry theme)
+$primary: #e7de99;
+border-bottom: 2px solid #e7de99;
+background: linear-gradient(135deg, #efe9c9 0%, #efe9c9 100%);
 ```
 
 ### ❌ ห้าม Section Title ไม่มี Underline
@@ -709,7 +833,7 @@ background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
   align-items: center;
   margin: 0 0 1rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #ff69b4; // ⭐ จำเป็น!
+  border-bottom: 2px solid #e7de99; // ⭐ จำเป็น! สีทอง
 }
 ```
 
@@ -751,6 +875,24 @@ background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
 
 ---
 
-**Last Updated:** 2025-01-20
-**Version:** 2.0 (Pink Theme Update)
-**Breaking Changes:** สีหลักเปลี่ยนจากสีส้ม (#f58511) เป็นสีชมพู (#ff69b4)
+## 📝 Version History
+
+**Version 3.1** - 2025-01-30
+- ✨ เพิ่มหัวข้อ "ตรวจสอบ Generic Components ก่อนเสมอ"
+- ✨ เพิ่มแนวทางการใช้งาน generic components จาก `/src/components/prime-vue/`
+- ✨ เพิ่มข้อห้าม: ห้าม import จาก PrimeVue โดยตรง
+- ✨ อัปเดต Checklist ให้ตรวจสอบ generic components ก่อน
+- 📋 เพิ่มตัวอย่าง WRONG vs CORRECT สำหรับการใช้ generic components
+
+**Version 3.0** - 2025-01-30
+- 🎨 สีหลักเปลี่ยนเป็นสีทอง Light Gold (#e7de99) สำหรับ Jewelry theme
+- 📦 อัปเดตทุก color reference ตาม variables.css
+- 🚫 เพิ่มข้อห้ามใช้สีชมพูและสีเก่า
+
+---
+
+**Last Updated:** 2025-01-30
+**Version:** 3.1 (Generic Components Guidelines)
+**Breaking Changes:**
+- ต้องใช้ generic components จาก `/src/components/prime-vue/` แทนการ import จาก PrimeVue โดยตรง
+- สีหลักเปลี่ยนเป็นสีทอง Light Gold (#e7de99) สำหรับ Jewelry theme ตาม variables.css
