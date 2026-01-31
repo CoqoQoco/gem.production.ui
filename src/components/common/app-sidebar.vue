@@ -89,7 +89,7 @@
           </div>
 
           <!-- Inventory Module with Submenu -->
-          <div v-if="hasAccessibleChildren(['StockSummary', 'GoodsReceipt', 'UpdateProduct', 'MassUpdateGoldPrice', 'StockList', 'StockIn', 'StockOut', 'StockTransfer'])" class="nav-group">
+          <div v-if="hasAccessibleChildren(['StockSummary', 'GoodsReceipt', 'UpdateProduct', 'MassUpdateGoldPrice', 'MassUploadImage', 'StockList', 'StockIn', 'StockOut', 'StockTransfer'])" class="nav-group">
             <a href="#" class="nav-item" @click.prevent="toggleSubmenu('inventory')">
               <i class="pi pi-box"></i>
               <span>{{ t('dashboard.menu.inventory') }}</span>
@@ -146,6 +146,16 @@
                 >
                   <i class="pi pi-circle-fill"></i>
                   <span>{{ t('dashboard.menu.massUpdateGoldPrice') || 'ปรับราคาทอง' }}</span>
+                </router-link>
+                <router-link
+                  v-if="canAccess('MassUploadImage')"
+                  to="/inventory/mass-upload-image"
+                  class="submenu-item"
+                  active-class="active"
+                  @click="closeSidebar"
+                >
+                  <i class="pi pi-circle-fill"></i>
+                  <span>{{ t('dashboard.menu.massUploadImage') || 'อัพโหลดรูปสินค้า' }}</span>
                 </router-link>
                 <router-link
                   v-if="canAccess('StockIn')"

@@ -77,6 +77,15 @@ const inventoryRoutes = [
     }
   },
   {
+    path: '/inventory/mass-upload-image',
+    name: 'MassUploadImage',
+    component: () => import('@/views/stock/mass-upload-image/mass-upload-image-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Mass Upload Product Image'
+    }
+  },
+  {
     path: '/inventory/update-product',
     name: 'UpdateProduct',
     component: () => import('@/views/stock/update-product/update-product-view.vue'),

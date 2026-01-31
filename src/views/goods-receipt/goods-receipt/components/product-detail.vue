@@ -254,6 +254,14 @@ export default {
         if (newValue && !this.isUpdatingFromParent) {
           this.isUpdatingFromParent = true;
           this.productData = JSON.parse(JSON.stringify(newValue));
+          // Re-sync AutoComplete selection when productTypeCode changes externally (e.g. duplicateProduct)
+          if (newValue.productTypeCode && this.productTypes.length > 0) {
+            this.selectedProductType = this.productTypes.find(
+              (pt) => pt.code === newValue.productTypeCode,
+            ) || null;
+          } else if (!newValue.productTypeCode) {
+            this.selectedProductType = null;
+          }
           this.$nextTick(() => {
             this.isUpdatingFromParent = false;
           });

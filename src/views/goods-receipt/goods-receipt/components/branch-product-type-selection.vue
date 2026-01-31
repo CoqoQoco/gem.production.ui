@@ -83,6 +83,14 @@ export default {
         if (newValue && !this.isUpdatingFromParent) {
           this.isUpdatingFromParent = true
           this.selectionData = JSON.parse(JSON.stringify(newValue))
+          // Re-sync AutoComplete selection when branchId changes externally (e.g. duplicateProduct)
+          if (newValue.branchId && this.branches.length > 0) {
+            this.selectedBranch = this.branches.find(
+              (b) => b.branchId === newValue.branchId
+            ) || null
+          } else if (!newValue.branchId) {
+            this.selectedBranch = null
+          }
           this.$nextTick(() => {
             this.isUpdatingFromParent = false
           })

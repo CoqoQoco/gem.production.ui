@@ -929,6 +929,21 @@ export default {
         { field: "itemNameTh", header: "ทอง", width: "150px", sortable: false },
         { field: "shapeNameTh", header: "รูปร่าง", width: "120px", sortable: false },
         {
+          field: "qty",
+          header: "จำนวน",
+          width: "80px",
+          align: "right",
+          format: "decimal2",
+          sortable: false,
+        },
+        {
+          field: "qtyUnit",
+          header: "หน่วยนับ",
+          width: "80px",
+          align: "center",
+          sortable: false,
+        },
+        {
           field: "weight",
           header: "น้ำหนัก",
           width: "90px",
@@ -957,21 +972,6 @@ export default {
           width: "100px",
           align: "right",
           format: "decimal2",
-          sortable: false,
-        },
-        {
-          field: "qty",
-          header: "จำนวน",
-          width: "80px",
-          align: "right",
-          format: "decimal2",
-          sortable: false,
-        },
-        {
-          field: "qtyUnit",
-          header: "หน่วยนับ",
-          width: "80px",
-          align: "center",
           sortable: false,
         },
         {
