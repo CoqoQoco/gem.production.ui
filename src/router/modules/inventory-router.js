@@ -86,6 +86,15 @@ const inventoryRoutes = [
     }
   },
   {
+    path: '/inventory/mass-transfer-product',
+    name: 'MassTransferProduct',
+    component: () => import('@/views/stock/mass-transfer-product/mass-transfer-product-view.vue'),
+    meta: {
+      requiresAuth: true,
+      title: 'Mass Transfer Product'
+    }
+  },
+  {
     path: '/inventory/update-product',
     name: 'UpdateProduct',
     component: () => import('@/views/stock/update-product/update-product-view.vue'),
