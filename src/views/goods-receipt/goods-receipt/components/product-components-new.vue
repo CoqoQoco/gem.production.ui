@@ -479,10 +479,13 @@
             <div class="form-grid-compact labor-grid">
               <div class="form-group-compact">
                 <label>หัวข้อ <span class="required">*</span></label>
-                <InputText
+                <AutoComplete
                   v-model="laborForm.itemNameTh"
+                  :suggestions="filteredLaborTitles"
+                  :dropdown="true"
+                  :force-selection="false"
                   placeholder="เช่น ค่าแรงช่าง, ค่าขนส่ง"
-                  class="input-compact"
+                  @complete="searchLaborTitles"
                 />
               </div>
 
@@ -773,12 +776,16 @@ export default {
       gemShapes: [],
       goldSizes: [],
 
+      // Default labor title suggestions
+      laborTitles: ['แต่ง', 'ฝัง', 'ขัดดิบ', 'ขัดชุบ'],
+
       // Filtered suggestions for autocomplete
       filteredGolds: [],
       filteredGoldSizes: [],
       filteredGems: [],
       filteredGemShapes: [],
       filteredGemFormulas: [],
+      filteredLaborTitles: [],
 
       errors: {},
       isUpdatingFromParent: false,
@@ -1518,6 +1525,15 @@ export default {
     },
 
     // Labor Methods
+    searchLaborTitles(event) {
+      const query = event.query.toLowerCase().trim()
+      this.filteredLaborTitles = query
+        ? this.laborTitles.filter((title) =>
+            title.toLowerCase().includes(query),
+          )
+        : [...this.laborTitles]
+    },
+
     getEmptyLaborItem() {
       return {
         type: "labor",
